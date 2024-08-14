@@ -24,7 +24,9 @@ const config: Config = {
         'dark-gray': '#707070',
       },
       fontSize: {
+        logo: ['35px', '41px'],
         h5: ['16px', '27px'],
+        small: ['12px', '20px'],
       },
     },
   },
