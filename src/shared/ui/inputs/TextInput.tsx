@@ -6,11 +6,12 @@ type TextInputProps = HTMLAttributes<HTMLInputElement> & {
   type: 'text' | 'password';
   invalid: boolean;
   notEmpty: boolean;
+  disabled?: boolean;
 };
 
 export const TextInput = forwardRef(
   (
-    { placeholder, type, invalid, notEmpty, ...props }: TextInputProps,
+    { placeholder, type, invalid, notEmpty, disabled, ...props }: TextInputProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     return (
@@ -18,6 +19,7 @@ export const TextInput = forwardRef(
         <input
           {...props}
           type={type}
+          disabled={disabled}
           ref={ref}
           className={clsx(
             `outline-none pb-3 ${dmSans.className} peer`,
