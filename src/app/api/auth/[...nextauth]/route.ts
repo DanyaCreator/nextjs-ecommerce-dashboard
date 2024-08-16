@@ -1,3 +1,3 @@
-import { handlers } from '@/shared/lib';
+import { handlers } from '../../../../auth';
 
 export const { GET, POST } = handlers;

@@ -12,8 +12,7 @@ import { SubmitButton, TextButton } from '@/shared/ui/buttons';
 import { FieldError } from '@/shared/ui/errors';
 import { TextInput } from '@/shared/ui/inputs';
 import { FormModalMessage } from '@/shared/ui/modals';
-import { login } from '../model';
-import { LoginSchema } from '../model';
+import { login, LoginSchema } from '../model';
 
 export const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -36,7 +35,6 @@ export const LoginForm = () => {
 
   const watchEmailField = watch('email');
   const watchPasswordField = watch('password');
-  const watchNameField = watch('name');
 
   const onSubmit = (data: z.infer<typeof LoginSchema>) => {
     setSuccessMessage(undefined);
@@ -56,17 +54,6 @@ export const LoginForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className='flex flex-col gap-5 items-center w-fit p-8 m-auto bg-white rounded-xl shadow-xl'>
       <Logo />
-      <div className='flex flex-col gap-2'>
-        <TextInput
-          placeholder={'Name'}
-          type={'text'}
-          notEmpty={!!watchNameField}
-          invalid={!!errors.name}
-          disabled={isPending}
-          {...register('name')}
-        />
-        {errors.name && <FieldError errorMessage={errors.name.message} />}
-      </div>
       <div className='flex flex-col gap-2'>
         <TextInput
           placeholder={'Email'}
