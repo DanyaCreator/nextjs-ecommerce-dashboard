@@ -2,10 +2,12 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
+import { signIn } from 'next-auth/react';
 import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import * as z from 'zod';
+import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { dmSans } from '@/shared/assets/fonts';
 import { Logo } from '@/shared/ui';
 import { SubmitButton, TextButton } from '@/shared/ui/buttons';
@@ -49,42 +51,48 @@ export const LoginForm = () => {
     });
   };
 
+  const onClick = async (provider: 'google') => {
+    await signIn(provider, { callbackUrl: DEFAULT_LOGIN_REDIRECT });
+  };
+
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className='flex flex-col gap-5 items-center w-fit p-8 m-auto bg-white rounded-xl shadow-xl'>
-      <Logo />
-      <div className='flex flex-col gap-2'>
-        <TextInput
-          placeholder={'Email'}
-          type={'text'}
-          notEmpty={!!watchEmailField}
-          invalid={!!errors.email}
-          disabled={isPending}
-          {...register('email')}
-        />
-        {errors.email && <FieldError errorMessage={errors.email.message} />}
-      </div>
-      <div className='flex flex-col gap-2'>
-        <TextInput
-          placeholder={'Password'}
-          type={'password'}
-          notEmpty={!!watchPasswordField}
-          invalid={!!errors.password}
-          disabled={isPending}
-          {...register('password')}
-        />
-        {errors.password && (
-          <FieldError errorMessage={errors.password.message} />
-        )}
-      </div>
-      <TextButton text={'Have you forgotten your password?'} />
-      <div className={'w-full'}>
-        {errorMessage && <FormModalMessage errorMessage={errorMessage} />}
-        {successMessage && <FormModalMessage successMessage={successMessage} />}
-      </div>
-      <div className='flex flex-col gap-6 w-full'>
+    <section className='flex flex-col gap-6 items-center w-fit p-8 m-auto bg-white rounded-xl shadow-xl'>
+      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5 items-center'>
+        <Logo />
+        <div className='flex flex-col gap-2'>
+          <TextInput
+            placeholder={'Email'}
+            type={'text'}
+            notEmpty={!!watchEmailField}
+            invalid={!!errors.email}
+            disabled={isPending}
+            {...register('email')}
+          />
+          {errors.email && <FieldError errorMessage={errors.email.message} />}
+        </div>
+        <div className='flex flex-col gap-2'>
+          <TextInput
+            placeholder={'Password'}
+            type={'password'}
+            notEmpty={!!watchPasswordField}
+            invalid={!!errors.password}
+            disabled={isPending}
+            {...register('password')}
+          />
+          {errors.password && (
+            <FieldError errorMessage={errors.password.message} />
+          )}
+        </div>
+        <TextButton text={'Have you forgotten your password?'} />
+        <div className={'w-full'}>
+          {errorMessage && <FormModalMessage errorMessage={errorMessage} />}
+          {successMessage && (
+            <FormModalMessage successMessage={successMessage} />
+          )}
+        </div>
         <SubmitButton text={'SIGN IN'} />
+      </form>
+      <div className='flex flex-col gap-6 w-full'>
         <div className='relative w-full h-[1px] bg-black'>
           <span
             className={clsx(
@@ -95,8 +103,12 @@ export const LoginForm = () => {
             or
           </span>
         </div>
-        <TextButton text={'Sign in with Google'} icon={<FcGoogle />} />
+        <TextButton
+          text={'Sign in with Google'}
+          icon={<FcGoogle />}
+          onClick={() => onClick('google')}
+        />
       </div>
-    </form>
+    </section>
   );
 };
