@@ -1,0 +1,1 @@
+export { NewPasswordSchema } from './NewPasswordSchema';

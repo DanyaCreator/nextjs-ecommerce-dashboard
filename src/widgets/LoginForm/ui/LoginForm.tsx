@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
@@ -18,15 +18,13 @@ import { FormModalMessage } from '@/shared/ui/modals';
 import { login, LoginSchema } from '../model';
 
 export const LoginForm = () => {
+  const router = useRouter();
+
   const searchParams = useSearchParams();
   const urlError =
     searchParams && searchParams.get('error') === 'OAuthAccountNotLinked'
       ? 'Email already in use with different provider!'
       : '';
-
-  useEffect(() => {
-    console.log('urlError: ', urlError);
-  }, [urlError]);
 
   const [isPending, startTransition] = useTransition();
 
@@ -96,7 +94,7 @@ export const LoginForm = () => {
             <FieldError errorMessage={errors.password.message} />
           )}
         </div>
-        <TextButton text={'Have you forgotten your password?'} />
+        <TextButton text={'Have you forgotten your password?'} type={'button'} onClick={() => router.push('/auth/reset')} />
         <div className={'w-full'}>
           {(errorMessage || urlError) && (
             <FormModalMessage errorMessage={errorMessage || urlError} />

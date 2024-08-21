@@ -1,10 +1,10 @@
-import { HTMLAttributes, ReactNode } from 'react';
+import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { dmSans } from '@/shared/assets/fonts';
 
 type TextButtonProps = {
   text: string;
   icon?: ReactNode;
-} & HTMLAttributes<HTMLButtonElement>;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const TextButton = ({ text, icon, ...props }: TextButtonProps) => {
   return (
