@@ -1,1 +1,1 @@
-export * from './ui';
+export { AuthErrorPage } from './ui';

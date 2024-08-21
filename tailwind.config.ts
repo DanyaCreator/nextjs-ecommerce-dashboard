@@ -22,6 +22,7 @@ const config: Config = {
         accent: '#A18A68',
         black: '#000',
         'dark-gray': '#707070',
+        'light-gray': '#EFEFEF'
       },
       fontSize: {
         logo: ['35px', '41px'],

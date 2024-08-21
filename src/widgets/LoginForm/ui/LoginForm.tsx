@@ -2,21 +2,32 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
+import { useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import * as z from 'zod';
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { dmSans } from '@/shared/assets/fonts';
 import { Logo } from '@/shared/ui';
-import { SubmitButton, TextButton } from '@/shared/ui/buttons';
+import { RoundedButton, TextButton } from '@/shared/ui/buttons';
 import { FieldError } from '@/shared/ui/errors';
 import { TextInput } from '@/shared/ui/inputs';
 import { FormModalMessage } from '@/shared/ui/modals';
 import { login, LoginSchema } from '../model';
 
 export const LoginForm = () => {
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams && searchParams.get('error') === 'OAuthAccountNotLinked'
+      ? 'Email already in use with different provider!'
+      : '';
+
+  useEffect(() => {
+    console.log('urlError: ', urlError);
+  }, [urlError]);
+
   const [isPending, startTransition] = useTransition();
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
@@ -57,7 +68,9 @@ export const LoginForm = () => {
 
   return (
     <section className='flex flex-col gap-6 items-center w-fit p-8 m-auto bg-white rounded-xl shadow-xl'>
-      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5 items-center'>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className='flex flex-col gap-5 items-center'>
         <Logo />
         <div className='flex flex-col gap-2'>
           <TextInput
@@ -85,12 +98,14 @@ export const LoginForm = () => {
         </div>
         <TextButton text={'Have you forgotten your password?'} />
         <div className={'w-full'}>
-          {errorMessage && <FormModalMessage errorMessage={errorMessage} />}
+          {(errorMessage || urlError) && (
+            <FormModalMessage errorMessage={errorMessage || urlError} />
+          )}
           {successMessage && (
             <FormModalMessage successMessage={successMessage} />
           )}
         </div>
-        <SubmitButton text={'SIGN IN'} />
+        <RoundedButton text={'SIGN IN'} type={'submit'} />
       </form>
       <div className='flex flex-col gap-6 w-full'>
         <div className='relative w-full h-[1px] bg-black'>
