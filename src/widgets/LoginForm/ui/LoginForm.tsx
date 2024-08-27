@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import * as z from 'zod';
@@ -14,8 +14,9 @@ import { Logo } from '@/shared/ui';
 import { RoundedButton, TextButton } from '@/shared/ui/buttons';
 import { FieldError } from '@/shared/ui/errors';
 import { TextInput } from '@/shared/ui/inputs';
-import { FormModalMessage } from '@/shared/ui/modals';
-import { login, LoginSchema } from '../model';
+import { CardWrapper, FormModalMessage } from '@/shared/ui/modals';
+import { login } from '../api';
+import { LoginSchema } from '../model';
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -65,7 +66,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <section className='flex flex-col gap-6 items-center w-fit p-8 m-auto bg-white rounded-xl shadow-xl'>
+    <CardWrapper className='flex flex-col gap-6 items-center'>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className='flex flex-col gap-5 items-center'>
@@ -94,7 +95,11 @@ export const LoginForm = () => {
             <FieldError errorMessage={errors.password.message} />
           )}
         </div>
-        <TextButton text={'Have you forgotten your password?'} type={'button'} onClick={() => router.push('/auth/reset')} />
+        <TextButton
+          text={'Have you forgotten your password?'}
+          type={'button'}
+          onClick={() => router.push('/auth/reset')}
+        />
         <div className={'w-full'}>
           {(errorMessage || urlError) && (
             <FormModalMessage errorMessage={errorMessage || urlError} />
@@ -122,6 +127,6 @@ export const LoginForm = () => {
           onClick={() => onClick('google')}
         />
       </div>
-    </section>
+    </CardWrapper>
   );
 };

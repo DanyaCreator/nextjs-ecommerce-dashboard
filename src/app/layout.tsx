@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { ReactNode } from 'react';
+
 import './styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -12,11 +14,22 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang='en'>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <main
+          style={{
+            backgroundImage: `url("/bg-image.jpg")`,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}
+          className='w-screen h-screen flex'>
+          {children}
+        </main>
+      </body>
     </html>
   );
 }

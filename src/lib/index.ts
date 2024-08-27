@@ -1,2 +1,1 @@
-export * from './database';
-export * from './schemas';
+export { db } from './db';

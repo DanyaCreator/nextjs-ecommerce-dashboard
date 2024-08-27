@@ -9,7 +9,8 @@ import { RoundedButton, TextButton } from '@/shared/ui/buttons';
 import { FieldError } from '@/shared/ui/errors';
 import { TextInput } from '@/shared/ui/inputs';
 import { CardWrapper, FormModalMessage } from '@/shared/ui/modals';
-import { reset, ResetSchema } from '../model';
+import { reset } from '../api';
+import { ResetSchema } from '../model';
 
 export const ResetForm = () => {
   const router = useRouter();

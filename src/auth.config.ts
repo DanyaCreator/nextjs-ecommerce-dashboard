@@ -2,8 +2,14 @@ import bcrypt from 'bcryptjs';
 import type { NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import Google from 'next-auth/providers/google';
+import * as z from 'zod';
 
-import { db, AuthSchema } from '@/lib';
+import { db } from '@/lib';
+
+const AuthSchema = z.object({
+  email: z.string().email({ message: 'Invalid email!' }),
+  password: z.string().min(1, { message: 'Password is required!' }),
+});
 
 export default {
   providers: [

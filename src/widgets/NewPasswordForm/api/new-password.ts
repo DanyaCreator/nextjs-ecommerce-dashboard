@@ -1,11 +1,10 @@
 'use server';
 
-// FIXME Refactor get token by token
 import bcrypt from 'bcryptjs';
 import * as z from 'zod';
 import { db } from '@/lib';
-import { getUserByEmail } from '@/shared/model';
-import { NewPasswordSchema } from '../../model';
+import { getPasswordResetTokenByToken, getUserByEmail } from '@/shared/model';
+import { NewPasswordSchema } from '../model';
 
 export const newPassword = async (
   data: z.infer<typeof NewPasswordSchema>,
@@ -23,9 +22,7 @@ export const newPassword = async (
 
   const { password } = validatedFields.data;
 
-  const excitingToken = await db.resetPasswordToken.findUnique({
-    where: { token: token },
-  });
+  const excitingToken = await getPasswordResetTokenByToken(token);
 
   if (!excitingToken) {
     return { error: 'Invalid token!' };

@@ -1,2 +1,1 @@
-export * from './schemas';
-export * from './actions';
+export { NewPasswordSchema } from './NewPasswordSchema';

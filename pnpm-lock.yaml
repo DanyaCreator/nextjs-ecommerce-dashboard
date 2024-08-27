@@ -16,7 +16,7 @@ importers:
         version: 2.4.2(@prisma/client@5.18.0(prisma@5.18.0))
       '@hookform/resolvers':
         specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+        version: 3.9.0(react-hook-forms@7.52.2(react@18.3.1))
       '@prisma/client':
         specifier: ^5.18.0
         version: 5.18.0(prisma@5.18.0)

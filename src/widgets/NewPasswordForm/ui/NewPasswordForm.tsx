@@ -11,7 +11,8 @@ import { RoundedButton, TextButton } from '@/shared/ui/buttons';
 import { FieldError } from '@/shared/ui/errors';
 import { TextInput } from '@/shared/ui/inputs';
 import { CardWrapper, FormModalMessage } from '@/shared/ui/modals';
-import { newPassword, NewPasswordSchema } from '../model';
+import { newPassword } from '../api';
+import { NewPasswordSchema } from '../model';
 
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
@@ -46,9 +47,7 @@ export const NewPasswordForm = () => {
     console.log(data);
 
     startTransition(async () => {
-      console.log('token: ', token);
       const result = await newPassword(data, token);
-      console.log('result: ', result);
 
       setSuccessMessage(result.success);
       setErrorMessage(result.error);
