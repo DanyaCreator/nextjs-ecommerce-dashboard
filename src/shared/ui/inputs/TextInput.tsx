@@ -11,7 +11,14 @@ type TextInputProps = HTMLAttributes<HTMLInputElement> & {
 
 export const TextInput = forwardRef(
   (
-    { placeholder, type, invalid, notEmpty, disabled, ...props }: TextInputProps,
+    {
+      placeholder,
+      type,
+      invalid,
+      notEmpty,
+      disabled,
+      ...props
+    }: TextInputProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     return (

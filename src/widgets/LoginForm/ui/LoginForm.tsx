@@ -108,7 +108,7 @@ export const LoginForm = () => {
             <FormModalMessage successMessage={successMessage} />
           )}
         </div>
-        <RoundedButton text={'SIGN IN'} type={'submit'} />
+        <RoundedButton text={'SIGN IN'} className='mt-16' type={'submit'} />
       </form>
       <div className='flex flex-col gap-6 w-full'>
         <div className='relative w-full h-[1px] bg-black'>

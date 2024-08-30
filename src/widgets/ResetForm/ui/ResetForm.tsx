@@ -77,6 +77,7 @@ export const ResetForm = () => {
           )}
         </div>
         <RoundedButton
+          className='mt-16'
           text={'SEND RESET EMAIL'}
           type={'submit'}
           disabled={isPending}
