@@ -8,9 +8,9 @@ import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import * as z from 'zod';
+
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { dmSans } from '@/shared/assets/fonts';
-import { Logo } from '@/shared/ui';
 import { RoundedButton, TextButton } from '@/shared/ui/buttons';
 import { FieldError } from '@/shared/ui/errors';
 import { TextInput } from '@/shared/ui/inputs';
@@ -18,7 +18,7 @@ import { CardWrapper, FormModalMessage } from '@/shared/ui/modals';
 import { login } from '../api';
 import { LoginSchema } from '../model';
 
-export const LoginForm = () => {
+export const LoginPage = () => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -70,7 +70,6 @@ export const LoginForm = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         className='flex flex-col gap-5 items-center'>
-        <Logo />
         <div className='flex flex-col gap-2'>
           <TextInput
             placeholder={'Email'}

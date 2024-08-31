@@ -1,10 +1,12 @@
+'use client';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+
 import { dmSans } from '@/shared/assets/fonts';
-import { Logo } from '@/shared/ui';
 import { RoundedButton, TextButton } from '@/shared/ui/buttons';
 import { FieldError } from '@/shared/ui/errors';
 import { TextInput } from '@/shared/ui/inputs';
@@ -12,7 +14,7 @@ import { CardWrapper, FormModalMessage } from '@/shared/ui/modals';
 import { reset } from '../api';
 import { ResetSchema } from '../model';
 
-export const ResetForm = () => {
+export const ResetPage = () => {
   const router = useRouter();
 
   const [isPending, startTransition] = useTransition();
@@ -55,7 +57,6 @@ export const ResetForm = () => {
       <form
         className='flex flex-col gap-6 items-center'
         onSubmit={handleSubmit(onSubmit)}>
-        <Logo />
         <h5 className={`${dmSans.className} text-dark-gray`}>
           Forgot your password?
         </h5>
