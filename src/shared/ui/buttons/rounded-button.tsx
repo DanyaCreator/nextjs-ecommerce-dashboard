@@ -5,21 +5,24 @@ import { dmSans } from '@/shared/assets/fonts';
 type RoundedButtonProps = {
   text: string;
   className?: string;
+  white?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const RoundedButton = ({
   text,
   className,
+  white,
   ...props
 }: RoundedButtonProps) => {
   return (
     <button
       className={clsx(
-        'w-full h-8 flex justify-center items-center',
-        `${dmSans.className} text-white text-[12px] font-medium tracking-[2.5%]`,
-        'bg-black rounded border-solid border border-black',
-        'hover:bg-white hover:text-black transition-colors',
-        className && className
+        'min-w-20 px-2 h-8 flex justify-center items-center',
+        `${dmSans.className} text-[12px] font-medium tracking-[2.5%]`,
+        'rounded border-solid border border-black transition-colors',
+        !white && 'text-white bg-black hover:bg-white hover:text-black',
+        className && className,
+        white && 'text-black bg-white hover:bg-black hover:text-white'
       )}
       {...props}>
       {text}

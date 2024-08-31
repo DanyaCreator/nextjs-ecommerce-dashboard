@@ -5,6 +5,7 @@ import { ReactNode } from 'react';
 
 import './styles/globals.css';
 import { auth } from '@/auth';
+import { ModalProvider } from '@/app/providers/modal-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -32,6 +33,7 @@ export default async function RootLayout({
               backgroundPosition: 'center',
             }}
             className='w-screen h-screen flex'>
+            <ModalProvider />
             {children}
           </main>
         </body>

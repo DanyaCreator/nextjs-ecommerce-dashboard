@@ -22,7 +22,7 @@ export const TextInput = forwardRef(
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     return (
-      <div className={'relative min-w-96 flex flex-col'}>
+      <div className={'relative min-w-96 w-full flex flex-col'}>
         <input
           {...props}
           type={type}

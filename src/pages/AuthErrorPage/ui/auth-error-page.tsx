@@ -19,7 +19,7 @@ export const AuthErrorPage = () => {
         </div>
         <RoundedButton
           text={'Go back'}
-          className='mt-16'
+          className='mt-16 w-full'
           onClick={() => router.push('/auth/login')}
         />
       </div>

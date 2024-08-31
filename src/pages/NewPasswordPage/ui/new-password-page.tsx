@@ -81,7 +81,7 @@ export const NewPasswordPage = () => {
         </div>
         <RoundedButton
           text={'RESET PASSWORD'}
-          className='mt-16'
+          className='mt-16 w-full'
           type={'submit'}
           disabled={isPending}
         />

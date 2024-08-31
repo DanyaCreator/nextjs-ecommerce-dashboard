@@ -78,7 +78,7 @@ export const ResetPage = () => {
           )}
         </div>
         <RoundedButton
-          className='mt-16'
+          className='mt-16 w-full'
           text={'SEND RESET EMAIL'}
           type={'submit'}
           disabled={isPending}

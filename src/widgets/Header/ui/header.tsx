@@ -17,21 +17,23 @@ export const Header = () => {
   ];
 
   return (
-    <header className='flex items-center justify-between w-full px-4 py-2 bg-white border-b-solid border-b border-dark-gray'>
-      <div className='flex items-center'>
-        <Logo />
-        <nav className='flex gap-8 ml-16'>
-          {routes.map((link, i) => (
-            <HeaderLink
-              key={i}
-              href={link.href}
-              title={link.title}
-              active={link.active}
-            />
-          ))}
-        </nav>
+    <header className='w-full py-2 bg-white border-b-solid border-b border-dark-gray'>
+      <div className='container flex items-center justify-between'>
+        <div className='flex items-center'>
+          <Logo />
+          <nav className='flex gap-8 ml-16'>
+            {routes.map((link, i) => (
+              <HeaderLink
+                key={i}
+                href={link.href}
+                title={link.title}
+                active={link.active}
+              />
+            ))}
+          </nav>
+        </div>
+        <UserButton />
       </div>
-      <UserButton />
     </header>
   );
 };
