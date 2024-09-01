@@ -5,15 +5,18 @@ import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { useStoreModal } from '@/shared/model/hooks';
+import { useCurrentUser, useStoreModal } from '@/shared/model/hooks';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { FieldError } from '@/shared/ui/errors';
 import { TextInput } from '@/shared/ui/inputs';
 import { FormModalMessage, Modal } from '@/shared/ui/modals';
+import { createStore } from '../api';
 import { ModalStoreSchema } from '../model';
 
 export const StoreModal = () => {
   const storeModal = useStoreModal();
+
+  const user = useCurrentUser();
 
   const [isPending, startTransition] = useTransition();
 
@@ -40,10 +43,14 @@ export const StoreModal = () => {
     setErrorMessage(undefined);
 
     startTransition(async () => {
-      console.log(data);
-      // console.log('result: ', result);
-      // setSuccessMessage(result.success);
-      // setErrorMessage(result.error);
+      const result = await createStore(data, user?.id);
+
+      setSuccessMessage(result.success);
+      setErrorMessage(result.error);
+
+      if (result.error || !result.data) return;
+
+      window.location.assign(`/${result.data.id}`);
     });
   };
 
@@ -51,8 +58,8 @@ export const StoreModal = () => {
     <Modal
       title='Create store'
       description='Add a new store to manage products and categories'
-      isOpen
-      onClose={() => {}}>
+      isOpen={storeModal.isOpen}
+      onClose={storeModal.onClose}>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className='flex flex-col gap-5 items-center mt-6'>
@@ -73,9 +80,21 @@ export const StoreModal = () => {
             <FormModalMessage successMessage={successMessage} />
           )}
         </div>
-        <div className='flex gap-2 self-end'>
-          <RoundedButton text='Cancel' className='w-fit' type='button' white />
-          <RoundedButton text='Continue' className='w-fit' type='submit' />
+        <div className='flex gap-2 self-end mt-16'>
+          <RoundedButton
+            disabled={isPending}
+            text='Cancel'
+            className='w-fit'
+            type='button'
+            white
+            onClick={storeModal.onClose}
+          />
+          <RoundedButton
+            disabled={isPending}
+            text='Continue'
+            className='w-fit'
+            type='submit'
+          />
         </div>
       </form>
     </Modal>

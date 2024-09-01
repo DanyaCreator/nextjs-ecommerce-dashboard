@@ -14,5 +14,5 @@ export const SetupPage = () => {
     onOpen();
   }, [isOpen, onOpen]);
 
-  return <div>Root page</div>;
+  return null;
 };
