@@ -1,38 +1,28 @@
-'use client';
-
-import { usePathname } from 'next/navigation';
+import { auth } from '@/auth';
+import { db } from '@/lib';
 import { Logo } from '@/shared/ui';
-import { HeaderLink } from '@/shared/ui/links';
+import { Navbar } from './navbar';
+import { StoreSwitcher } from './store-switcher';
 import { UserButton } from './user-button';
 
-export const Header = () => {
-  const pathname = usePathname();
+export const Header = async () => {
+  const session = await auth();
 
-  const routes = [
-    {
-      href: '/settings',
-      title: 'Settings',
-      active: pathname === '/settings',
-    },
-  ];
+  const stores = await db.store.findMany({
+    where: { userId: session?.user?.id },
+  });
 
   return (
     <header className='w-full py-2 bg-white border-b-solid border-b border-dark-gray'>
       <div className='container flex items-center justify-between'>
         <div className='flex items-center'>
           <Logo />
-          <nav className='flex gap-8 ml-16'>
-            {routes.map((link, i) => (
-              <HeaderLink
-                key={i}
-                href={link.href}
-                title={link.title}
-                active={link.active}
-              />
-            ))}
-          </nav>
+          <Navbar />
         </div>
-        <UserButton />
+        <div className='flex gap-8 items-center'>
+          <StoreSwitcher items={stores} />
+          <UserButton />
+        </div>
       </div>
     </header>
   );

@@ -1,3 +1,5 @@
+'use client';
+
 import { FaUser } from 'react-icons/fa';
 
 import { logout } from '@/shared/api';

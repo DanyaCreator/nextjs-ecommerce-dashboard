@@ -19,6 +19,7 @@ const config = {
     },
     extend: {
       colors: {
+        'light-gray': '#EFEFEF',
         'dark-gray': '#707070',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

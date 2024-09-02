@@ -1,10 +1,12 @@
 export { Avatar, AvatarFallback, AvatarImage } from './avatar';
+
 export {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
 } from './dropdown-menu';
+
 export {
   Dialog,
   DialogContent,
@@ -12,3 +14,13 @@ export {
   DialogDescription,
   DialogHeader,
 } from './dialog';
+
+export {
+  Command,
+  CommandList,
+  CommandInput,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandSeparator,
+} from './command';
