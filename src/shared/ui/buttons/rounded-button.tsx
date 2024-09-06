@@ -1,31 +1,44 @@
 import clsx from 'clsx';
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { dmSans } from '@/shared/assets/fonts';
 
+type Variants = 'default' | 'white' | 'destructive';
+
 type RoundedButtonProps = {
-  text: string;
+  text?: string;
   className?: string;
-  white?: boolean;
+  variant?: Variants;
+  size?: 'default' | 'icon';
+  children?: ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const RoundedButton = ({
   text,
   className,
-  white,
+  variant,
+  children,
+  size,
   ...props
 }: RoundedButtonProps) => {
   return (
     <button
       className={clsx(
-        'min-w-20 px-2 h-8 flex justify-center items-center',
+        'px-2 flex justify-center items-center',
+        (!size || size === 'default') && 'min-w-20 h-8',
+        size === 'icon' && 'w-8 h-8',
         `${dmSans.className} text-[12px] font-medium tracking-[2.5%]`,
         'rounded border-solid border border-black transition-colors',
-        !white && 'text-white bg-black hover:bg-white hover:text-black',
+        (!variant || variant === 'default') &&
+          'text-white bg-black hover:bg-white hover:text-black',
         className && className,
-        white && 'text-black bg-white hover:bg-black hover:text-white'
+        variant === 'white' &&
+          'text-black bg-white hover:bg-black hover:text-white',
+        variant === 'destructive' &&
+          'text-white bg-red-500 border-none hover:bg-red-400'
       )}
       {...props}>
       {text}
+      {children}
     </button>
   );
 };

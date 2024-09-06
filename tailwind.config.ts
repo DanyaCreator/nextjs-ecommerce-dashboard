@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      filter: {
+        white:
+          'brightness(0) saturate(100%) invert(100%) sepia(20%) saturate(868%) hue-rotate(288deg) brightness(108%) contrast(100%)',
+      },
       colors: {
         'light-gray': '#EFEFEF',
         'dark-gray': '#707070',

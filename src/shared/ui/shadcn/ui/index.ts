@@ -24,3 +24,7 @@ export {
   CommandItem,
   CommandSeparator,
 } from './command';
+
+export { Alert, AlertTitle, AlertDescription } from './alert';
+
+export { Badge } from './badge';

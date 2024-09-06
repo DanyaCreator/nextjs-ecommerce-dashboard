@@ -10,6 +10,11 @@ export const Navbar = () => {
 
   const routes = [
     {
+      href: `/${params?.storeId}`,
+      title: 'Overview',
+      active: pathname === `/${params?.storeId}`,
+    },
+    {
       href: `/${params?.storeId}/settings`,
       title: 'Settings',
       active: pathname === `/${params?.storeId}/settings`,
