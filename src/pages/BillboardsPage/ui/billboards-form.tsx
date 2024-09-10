@@ -14,8 +14,8 @@ import { UploadImage } from '@/shared/ui';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { FieldError } from '@/shared/ui/errors';
 import { TextInput } from '@/shared/ui/inputs';
-import { FormModalMessage } from '@/shared/ui/modals';
-import { createBillboard, updateBillboard } from '../api';
+import { AlertModal, FormModalMessage } from '@/shared/ui/modals';
+import { createBillboard, deleteBillboard, updateBillboard } from '../api';
 import { BillboardFormSchema } from '../model';
 
 type BillboardFormProps = {
@@ -23,6 +23,7 @@ type BillboardFormProps = {
   storeId?: string;
 };
 
+// TODO Add custom scrollbar & ui improvements
 export const BillboardForm = ({ initialData, storeId }: BillboardFormProps) => {
   const router = useRouter();
   const params = useParams();
@@ -81,33 +82,34 @@ export const BillboardForm = ({ initialData, storeId }: BillboardFormProps) => {
     });
   };
 
-  // const onDelete = () => {
-  //   setSuccessMessage('');
-  //   setErrorMessage('');
-  //
-  //   startTransition(async () => {
-  //     const result = await deleteStore(initialData.id);
-  //
-  //     setErrorMessage(result.error);
-  //
-  //     if (!result.error) {
-  //       setSuccessMessage(result.success);
-  //
-  //       router.refresh();
-  //     }
-  //   });
-  // };
+  const onDelete = () => {
+    setSuccessMessage('');
+    setErrorMessage('');
+
+    startTransition(async () => {
+      const result = await deleteBillboard(initialData?.id, storeId);
+
+      setErrorMessage(result.error);
+
+      if (!result.error) {
+        setSuccessMessage(result.success);
+
+        router.refresh();
+        router.push(`/${params?.storeId}/billboards`);
+      }
+    });
+  };
 
   return (
     <>
-      {/*<AlertModal*/}
-      {/*  isOpen={open}*/}
-      {/*  onClose={() => setOpen(false)}*/}
-      {/*  onConfirm={onDelete}*/}
-      {/*  loading={isPending}*/}
-      {/*/>*/}
-      <section>
-        <header className='flex items-center pb-6 border-solid border-b border-light-gray'>
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={onDelete}
+        loading={isPending}
+      />
+      <section className='overflow-auto h-full'>
+        <header className='flex items-center justify-between pb-6 border-solid border-b border-light-gray'>
           <div>
             <h1 className={`${dmSans.className}`}>{title}</h1>
             <span className={`${dmSans.className} text-dark-gray`}>
