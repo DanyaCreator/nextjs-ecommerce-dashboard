@@ -7,7 +7,13 @@ import { useState } from 'react';
 import { dmSans } from '@/shared/assets/fonts';
 import { RoundedButton } from '@/shared/ui/buttons';
 
-export const BillboardsHeader = () => {
+type BillboardsHeaderProps = {
+  billboardsCount?: number;
+};
+
+export const BillboardsHeader = ({
+  billboardsCount,
+}: BillboardsHeaderProps) => {
   const [btnHovered, setBtnHovered] = useState(false);
 
   const router = useRouter();
@@ -16,7 +22,9 @@ export const BillboardsHeader = () => {
   return (
     <header className='flex justify-between items-center pb-6 border-solid border-b border-light-gray'>
       <div>
-        <h1 className={`${dmSans.className}`}>Billboards(0)</h1>
+        <h1 className={`${dmSans.className}`}>
+          Billboards({billboardsCount || 0})
+        </h1>
         <span className={`${dmSans.className} text-dark-gray`}>
           Manage billboards for your store
         </span>

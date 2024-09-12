@@ -28,3 +28,12 @@ export {
 export { Alert, AlertTitle, AlertDescription } from './alert';
 
 export { Badge } from './badge';
+
+export {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './table';

@@ -17,7 +17,7 @@ type SimpleModal = {
 
 export const SimpleModal = ({ variant, message, onClose }: SimpleModal) => {
   useEffect(() => {
-    const timeoutId = setTimeout(onClose, 2000);
+    const timeoutId = setTimeout(onClose, 3000);
 
     return () => clearTimeout(timeoutId);
   }, []);
@@ -31,7 +31,7 @@ export const SimpleModal = ({ variant, message, onClose }: SimpleModal) => {
   return message
     ? transitions((style) =>
         createPortal(
-          <div className='fixed top-2 left-1/2 -translate-x-1/2'>
+          <div className='fixed z-50 top-2 left-1/2 -translate-x-1/2'>
             <animated.div
               style={style}
               className={clsx(
@@ -40,8 +40,12 @@ export const SimpleModal = ({ variant, message, onClose }: SimpleModal) => {
                 variant === 'success' && 'text-green-600 bg-green-200',
                 variant === 'error' && 'text-red-600 bg-red-200'
               )}>
-              {variant === 'success' && <CiCircleCheck className='w-6 h-6' />}
-              {variant === 'error' && <BiError className='w-6 h-6' />}
+              {variant === 'success' && (
+                <CiCircleCheck className='w-6 h-6' fill={'rgb(22 163 74'} />
+              )}
+              {variant === 'error' && (
+                <BiError className='w-6 h-6' fill={'rgb(220 38 38)'} />
+              )}
               {message}
             </animated.div>
           </div>,

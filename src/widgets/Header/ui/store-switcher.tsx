@@ -1,5 +1,7 @@
 'use client';
 
+// TODO Animation & rotate arrow
+
 import { Store } from '@prisma/client';
 import clsx from 'clsx';
 import { Check, PlusIcon, StoreIcon } from 'lucide-react';

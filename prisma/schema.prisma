@@ -74,6 +74,7 @@ model ResetPasswordToken {
   @@unique([email, token])
 }
 
+// TODO Add billboard relation
 model Store {
   id        String      @id @default(uuid())
   name      String

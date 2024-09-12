@@ -1,11 +1,12 @@
 import clsx from 'clsx';
-import { ForwardedRef, forwardRef, HTMLAttributes } from 'react';
+import { ForwardedRef, forwardRef, InputHTMLAttributes } from 'react';
 import { dmSans } from '@/shared/assets/fonts';
-type TextInputProps = HTMLAttributes<HTMLInputElement> & {
+
+type TextInputProps = InputHTMLAttributes<HTMLInputElement> & {
   placeholder: string;
   type: 'text' | 'password';
-  invalid: boolean;
-  notEmpty: boolean;
+  invalid?: boolean;
+  notEmpty?: boolean;
   disabled?: boolean;
 };
 

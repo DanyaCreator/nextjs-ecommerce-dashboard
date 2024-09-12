@@ -6,7 +6,7 @@ type BillboardsProps = {
 };
 
 const Billboards = ({ params }: BillboardsProps) => {
-  return <BillboardsPage />;
+  return <BillboardsPage storeId={params.storeId} />;
 };
 
 export default Billboards;
