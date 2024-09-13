@@ -4,8 +4,9 @@ import { Copy, Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 
+import { useToastStore } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
-import { AlertModal, SimpleModal } from '@/shared/ui/modals';
+import { AlertModal } from '@/shared/ui/modals';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,11 +21,9 @@ type CellActionsProps = {
 };
 
 export const CellActions = ({ data }: CellActionsProps) => {
+  const toastStore = useToastStore();
+
   const [btnHovered, setBtnHovered] = useState(false);
-  const [simpleModalMessage, setSimpleModalMessage] = useState<{
-    variant: 'error' | 'success';
-    msg: string;
-  } | null>(null);
 
   const [open, setOpen] = useState(false);
 
@@ -34,12 +33,11 @@ export const CellActions = ({ data }: CellActionsProps) => {
   const params = useParams();
 
   const onCopy = (description: string) => {
-    navigator.clipboard.writeText(description).then(() =>
-      setSimpleModalMessage({
-        variant: 'success',
-        msg: 'Billboard id copied to the clipboard',
-      })
-    );
+    navigator.clipboard
+      .writeText(description)
+      .then(() =>
+        toastStore.onOpen('Billboard id copied to the clipboard', 'success')
+      );
   };
 
   const onDelete = () => {
@@ -50,14 +48,11 @@ export const CellActions = ({ data }: CellActionsProps) => {
       );
 
       if (result.error) {
-        setSimpleModalMessage({ variant: 'error', msg: result.error });
+        toastStore.onOpen(result.error, 'error');
         return;
       }
 
-      setSimpleModalMessage({
-        variant: 'success',
-        msg: result.success || 'Successful deleted!',
-      });
+      toastStore.onOpen(result.success || '', 'success');
 
       setOpen(false);
       router.refresh();
@@ -67,13 +62,6 @@ export const CellActions = ({ data }: CellActionsProps) => {
 
   return (
     <>
-      {simpleModalMessage && (
-        <SimpleModal
-          variant={simpleModalMessage.variant}
-          message={simpleModalMessage.msg}
-          onClose={() => setSimpleModalMessage(null)}
-        />
-      )}
       <DropdownMenu>
         <AlertModal
           isOpen={open}

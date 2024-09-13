@@ -9,10 +9,12 @@ export const deleteStore = async (storeId?: string) => {
   if (!store) return { error: 'Cannot find store!' };
 
   try {
+    console.log('store id: ', storeId);
     await db.store.delete({ where: { id: storeId } });
 
     return { success: 'Store deleted!' };
-  } catch {
+  } catch (err) {
+    console.error('[DATABASE_ERROR]: ', err);
     return { error: 'Internal error!' };
   }
 };

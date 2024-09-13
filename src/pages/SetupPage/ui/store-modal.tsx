@@ -86,7 +86,7 @@ export const StoreModal = () => {
             text='Cancel'
             className='w-fit'
             type='button'
-            white
+            variant='white'
             onClick={storeModal.onClose}
           />
           <RoundedButton

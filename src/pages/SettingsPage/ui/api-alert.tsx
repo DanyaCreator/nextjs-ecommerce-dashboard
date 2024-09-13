@@ -4,8 +4,8 @@ import { Copy, Server } from 'lucide-react';
 import { useState } from 'react';
 
 import { dmSans } from '@/shared/assets/fonts';
+import { useToastStore } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
-import { SimpleModal } from '@/shared/ui/modals';
 import { Alert, AlertDescription, AlertTitle, Badge } from '@/shared/ui/shadcn';
 
 type Variant =
@@ -33,24 +33,20 @@ const variantMap: Record<ApiAlertProps['variant'], Variant> = {
 };
 
 export const ApiAlert = ({ title, description, variant }: ApiAlertProps) => {
+  const toastStore = useToastStore();
+
   const [copyBtnHovered, setCopyBtnHovered] = useState(false);
-  const [simpleModalMessage, setSimpleModalMessage] = useState('');
 
   const onCopy = (description: string) => {
     navigator.clipboard
       .writeText(description)
-      .then(() => setSimpleModalMessage('API Route copied to the clipboard'));
+      .then(() =>
+        toastStore.onOpen('API Route copied to the clipboard', 'success')
+      );
   };
 
   return (
     <section className='mt-6 py-4 border-solid border-t border-light-gray'>
-      {simpleModalMessage && (
-        <SimpleModal
-          variant='success'
-          message={simpleModalMessage}
-          onClose={() => setSimpleModalMessage('')}
-        />
-      )}
       <Alert>
         <Server className='h-4 w-4' />
         <AlertTitle className={`${dmSans.className} flex items-center gap-2`}>

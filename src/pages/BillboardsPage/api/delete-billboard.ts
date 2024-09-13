@@ -22,7 +22,7 @@ export const deleteBillboard = async (
   try {
     await db.billboard.delete({ where: { id: billboardId } });
 
-    return { success: 'Store deleted!' };
+    return { success: 'Billboard deleted!' };
   } catch {
     return { error: 'Internal error!' };
   }
