@@ -1,5 +1,7 @@
 'use client';
 
+// FIXME Replace file to upper slices
+
 import { Copy, Server } from 'lucide-react';
 import { useState } from 'react';
 
@@ -46,7 +48,7 @@ export const ApiAlert = ({ title, description, variant }: ApiAlertProps) => {
   };
 
   return (
-    <section className='mt-6 py-4 border-solid border-t border-light-gray'>
+    <section className='py-4'>
       <Alert>
         <Server className='h-4 w-4' />
         <AlertTitle className={`${dmSans.className} flex items-center gap-2`}>

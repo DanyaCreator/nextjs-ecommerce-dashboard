@@ -1,7 +1,5 @@
 'use client';
 
-// TODO Animation & rotate arrow
-
 import { Store } from '@prisma/client';
 import clsx from 'clsx';
 import { Check, PlusIcon, StoreIcon } from 'lucide-react';
@@ -54,7 +52,7 @@ export const StoreSwitcher = ({ items }: StoreSwitcherProps) => {
       icon={<StoreIcon />}
       clickOutside={() => setOpen(false)}>
       <Command>
-        <CommandList>
+        <CommandList className='overflow-hidden'>
           <CommandInput
             placeholder='Search store...'
             className={clsx(
@@ -65,7 +63,7 @@ export const StoreSwitcher = ({ items }: StoreSwitcherProps) => {
           <CommandEmpty>No store founded</CommandEmpty>
           <CommandGroup
             heading='Stores'
-            className={`${dmSans.className} text-dark-gray`}>
+            className={`${dmSans.className} text-dark-gray h-[90px] overflow-auto scrollbar-thin`}>
             {formattedItems.map((store) => (
               <CommandItem
                 className={'text-[14px] flex gap-2 cursor-pointer'}

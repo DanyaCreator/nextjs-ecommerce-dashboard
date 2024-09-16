@@ -18,7 +18,6 @@ export const FormModalMessage = ({
   const transitions = useTransition(null, {
     from: { opacity: 0, transform: 'translateY(-40px)' },
     enter: { opacity: 1, transform: 'translateY(0px)' },
-    leave: { opacity: 0, transform: 'translateY(-40px)' },
   });
 
   return transitions((style) => (
@@ -31,8 +30,12 @@ export const FormModalMessage = ({
           successMessage && 'text-green-600 bg-green-200',
           errorMessage && 'text-red-600 bg-red-200'
         )}>
-        {successMessage && <CiCircleCheck className='w-6 h-6' />}
-        {errorMessage && <BiError className='w-6 h-6' />}
+        {successMessage && (
+          <CiCircleCheck className='w-6 h-6' fill={'rgb(22 163 74'} />
+        )}
+        {errorMessage && (
+          <BiError className='w-6 h-6' fill={'rgb(220 38 38)'} />
+        )}
         {successMessage || errorMessage}
       </animated.div>
     </div>

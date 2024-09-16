@@ -25,16 +25,16 @@ export const UserButton = () => {
         <Avatar>
           <AvatarImage src={user?.image || ''} />
           <AvatarFallback className='bg-black'>
-            <FaUser className='text-white' />
+            <FaUser fill='white' />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent align={'end'}>
         <div className='flex gap-4 items-center'>
           <Avatar>
             <AvatarImage src={user?.image || ''} />
             <AvatarFallback className='bg-black'>
-              <FaUser className='text-white' />
+              <FaUser fill='white' />
             </AvatarFallback>
           </Avatar>
           <div className='flex flex-col items-start'>
@@ -46,13 +46,11 @@ export const UserButton = () => {
             </h5>
           </div>
         </div>
-        <DropdownMenuItem className='mt-8'>
-          <RoundedButton
-            text={'Logout'}
-            className='w-full'
-            onClick={() => logout()}
-          />
-        </DropdownMenuItem>
+        <RoundedButton
+          text={'Logout'}
+          className='w-full mt-8'
+          onClick={() => logout()}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -13,7 +13,7 @@ export const SettingsPage = async ({ storeId }: SettingsPageProps) => {
   if (!store) redirect('/');
 
   return (
-    <main className='container h-[80%] py-10 bg-white rounded-b-xl'>
+    <main className='container h-[80%] py-10 bg-white rounded-b-xl overflow-auto'>
       <SettingsForm initialData={store} />
     </main>
   );

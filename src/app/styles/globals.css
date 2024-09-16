@@ -98,4 +98,15 @@ h5 {
     line-height: 27px;
 }
 
-/*TODO Add custom scrollbar*/
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #D8D8D8;
+    border-radius: 10px;
+}

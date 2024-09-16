@@ -1,1 +1,1 @@
-export { SettingsPage } from './ui';
+export { SettingsPage, ApiAlert } from './ui';

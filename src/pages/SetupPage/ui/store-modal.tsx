@@ -4,13 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import axios, { AxiosError } from 'axios';
 
 import { useCurrentUser, useStoreModal } from '@/shared/model/hooks';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { FieldError } from '@/shared/ui/errors';
 import { TextInput } from '@/shared/ui/inputs';
 import { FormModalMessage, Modal } from '@/shared/ui/modals';
-import { createStore } from '../api';
 import { ModalStoreSchema } from '../model';
 
 export const StoreModal = () => {
@@ -43,14 +43,16 @@ export const StoreModal = () => {
     setErrorMessage(undefined);
 
     startTransition(async () => {
-      const result = await createStore(data, user?.id);
+      try {
+        const result = await axios.post('/api/stores', data);
 
-      setSuccessMessage(result.success);
-      setErrorMessage(result.error);
-
-      if (result.error || !result.data) return;
-
-      window.location.assign(`/${result.data.id}`);
+        setSuccessMessage('Store is created successfully!');
+        window.location.assign(`/${result.data.id}`);
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          setErrorMessage(error.response?.data);
+        }
+      }
     });
   };
 

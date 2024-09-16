@@ -1,6 +1,8 @@
 import { format } from 'date-fns';
 
 import { db } from '@/lib';
+import { dmSans } from '@/shared/assets/fonts';
+import { ApiList } from './api-list';
 import { BillboardsHeader } from './billboards-header';
 import { BillboardsTable } from './billboards-table';
 import { BillboardColumn } from './columns';
@@ -28,6 +30,17 @@ export const BillboardsPage = async ({ storeId }: BillboardsPageProps) => {
       </section>
       <section className='mt-6'>
         <BillboardsTable data={formattedBillboardItems} />
+      </section>
+      <section>
+        <div>
+          <h1 className={`${dmSans.className}`}>API</h1>
+          <span className={`${dmSans.className} text-dark-gray`}>
+            API calls for stores
+          </span>
+        </div>
+        <div className='flex flex-col'>
+          <ApiList entityName='billbooards' entityIdName={'billboardId'} />
+        </div>
       </section>
     </main>
   );

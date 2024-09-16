@@ -1,5 +1,6 @@
 'use client';
 
+import axios, { AxiosError } from 'axios';
 import { Copy, Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
@@ -13,7 +14,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/shared/ui/shadcn';
-import { deleteBillboard } from '../api';
 import { BillboardColumn } from './columns';
 
 type CellActionsProps = {
@@ -42,21 +42,20 @@ export const CellActions = ({ data }: CellActionsProps) => {
 
   const onDelete = () => {
     startTransition(async () => {
-      const result = await deleteBillboard(
-        data.id,
-        typeof params?.storeId === 'string' ? params?.storeId : undefined
-      );
+      try {
+        await axios.delete(
+          `/api/stores/${params?.storeId}/billboards/${data.id}`
+        );
 
-      if (result.error) {
-        toastStore.onOpen(result.error, 'error');
-        return;
+        toastStore.onOpen('Billboard was deleted!', 'success');
+
+        router.refresh();
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          console.log(error);
+          toastStore.onOpen(error.response?.data, 'error');
+        }
       }
-
-      toastStore.onOpen(result.success || '', 'success');
-
-      setOpen(false);
-      router.refresh();
-      router.push(`/${params?.storeId}/billboards`);
     });
   };
 

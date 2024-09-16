@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Store } from '@prisma/client';
+import axios, { AxiosError } from 'axios';
 import clsx from 'clsx';
 import { Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -10,13 +11,12 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { dmSans } from '@/shared/assets/fonts';
-import { useOrigin } from '@/shared/model';
+import { useOrigin, useToastStore } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { FieldError } from '@/shared/ui/errors';
 import { TextInput } from '@/shared/ui/inputs';
 import { FormModalMessage } from '@/shared/ui/modals';
 import { AlertModal } from '@/shared/ui/modals';
-import { deleteStore, renameStore } from '../api';
 import { SettingsFormSchema } from '../model';
 import { ApiAlert } from './api-alert';
 
@@ -27,6 +27,8 @@ type SettingsFormProps = {
 export const SettingsForm = ({ initialData }: SettingsFormProps) => {
   const router = useRouter();
   const origin = useOrigin();
+
+  const toastStore = useToastStore();
 
   const [open, setOpen] = useState(false);
 
@@ -56,31 +58,30 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
     setErrorMessage('');
 
     startTransition(async () => {
-      const result = await renameStore(data, initialData.id);
+      try {
+        await axios.patch(`/api/stores/${initialData.id}`, data);
 
-      setErrorMessage(result.error);
-
-      if (!result.error && result.data) {
-        setSuccessMessage(result.success);
-
+        setSuccessMessage('Store was updated successfully!');
         router.refresh();
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          setErrorMessage(error.response?.data);
+        }
       }
     });
   };
 
   const onDelete = () => {
-    setSuccessMessage('');
-    setErrorMessage('');
-
     startTransition(async () => {
-      const result = await deleteStore(initialData.id);
+      try {
+        await axios.delete(`/api/stores/${initialData.id}`);
 
-      setErrorMessage(result.error);
-
-      if (!result.error) {
-        setSuccessMessage(result.success);
-
+        toastStore.onOpen('Store was deleted successfully!', 'success');
         router.refresh();
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          toastStore.onOpen(error.response?.data, 'error');
+        }
       }
     });
   };
@@ -134,11 +135,19 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
           <RoundedButton text='Save changes' className='mt-16' type='submit' />
         </form>
       </section>
-      <ApiAlert
-        title='NEXT_PUBLIC_API_URL'
-        description={`${origin}/api/${initialData.id}`}
-        variant='public'
-      />
+      <section>
+        <div>
+          <h1 className={`${dmSans.className}`}>API</h1>
+          <span className={`${dmSans.className} text-dark-gray`}>
+            API calls for stores
+          </span>
+        </div>
+        <ApiAlert
+          title='NEXT_PUBLIC_API_URL'
+          description={`${origin}/api/store/${initialData.id}`}
+          variant='public'
+        />
+      </section>
     </>
   );
 };

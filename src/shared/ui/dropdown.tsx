@@ -1,8 +1,9 @@
 'use client';
 
+import { useSpring, animated } from '@react-spring/web';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { ReactNode, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 
 import { dmSans } from '@/shared/assets/fonts';
 import { arrowDown } from '@/shared/assets/icons';
@@ -29,6 +30,15 @@ export const Dropdown = ({
 
   useOutsideAlerter(dropdownMenuRef, clickOutside ? clickOutside : () => {});
 
+  const [{ height }, api] = useSpring(() => ({
+    height: 0,
+  }));
+
+  useEffect(() => {
+    if (!isOpen) api({ height: 0 });
+    else api({ height: 170 });
+  });
+
   return (
     <div className={'relative flex flex-col gap-4'} ref={dropdownMenuRef}>
       <div
@@ -41,19 +51,24 @@ export const Dropdown = ({
           {icon && icon}
           <span className={dmSans.className}>{title}</span>
         </div>
-        <Image src={arrowDown} alt={'arrow-down'} />
-      </div>
-      {isOpen && (
-        <div
-          style={{ top: 'calc(100% + 10px)' }}
+        <Image
+          src={arrowDown}
+          alt={'arrow-down'}
           className={clsx(
-            'absolute left-1/2 translate-x-[-50%]',
-            'flex flex-col w-full',
-            'shadow-md '
-          )}>
-          {children}
-        </div>
-      )}
+            'transition-transform',
+            isOpen ? 'rotate-180' : 'rotate-0'
+          )}
+        />
+      </div>
+      <animated.div
+        style={{ top: 'calc(100% + 10px)', height }}
+        className={clsx(
+          'absolute left-1/2 translate-x-[-50%]',
+          'flex flex-col w-full',
+          'shadow-md'
+        )}>
+        {children}
+      </animated.div>
     </div>
   );
 };

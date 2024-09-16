@@ -1,16 +1,11 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import clsx from 'clsx';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import { FcGoogle } from 'react-icons/fc';
 import * as z from 'zod';
 
-import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
-import { dmSans } from '@/shared/assets/fonts';
 import { RoundedButton, TextButton } from '@/shared/ui/buttons';
 import { FieldError } from '@/shared/ui/errors';
 import { TextInput } from '@/shared/ui/inputs';
@@ -21,18 +16,9 @@ import { LoginSchema } from '../model';
 export const LoginPage = () => {
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-  const urlError =
-    searchParams && searchParams.get('error') === 'OAuthAccountNotLinked'
-      ? 'Email already in use with different provider!'
-      : '';
-
   const [isPending, startTransition] = useTransition();
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
-    undefined
-  );
-  const [successMessage, setSuccessMessage] = useState<string | undefined>(
     undefined
   );
 
@@ -49,20 +35,13 @@ export const LoginPage = () => {
   const watchPasswordField = watch('password');
 
   const onSubmit = (data: z.infer<typeof LoginSchema>) => {
-    setSuccessMessage(undefined);
     setErrorMessage(undefined);
 
     startTransition(async () => {
       const result = await login(data);
-      console.log('result: ', result);
 
-      setSuccessMessage(result.success);
       setErrorMessage(result.error);
     });
-  };
-
-  const onClick = async (provider: 'google') => {
-    await signIn(provider, { callbackUrl: DEFAULT_LOGIN_REDIRECT });
   };
 
   return (
@@ -100,12 +79,7 @@ export const LoginPage = () => {
           onClick={() => router.push('/auth/reset')}
         />
         <div className={'w-full'}>
-          {(errorMessage || urlError) && (
-            <FormModalMessage errorMessage={errorMessage || urlError} />
-          )}
-          {successMessage && (
-            <FormModalMessage successMessage={successMessage} />
-          )}
+          {errorMessage && <FormModalMessage errorMessage={errorMessage} />}
         </div>
         <RoundedButton
           text={'SIGN IN'}
@@ -113,23 +87,6 @@ export const LoginPage = () => {
           type={'submit'}
         />
       </form>
-      <div className='flex flex-col gap-6 w-full'>
-        <div className='relative w-full h-[1px] bg-black'>
-          <span
-            className={clsx(
-              'absolute top-1/2 left-1/2 px-2 py-1',
-              `${dmSans.className} text-h5 text-black bg-white`,
-              'translate-x-[-50%] translate-y-[-50%]'
-            )}>
-            or
-          </span>
-        </div>
-        <TextButton
-          text={'Sign in with Google'}
-          icon={<FcGoogle />}
-          onClick={() => onClick('google')}
-        />
-      </div>
     </CardWrapper>
   );
 };

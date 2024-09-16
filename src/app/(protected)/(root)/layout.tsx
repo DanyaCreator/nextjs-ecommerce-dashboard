@@ -11,8 +11,6 @@ export default async function SetupLayout({
 }) {
   const session = await auth();
 
-  // TODO Make API routes instead server actions
-
   const store = await db.store.findFirst({
     where: { userId: session?.user.id },
   });

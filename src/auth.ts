@@ -8,19 +8,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: '/auth/login',
     error: '/auth/error',
   },
-  events: {
-    async linkAccount({ user }) {
-      await db.user.update({
-        where: { id: user.id },
-        data: { emailVerified: new Date() },
-      });
-    },
-  },
   callbacks: {
     async session({ token, session }) {
-      console.log({
-        sessionToken: token,
-      });
       if (token.sub && session.user) {
         session.user.id = token.sub;
       }

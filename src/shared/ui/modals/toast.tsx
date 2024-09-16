@@ -44,10 +44,9 @@ const SimpleModal = ({ variant, message, isOpen }: ToastProps) => {
   });
 
   return (
-    <animated.div
-      style={{ y }}
-      className='fixed z-50 -top-10 left-1/2 -translate-x-1/2'>
-      <div
+    <div className='fixed z-[100] -top-10 left-1/2 -translate-x-1/2'>
+      <animated.div
+        style={{ y }}
         className={clsx(
           'flex justify-center items-center w-fit h-10 px-2 gap-2',
           `${dmSans.className} text-h5 rounded-lg`,
@@ -61,7 +60,7 @@ const SimpleModal = ({ variant, message, isOpen }: ToastProps) => {
           <BiError className='w-6 h-6' fill={'rgb(220 38 38)'} />
         )}
         {message}
-      </div>
-    </animated.div>
+      </animated.div>
+    </div>
   );
 };
