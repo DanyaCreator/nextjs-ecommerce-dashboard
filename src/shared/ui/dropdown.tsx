@@ -63,7 +63,7 @@ export const Dropdown = ({
       <animated.div
         style={{ top: 'calc(100% + 10px)', height }}
         className={clsx(
-          'absolute left-1/2 translate-x-[-50%]',
+          'absolute left-1/2 translate-x-[-50%] z-50',
           'flex flex-col w-full',
           'shadow-md'
         )}>

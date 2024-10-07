@@ -1,7 +1,5 @@
 'use client';
 
-// FIXME Replace file to upper slices
-
 import { Copy, Server } from 'lucide-react';
 import { useState } from 'react';
 

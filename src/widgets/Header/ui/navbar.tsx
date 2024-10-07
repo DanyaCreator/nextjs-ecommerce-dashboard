@@ -20,6 +20,11 @@ export const Navbar = () => {
       active: pathname === `/${params?.storeId}/billboards`,
     },
     {
+      href: `/${params?.storeId}/categories`,
+      title: 'Categories',
+      active: pathname === `/${params?.storeId}/categories`,
+    },
+    {
       href: `/${params?.storeId}/settings`,
       title: 'Settings',
       active: pathname === `/${params?.storeId}/settings`,

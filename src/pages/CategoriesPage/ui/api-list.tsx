@@ -1,5 +1,7 @@
 'use client';
 
+// FIXME More responsibility and universal
+
 import { useParams } from 'next/navigation';
 
 import { ApiAlert } from '@/features/ApiAlert';
