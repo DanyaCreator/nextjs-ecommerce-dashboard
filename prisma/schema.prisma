@@ -84,7 +84,7 @@ model Store {
   Category  Category[]  @relation("StoreToCategory")
 }
 
-// TODO Add productId (product entity relation), cost
+// TODO Add productId (product entity relation)
 model Billboard {
   id        String     @id @default(uuid())
   storeId   String

@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
 import { ReactNode } from 'react';
 
+// FIXME Delete blue background if we choose field from hints
+
 import './styles/globals.css';
 import { auth } from '@/auth';
 import { ModalProvider } from '@/app/providers/modal-provider';

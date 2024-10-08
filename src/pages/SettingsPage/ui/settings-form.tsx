@@ -57,7 +57,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
 
     startTransition(async () => {
       try {
-        await axios.patch(`/api/stores/${initialData.id}`, data);
+        await axios.patch(`/api/${initialData.id}`, data);
 
         setSuccessMessage('Store was updated successfully!');
         router.refresh();
@@ -72,7 +72,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
   const onDelete = () => {
     startTransition(async () => {
       try {
-        await axios.delete(`/api/stores/${initialData.id}`);
+        await axios.delete(`/api/${initialData.id}`);
 
         toastStore.onOpen('Store was deleted successfully!', 'success');
         router.refresh();

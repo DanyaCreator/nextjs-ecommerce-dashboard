@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 import { dmSans } from '@/shared/assets/fonts';
 import { useStoreModal } from '@/shared/model';
-import { Dropdown } from '@/shared/ui';
+import { Dropdown } from '@/shared/ui/dropdown';
 import {
   Command,
   CommandEmpty,

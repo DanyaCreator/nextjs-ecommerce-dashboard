@@ -15,6 +15,7 @@ type DropdownProps = {
   title?: string;
   icon?: ReactNode;
   clickOutside?: () => void;
+  className?: string;
   children: ReactNode;
 };
 
@@ -24,19 +25,20 @@ export const Dropdown = ({
   isOpen,
   isOpenChange,
   clickOutside,
+  className,
   children,
 }: DropdownProps) => {
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
 
   useOutsideAlerter(dropdownMenuRef, clickOutside ? clickOutside : () => {});
 
-  const [{ height }, api] = useSpring(() => ({
-    height: 0,
+  const [{ maxHeight }, api] = useSpring(() => ({
+    maxHeight: 0,
   }));
 
   useEffect(() => {
-    if (!isOpen) api({ height: 0 });
-    else api({ height: 170 });
+    if (!isOpen) api({ maxHeight: 0 });
+    else api({ maxHeight: 170 });
   });
 
   return (
@@ -44,7 +46,8 @@ export const Dropdown = ({
       <div
         className={clsx(
           'w-[260px] h-[52px] px-4 py-3 flex justify-between items-center',
-          'border-solid border border-light-gray rounded-s cursor-pointer'
+          'border-solid border border-light-gray rounded-s cursor-pointer',
+          className
         )}
         onClick={isOpenChange}>
         <div className='flex gap-4 items-center'>
@@ -61,11 +64,11 @@ export const Dropdown = ({
         />
       </div>
       <animated.div
-        style={{ top: 'calc(100% + 10px)', height }}
+        style={{ top: 'calc(100% + 10px)', maxHeight }}
         className={clsx(
           'absolute left-1/2 translate-x-[-50%] z-50',
           'flex flex-col w-full',
-          'shadow-md'
+          'shadow-md overflow-hidden'
         )}>
         {children}
       </animated.div>

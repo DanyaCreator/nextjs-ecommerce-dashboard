@@ -6,5 +6,5 @@ type CategoriesTableProps = {
 };
 
 export const CategoriesTable = ({ data }: CategoriesTableProps) => {
-  return <DataTable searchKey='label' columns={columns} data={data} />;
+  return <DataTable searchKey='name' columns={columns} data={data} />;
 };

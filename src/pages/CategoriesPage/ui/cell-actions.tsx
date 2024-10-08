@@ -45,9 +45,7 @@ export const CellActions = ({ data }: CellActionsProps) => {
   const onDelete = () => {
     startTransition(async () => {
       try {
-        await axios.delete(
-          `/api/stores/${params?.storeId}/category/${data.id}`
-        );
+        await axios.delete(`/api/${params?.storeId}/categories/${data.id}`);
 
         toastStore.onOpen('Category was deleted!', 'success');
 
@@ -92,7 +90,7 @@ export const CellActions = ({ data }: CellActionsProps) => {
           <DropdownMenuItem
             className='cursor-pointer'
             onClick={() =>
-              router.push(`/${params?.storeId}/category/${data.id}`)
+              router.push(`/${params?.storeId}/categories/${data.id}`)
             }>
             <Edit className='mr-2 w-4 h-4' />
             Update

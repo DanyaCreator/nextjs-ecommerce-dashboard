@@ -44,7 +44,7 @@ export const CellActions = ({ data }: CellActionsProps) => {
     startTransition(async () => {
       try {
         await axios.delete(
-          `/api/stores/${params?.storeId}/billboards/${data.id}`
+          `/api/${params?.storeId}/billboards/${data.id}`
         );
 
         toastStore.onOpen('Billboard was deleted!', 'success');

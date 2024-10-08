@@ -55,10 +55,10 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
     startTransition(async () => {
       try {
         if (!initialData) {
-          await axios.post(`/api/stores/${params?.storeId}/billboards`, data);
+          await axios.post(`/api/${params?.storeId}/billboards`, data);
         } else {
           await axios.patch(
-            `/api/stores/${params?.storeId}/billboards/${params?.billboardId}`,
+            `/api/${params?.storeId}/billboards/${params?.billboardId}`,
             data
           );
         }
