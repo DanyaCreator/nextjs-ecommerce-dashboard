@@ -1,2 +1,2 @@
 export { BillboardsPage } from './billboards-page';
-export { BillboardForm } from './billboards-form';
+export { BillboardForm } from './billboard-form';

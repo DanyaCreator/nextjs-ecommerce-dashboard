@@ -82,6 +82,7 @@ model Store {
   updatedAt DateTime    @updatedAt
   Billboard Billboard[] @relation("StoreToBillboard")
   Category  Category[]  @relation("StoreToCategory")
+  Size      Size[]      @relation("StoreToSize")
 }
 
 // TODO Add productId (product entity relation)
@@ -107,4 +108,19 @@ model Category {
   name        String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+  @@index([storeId])
+  @@index([billboardId])
+}
+
+model Size {
+  id        String   @id @default(uuid())
+  storeId   String
+  store     Store    @relation("StoreToSize", fields: [storeId], references: [id])
+  name      String
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId])
 }

@@ -1,8 +1,7 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-
-import { CellActions } from './cell-actions';
+import { EntityCellActions } from '@/shared/ui';
 
 export type BillboardColumn = {
   id: string;
@@ -21,6 +20,12 @@ export const columns: ColumnDef<BillboardColumn>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => <CellActions data={row.original} />,
+    cell: ({ row }) => (
+      <EntityCellActions
+        entityId={row.original.id}
+        entityName='Billboards'
+        entityEndpoint='billboards'
+      />
+    ),
   },
 ];

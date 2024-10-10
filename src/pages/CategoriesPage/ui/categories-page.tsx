@@ -1,15 +1,41 @@
 import { format } from 'date-fns';
 
 import { db } from '@/lib';
-import { dmSans } from '@/shared/assets/fonts';
-import { ApiList } from './api-list';
-import { CategoriesHeader } from './categories-header';
-import { CategoriesTable } from './categories-table';
-import { CategoryColumn } from './columns';
+import { ApiData, ApiList } from '@/widgets/ApiList';
+import { CategoriesTable, CategoryColumn } from '@/features/Category';
+import { CategoriesHeader } from '@/entities/Category';
 
 type CategoriesPageProps = {
   storeId: string;
 };
+
+const apiCalls: ApiData[] = [
+  {
+    title: 'GET',
+    endpoint: 'categories',
+    variant: 'public',
+  },
+  {
+    title: 'POST',
+    endpoint: 'categories',
+    variant: 'admin',
+  },
+  {
+    title: 'GET',
+    endpoint: 'categories/{categoryId}',
+    variant: 'public',
+  },
+  {
+    title: 'PATCH',
+    endpoint: 'categories/{categoryId}',
+    variant: 'admin',
+  },
+  {
+    title: 'DELETE',
+    endpoint: 'categories/{categoryId}',
+    variant: 'admin',
+  },
+];
 
 export const CategoriesPage = async ({ storeId }: CategoriesPageProps) => {
   const categories = await db.category.findMany({
@@ -37,15 +63,7 @@ export const CategoriesPage = async ({ storeId }: CategoriesPageProps) => {
           <CategoriesTable data={formattedCategoryItems} />
         </section>
         <section>
-          <div>
-            <h1 className={`${dmSans.className}`}>API</h1>
-            <span className={`${dmSans.className} text-dark-gray`}>
-              API calls for stores
-            </span>
-          </div>
-          <div className='flex flex-col'>
-            <ApiList entityName='categories' entityIdName={'categoryId'} />
-          </div>
+          <ApiList data={apiCalls} entityName='categories' />
         </section>
       </div>
     </main>

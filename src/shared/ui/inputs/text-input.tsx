@@ -35,6 +35,7 @@ export const TextInput = forwardRef(
             'focus:border-black transition',
             invalid && 'border-red-500'
           )}
+          autoComplete='off'
         />
         <label
           className={clsx(

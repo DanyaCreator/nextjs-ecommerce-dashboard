@@ -14,13 +14,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/shared/ui/shadcn';
-import { BillboardColumn } from './columns';
 
-type CellActionsProps = {
-  data: BillboardColumn;
+type EntityCellActionsProps = {
+  entityName: string;
+  entityId: string;
+  entityEndpoint: string;
 };
 
-export const CellActions = ({ data }: CellActionsProps) => {
+export const EntityCellActions = ({
+  entityName,
+  entityId,
+  entityEndpoint,
+}: EntityCellActionsProps) => {
   const toastStore = useToastStore();
 
   const [btnHovered, setBtnHovered] = useState(false);
@@ -36,7 +41,7 @@ export const CellActions = ({ data }: CellActionsProps) => {
     navigator.clipboard
       .writeText(description)
       .then(() =>
-        toastStore.onOpen('Billboard id copied to the clipboard', 'success')
+        toastStore.onOpen(`${entityName} id copied to the clipboard`, 'success')
       );
   };
 
@@ -44,10 +49,10 @@ export const CellActions = ({ data }: CellActionsProps) => {
     startTransition(async () => {
       try {
         await axios.delete(
-          `/api/${params?.storeId}/billboards/${data.id}`
+          `/api/${params?.storeId}/${entityEndpoint}/${entityId}`
         );
 
-        toastStore.onOpen('Billboard was deleted!', 'success');
+        toastStore.onOpen(`${entityName} was deleted!`, 'success');
 
         router.refresh();
       } catch (error) {
@@ -83,14 +88,14 @@ export const CellActions = ({ data }: CellActionsProps) => {
         <DropdownMenuContent title='Actions' align='end'>
           <DropdownMenuItem
             className='cursor-pointer'
-            onClick={() => onCopy(data.id)}>
+            onClick={() => onCopy(entityId)}>
             <Copy className='mr-2 w-4 h-4' />
             Copy id
           </DropdownMenuItem>
           <DropdownMenuItem
             className='cursor-pointer'
             onClick={() =>
-              router.push(`/${params?.storeId}/billboards/${data.id}`)
+              router.push(`/${params?.storeId}/${entityEndpoint}/${entityId}`)
             }>
             <Edit className='mr-2 w-4 h-4' />
             Update
