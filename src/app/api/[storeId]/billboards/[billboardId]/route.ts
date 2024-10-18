@@ -1,20 +1,18 @@
 import { NextResponse } from 'next/server';
 
-import { auth } from '@/auth';
 import { db } from '@/lib';
+import { validateAndAuthorize } from '@/shared/api';
 
 export async function PATCH(
   req: Request,
   { params }: { params: { storeId: string; billboardId: string } }
 ) {
   try {
-    const session = await auth();
+    const res = await validateAndAuthorize(params.storeId);
+    if (res) return res.error;
+
     const body = await req.json();
-
     const { label, imageUrl } = body;
-
-    if (!session?.user?.id)
-      return new NextResponse('Unauthenticated', { status: 401 });
 
     if (!label) {
       return new NextResponse('Label is required!', { status: 400 });
@@ -24,19 +22,8 @@ export async function PATCH(
       return new NextResponse('Image URL is required!', { status: 400 });
     }
 
-    if (!params.storeId)
-      return new NextResponse('Store id is required!', { status: 400 });
-
     if (!params.billboardId)
       return new NextResponse('Billboard id is required!', { status: 400 });
-
-    const storeByUserId = await db.store.findFirst({
-      where: { id: params.storeId, userId: session.user.id },
-    });
-
-    if (!storeByUserId) {
-      return new NextResponse('Unauthorized!', { status: 403 });
-    }
 
     const updatedStore = await db.billboard.updateMany({
       where: {
@@ -57,24 +44,11 @@ export async function DELETE(
   { params }: { params: { storeId: string; billboardId: string } }
 ) {
   try {
-    const session = await auth();
-
-    if (!session?.user?.id)
-      return new NextResponse('Unauthorized', { status: 401 });
+    const res = await validateAndAuthorize(params.storeId);
+    if (res) return res.error;
 
     if (!params.billboardId) {
       return new NextResponse('Billboard id is required!', { status: 400 });
-    }
-
-    if (!params.storeId)
-      return new NextResponse('Store id is required!', { status: 400 });
-
-    const storeByUserId = await db.store.findFirst({
-      where: { id: params.storeId, userId: session.user.id },
-    });
-
-    if (!storeByUserId) {
-      return new NextResponse('Unauthorized!', { status: 403 });
     }
 
     const billboard = await db.billboard.deleteMany({

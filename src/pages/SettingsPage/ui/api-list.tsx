@@ -1,6 +1,6 @@
 'use client';
 
-import { ApiAlert } from '@/features/ApiAlert';
+import { ApiAlert } from '@/widgets/ApiList';
 import { dmSans } from '@/shared/assets/fonts';
 import { useOrigin } from '@/shared/model';
 

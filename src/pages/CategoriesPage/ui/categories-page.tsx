@@ -40,16 +40,12 @@ const apiCalls: ApiData[] = [
 export const CategoriesPage = async ({ storeId }: CategoriesPageProps) => {
   const categories = await db.category.findMany({
     where: { storeId },
-    include: {
-      billboard: true,
-    },
     orderBy: { createdAt: 'desc' },
   });
 
   const formattedCategoryItems: CategoryColumn[] = categories.map((i) => ({
     id: i.id,
     name: i.name,
-    billboardLabel: i.billboard.label,
     createdAt: format(i.createdAt, 'MMMM do, yyyy'),
   }));
 

@@ -12,7 +12,7 @@ export const CardWrapper = ({ children, className }: CardWrapperProps) => {
   return (
     <section
       className={clsx(
-        'min-w-[500px] p-8 m-auto bg-white rounded-xl shadow-xl',
+        'w-[500px] p-8 m-auto bg-white rounded-xl shadow-xl',
         className
       )}>
       <Logo className='w-full text-center' />

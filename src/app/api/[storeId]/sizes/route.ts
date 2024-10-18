@@ -1,21 +1,19 @@
 import { NextResponse } from 'next/server';
 
-import { auth } from '@/auth';
 import { db } from '@/lib';
+import { validateAndAuthorize } from '@/shared/api';
 
 export async function POST(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
   try {
-    const session = await auth();
+    const res = await validateAndAuthorize(params.storeId);
+
+    if (res) return res.error;
+
     const body = await req.json();
-
     const { name, value } = body;
-
-    if (!session?.user?.id) {
-      return new NextResponse('Unauthenticated!', { status: 401 });
-    }
 
     if (!name) {
       return new NextResponse('Name is required!', { status: 400 });
@@ -23,18 +21,6 @@ export async function POST(
 
     if (!value) {
       return new NextResponse('Value is required!', { status: 400 });
-    }
-
-    if (!params.storeId) {
-      return new NextResponse('Store id is required!', { status: 400 });
-    }
-
-    const storeByUserId = await db.store.findFirst({
-      where: { id: params.storeId, userId: session.user.id },
-    });
-
-    if (!storeByUserId) {
-      return new NextResponse('Unauthorized!', { status: 403 });
     }
 
     const size = await db.size.create({

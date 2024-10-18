@@ -5,14 +5,13 @@ import { Material } from '@prisma/client';
 import axios, { AxiosError } from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { useTransition } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { dmSans } from '@/shared/assets/fonts';
 import { useToastStore } from '@/shared/model';
+import { EntityFormWrapper } from '@/shared/ui';
 import { RoundedButton } from '@/shared/ui/buttons';
-import { FieldError } from '@/shared/ui/errors';
-import { TextInput } from '@/shared/ui/inputs';
+import { TextField } from '@/shared/ui/form-fields';
 import { MaterialsFormSchema } from '../model';
 
 type MaterialFormProps = {
@@ -28,9 +27,8 @@ export const MaterialForm = ({ initialData }: MaterialFormProps) => {
   const [isPending, startTransition] = useTransition();
 
   const {
-    register,
+    control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<z.infer<typeof MaterialsFormSchema>>({
     resolver: zodResolver(MaterialsFormSchema),
@@ -39,9 +37,6 @@ export const MaterialForm = ({ initialData }: MaterialFormProps) => {
       value: '',
     },
   });
-
-  const watchNameField = watch('name');
-  const watchValueField = watch('value');
 
   const title = initialData ? 'Edit material' : 'Create material';
   const description = initialData ? 'Edit a material' : 'Create a material';
@@ -75,48 +70,41 @@ export const MaterialForm = ({ initialData }: MaterialFormProps) => {
     });
   };
 
-  // FIXME Duplicate code
   return (
-    <section className='overflow-auto h-full pr-2'>
-      <header className='flex items-center justify-between pb-6 border-solid border-b border-light-gray'>
-        <div>
-          <h1 className={`${dmSans.className}`}>{title}</h1>
-          <span className={`${dmSans.className} text-dark-gray`}>
-            {description}
-          </span>
-        </div>
-      </header>
+    <EntityFormWrapper title={title} description={description}>
       <form
         className='w-fit flex flex-col gap-6 items-start py-6'
         onSubmit={handleSubmit(onSubmit)}>
         <div className='flex gap-16'>
-          <div>
-            <TextInput
-              placeholder='Name'
-              type='text'
-              invalid={!!errors.name}
-              notEmpty={!!watchNameField}
-              disabled={isPending}
-              defaultValue={initialData?.name}
-              {...register('name')}
-            />
-            {errors.name && <FieldError errorMessage={errors.name.message} />}
-          </div>
-          <div className={'flex flex-col gap-2'}>
-            <TextInput
-              placeholder='Value'
-              type='text'
-              invalid={!!errors.value}
-              notEmpty={!!watchValueField}
-              disabled={isPending}
-              defaultValue={initialData?.value}
-              {...register('value')}
-            />
-            {errors.value && <FieldError errorMessage={errors.value.message} />}
-          </div>
+          <Controller
+            control={control}
+            name='name'
+            render={({ field }) => (
+              <TextField
+                label='Name'
+                error={errors.name?.message}
+                disabled={isPending}
+                defaultValue={initialData?.name}
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name='value'
+            render={({ field }) => (
+              <TextField
+                label='Value'
+                error={errors.value?.message}
+                disabled={isPending}
+                defaultValue={initialData?.value}
+                {...field}
+              />
+            )}
+          />
         </div>
         <RoundedButton text={action} className='mt-16' type='submit' />
       </form>
-    </section>
+    </EntityFormWrapper>
   );
 };

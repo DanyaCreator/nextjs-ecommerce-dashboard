@@ -7,14 +7,13 @@ import clsx from 'clsx';
 import { Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { dmSans } from '@/shared/assets/fonts';
 import { useToastStore } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
-import { FieldError } from '@/shared/ui/errors';
-import { TextInput } from '@/shared/ui/inputs';
+import { TextField } from '@/shared/ui/form-fields';
 import { FormModalMessage } from '@/shared/ui/modals';
 import { AlertModal } from '@/shared/ui/modals';
 import { SettingsFormSchema } from '../model';
@@ -40,16 +39,13 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
   );
 
   const {
-    register,
+    control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<z.infer<typeof SettingsFormSchema>>({
     resolver: zodResolver(SettingsFormSchema),
     defaultValues: initialData,
   });
-
-  const watchNameField = watch('name');
 
   const onSubmit = (data: z.infer<typeof SettingsFormSchema>) => {
     setSuccessMessage('');
@@ -111,18 +107,19 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
       <form
         className='w-fit flex flex-col gap-6 items-start py-6'
         onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <TextInput
-            placeholder='Name'
-            type='text'
-            invalid={!!errors.name}
-            notEmpty={!!watchNameField}
-            disabled={isPending}
-            defaultValue={initialData.name}
-            {...register('name')}
-          />
-          {errors.name && <FieldError errorMessage={errors.name.message} />}
-        </div>
+        <Controller
+          control={control}
+          name='name'
+          render={({ field }) => (
+            <TextField
+              label='Name'
+              error={errors.name?.message}
+              disabled={isPending}
+              defaultValue={initialData.name}
+              {...field}
+            />
+          )}
+        />
         <div className='w-full'>
           {errorMessage && <FormModalMessage errorMessage={errorMessage} />}
           {successMessage && (

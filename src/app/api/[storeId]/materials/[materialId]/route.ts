@@ -1,20 +1,19 @@
 import { NextResponse } from 'next/server';
 
-import { auth } from '@/auth';
 import { db } from '@/lib';
+import { validateAndAuthorize } from '@/shared/api';
 
 export async function PATCH(
   req: Request,
   { params }: { params: { storeId: string; materialId: string } }
 ) {
   try {
-    const session = await auth();
+    const res = await validateAndAuthorize(params.storeId);
+    if (res) return res.error;
+
     const body = await req.json();
 
     const { name, value } = body;
-
-    if (!session?.user?.id)
-      return new NextResponse('Unauthenticated', { status: 401 });
 
     if (!name) {
       return new NextResponse('Name is required!', { status: 400 });
@@ -24,19 +23,8 @@ export async function PATCH(
       return new NextResponse('Value is required!', { status: 400 });
     }
 
-    if (!params.storeId)
-      return new NextResponse('Store id is required!', { status: 400 });
-
     if (!params.materialId)
       return new NextResponse('Material id is required!', { status: 400 });
-
-    const storeByUserId = await db.store.findFirst({
-      where: { id: params.storeId, userId: session.user.id },
-    });
-
-    if (!storeByUserId) {
-      return new NextResponse('Unauthorized!', { status: 403 });
-    }
 
     const updatedMaterial = await db.material.updateMany({
       where: {
@@ -57,24 +45,11 @@ export async function DELETE(
   { params }: { params: { storeId: string; materialId: string } }
 ) {
   try {
-    const session = await auth();
-
-    if (!session?.user?.id)
-      return new NextResponse('Unauthorized', { status: 401 });
+    const res = await validateAndAuthorize(params.storeId);
+    if (res) return res.error;
 
     if (!params.materialId) {
       return new NextResponse('Material id is required!', { status: 400 });
-    }
-
-    if (!params.storeId)
-      return new NextResponse('Store id is required!', { status: 400 });
-
-    const storeByUserId = await db.store.findFirst({
-      where: { id: params.storeId, userId: session.user.id },
-    });
-
-    if (!storeByUserId) {
-      return new NextResponse('Unauthorized!', { status: 403 });
     }
 
     const material = await db.material.deleteMany({

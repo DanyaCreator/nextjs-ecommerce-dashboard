@@ -12,7 +12,7 @@ import {
 import { useState } from 'react';
 
 import { RoundedButton } from '@/shared/ui/buttons';
-import { TextInput } from '@/shared/ui/inputs';
+import { TextField } from '@/shared/ui/form-fields';
 import {
   Table,
   TableBody,
@@ -50,14 +50,13 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div className='flex items-center py-4'>
-        <TextInput
-          type='text'
-          placeholder='Search...'
-          value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ''}
+        <TextField
+          label='Search...'
+          value={(table.getColumn(searchKey)?.getFilterValue() as string) || ''}
           onChange={(event) =>
             table.getColumn(searchKey)?.setFilterValue(event.target.value)
           }
-          className='max-w-sm'
+          className='min-w-full'
         />
       </div>
       <div className='rounded-md border'>

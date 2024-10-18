@@ -1,44 +1,30 @@
 import { NextResponse } from 'next/server';
 
-import { auth } from '@/auth';
 import { db } from '@/lib';
+import { validateAndAuthorize } from '@/shared/api';
 
 export async function POST(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
   try {
-    const session = await auth();
+    const res = await validateAndAuthorize(params.storeId);
+
+    if (res) return res.error;
+
     const body = await req.json();
-
-    const { name, billboardId } = body;
-
-    if (!session?.user?.id) {
-      return new NextResponse('Unauthenticated!', { status: 401 });
-    }
+    const { name } = body;
 
     if (!name) {
       return new NextResponse('Name is required!', { status: 400 });
     }
 
-    if (!billboardId) {
-      return new NextResponse('Billboard id is required!', { status: 400 });
-    }
-
-    if (!params.storeId) {
-      return new NextResponse('Store id is required!', { status: 400 });
-    }
-
-    const storeByUserId = await db.store.findFirst({
-      where: { id: params.storeId, userId: session.user.id },
-    });
-
-    if (!storeByUserId) {
-      return new NextResponse('Unauthorized!', { status: 403 });
-    }
+    // if (!billboardId) {
+    //   return new NextResponse('Billboard id is required!', { status: 400 });
+    // }
 
     const category = await db.category.create({
-      data: { name, billboardId, storeId: params.storeId },
+      data: { name, storeId: params.storeId },
     });
 
     return NextResponse.json(category);

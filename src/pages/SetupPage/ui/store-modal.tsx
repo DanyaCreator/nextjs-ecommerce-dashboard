@@ -1,22 +1,19 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, useTransition } from 'react';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
 import axios, { AxiosError } from 'axios';
+import { useState, useTransition } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import * as z from 'zod';
 
-import { useCurrentUser, useStoreModal } from '@/shared/model/hooks';
+import { useStoreModal } from '@/shared/model/hooks';
 import { RoundedButton } from '@/shared/ui/buttons';
-import { FieldError } from '@/shared/ui/errors';
-import { TextInput } from '@/shared/ui/inputs';
+import { TextField } from '@/shared/ui/form-fields';
 import { FormModalMessage, Modal } from '@/shared/ui/modals';
 import { ModalStoreSchema } from '../model';
 
 export const StoreModal = () => {
   const storeModal = useStoreModal();
-
-  const user = useCurrentUser();
 
   const [isPending, startTransition] = useTransition();
 
@@ -28,15 +25,12 @@ export const StoreModal = () => {
   );
 
   const {
-    register,
+    control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<z.infer<typeof ModalStoreSchema>>({
     resolver: zodResolver(ModalStoreSchema),
   });
-
-  const watchNameField = watch('name');
 
   const onSubmit = (data: z.infer<typeof ModalStoreSchema>) => {
     setSuccessMessage(undefined);
@@ -65,17 +59,18 @@ export const StoreModal = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         className='flex flex-col gap-5 items-center mt-6'>
-        <div className='flex flex-col gap-2 w-full'>
-          <TextInput
-            placeholder='Name'
-            type='text'
-            notEmpty={!!watchNameField}
-            invalid={!!errors.name}
-            disabled={isPending}
-            {...register('name')}
-          />
-          {errors.name && <FieldError errorMessage={errors.name.message} />}
-        </div>
+        <Controller
+          control={control}
+          name='name'
+          render={({ field }) => (
+            <TextField
+              label='Name'
+              error={errors.name?.message}
+              disabled={isPending}
+              {...field}
+            />
+          )}
+        />
         <div className={'w-full'}>
           {errorMessage && <FormModalMessage errorMessage={errorMessage} />}
           {successMessage && (

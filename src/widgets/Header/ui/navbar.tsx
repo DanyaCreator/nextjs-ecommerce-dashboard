@@ -35,6 +35,11 @@ export const Navbar = () => {
       active: pathname === `/${params?.storeId}/materials`,
     },
     {
+      href: `/${params?.storeId}/products`,
+      title: 'Products',
+      active: pathname === `/${params?.storeId}/products`,
+    },
+    {
       href: `/${params?.storeId}/settings`,
       title: 'Settings',
       active: pathname === `/${params?.storeId}/settings`,
