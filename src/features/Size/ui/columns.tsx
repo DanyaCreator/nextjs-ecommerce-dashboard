@@ -5,19 +5,19 @@ import { EntityCellActions } from '@/shared/ui';
 
 export type SizeColumn = {
   id: string;
-  name: string;
   value: string;
+  category: string;
   createdAt: string;
 };
 
 export const columns: ColumnDef<SizeColumn>[] = [
   {
-    accessorKey: 'name',
-    header: 'Name',
-  },
-  {
     accessorKey: 'value',
     header: 'Value',
+  },
+  {
+    accessorKey: 'category',
+    header: 'Category',
   },
   {
     accessorKey: 'createdAt',

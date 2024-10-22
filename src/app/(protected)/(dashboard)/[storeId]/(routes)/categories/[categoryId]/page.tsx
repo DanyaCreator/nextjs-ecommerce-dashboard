@@ -10,13 +10,9 @@ const CategorySettings = async ({
     where: { id: params.categoryId },
   });
 
-  const billboards = await db.billboard.findMany({
-    where: { storeId: params.storeId },
-  });
-
   return (
     <main className='container h-[80%] py-10 bg-white rounded-b-xl overflow-hidden'>
-      <CategoryForm initialData={category} billboards={billboards} />
+      <CategoryForm initialData={category} />
     </main>
   );
 };

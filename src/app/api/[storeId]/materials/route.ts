@@ -14,18 +14,14 @@ export async function POST(
 
     const body = await req.json();
 
-    const { name, value } = body;
-
-    if (!name) {
-      return new NextResponse('Name is required!', { status: 400 });
-    }
+    const { value } = body;
 
     if (!value) {
       return new NextResponse('Value is required!', { status: 400 });
     }
 
     const material = await db.material.create({
-      data: { name, value, storeId: params.storeId },
+      data: { value, storeId: params.storeId },
     });
 
     return NextResponse.json(material);

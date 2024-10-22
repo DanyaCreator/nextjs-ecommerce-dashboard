@@ -13,18 +13,14 @@ export async function POST(
     if (res) return res.error;
 
     const body = await req.json();
-    const { name, value } = body;
-
-    if (!name) {
-      return new NextResponse('Name is required!', { status: 400 });
-    }
+    const { value, categoryId } = body;
 
     if (!value) {
       return new NextResponse('Value is required!', { status: 400 });
     }
 
     const size = await db.size.create({
-      data: { name, value, storeId: params.storeId },
+      data: { value, categoryId, storeId: params.storeId },
     });
 
     return NextResponse.json(size);

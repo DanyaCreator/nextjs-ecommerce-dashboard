@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 
 import { db } from '@/lib';
 import { ApiData, ApiList } from '@/widgets/ApiList';
-import { SizeColumn, SizesTable } from '@/features/Size'
+import { SizeColumn, SizesTable } from '@/features/Size';
 import { SizesHeader } from '@/entities/Size';
 
 type SizesPageProps = {
@@ -40,13 +40,14 @@ const apiCalls: ApiData[] = [
 export const SizesPage = async ({ storeId }: SizesPageProps) => {
   const sizes = await db.size.findMany({
     where: { storeId },
+    include: { category: true },
     orderBy: { createdAt: 'desc' },
   });
 
   const formattedSizeItems: SizeColumn[] = sizes.map((i) => ({
     id: i.id,
-    name: i.name,
-    value: i.value,
+    value: i.value.toString(),
+    category: i.category.name,
     createdAt: format(i.createdAt, 'MMMM do, yyyy'),
   }));
 

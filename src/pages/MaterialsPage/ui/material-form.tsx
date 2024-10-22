@@ -33,7 +33,6 @@ export const MaterialForm = ({ initialData }: MaterialFormProps) => {
   } = useForm<z.infer<typeof MaterialsFormSchema>>({
     resolver: zodResolver(MaterialsFormSchema),
     defaultValues: initialData || {
-      name: '',
       value: '',
     },
   });
@@ -75,34 +74,19 @@ export const MaterialForm = ({ initialData }: MaterialFormProps) => {
       <form
         className='w-fit flex flex-col gap-6 items-start py-6'
         onSubmit={handleSubmit(onSubmit)}>
-        <div className='flex gap-16'>
-          <Controller
-            control={control}
-            name='name'
-            render={({ field }) => (
-              <TextField
-                label='Name'
-                error={errors.name?.message}
-                disabled={isPending}
-                defaultValue={initialData?.name}
-                {...field}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name='value'
-            render={({ field }) => (
-              <TextField
-                label='Value'
-                error={errors.value?.message}
-                disabled={isPending}
-                defaultValue={initialData?.value}
-                {...field}
-              />
-            )}
-          />
-        </div>
+        <Controller
+          control={control}
+          name='value'
+          render={({ field }) => (
+            <TextField
+              label='Value'
+              error={errors.value?.message}
+              disabled={isPending}
+              defaultValue={initialData?.value}
+              {...field}
+            />
+          )}
+        />
         <RoundedButton text={action} className='mt-16' type='submit' />
       </form>
     </EntityFormWrapper>

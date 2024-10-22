@@ -12,14 +12,14 @@ export async function PATCH(
     if (res) return res.error;
 
     const body = await req.json();
-    const { name, value } = body;
-
-    if (!name) {
-      return new NextResponse('Name is required!', { status: 400 });
-    }
+    const { value, categoryId } = body;
 
     if (!value) {
       return new NextResponse('Value is required!', { status: 400 });
+    }
+
+    if (!categoryId) {
+      return new NextResponse('CategoryID is required!', { status: 400 });
     }
 
     if (!params.sizeId)
@@ -29,7 +29,7 @@ export async function PATCH(
       where: {
         id: params.sizeId,
       },
-      data: { name, value },
+      data: { value, categoryId },
     });
 
     return NextResponse.json(updatedSize);

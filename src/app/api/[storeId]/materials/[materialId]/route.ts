@@ -13,11 +13,7 @@ export async function PATCH(
 
     const body = await req.json();
 
-    const { name, value } = body;
-
-    if (!name) {
-      return new NextResponse('Name is required!', { status: 400 });
-    }
+    const { value } = body;
 
     if (!value) {
       return new NextResponse('Value is required!', { status: 400 });
@@ -30,7 +26,7 @@ export async function PATCH(
       where: {
         id: params.materialId,
       },
-      data: { name, value },
+      data: { value },
     });
 
     return NextResponse.json(updatedMaterial);

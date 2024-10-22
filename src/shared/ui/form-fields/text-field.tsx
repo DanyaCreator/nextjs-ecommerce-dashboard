@@ -43,7 +43,11 @@ export const TextField = forwardRef(
               `${dmSans.className} text-h5 text-dark-gray`,
               'transition-all',
               'peer-focus:text-black peer-focus:text-small peer-focus:translate-y-[-25px]',
-              !!props.value && 'text-black text-small translate-y-[-25px]',
+              (props.defaultValue ||
+                props.defaultValue === 0 ||
+                props.value ||
+                props.value === 0) &&
+                'text-black text-small translate-y-[-25px]',
               !!error && 'text-red-500'
             )}>
             {label}

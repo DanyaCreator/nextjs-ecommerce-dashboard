@@ -1,57 +1,41 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Billboard, Category } from '@prisma/client';
+import { Category } from '@prisma/client';
 import axios, { AxiosError } from 'axios';
-import clsx from 'clsx';
-import { Check } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import { useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { dmSans } from '@/shared/assets/fonts';
 import { useToastStore } from '@/shared/model';
 import { EntityFormWrapper } from '@/shared/ui';
 import { RoundedButton } from '@/shared/ui/buttons';
-import { Dropdown } from '@/shared/ui/dropdown';
-import { FieldError } from '@/shared/ui/errors';
 import { TextField } from '@/shared/ui/form-fields';
 import { CategoryFormSchema } from '../model';
 
 type CategoryFormProps = {
   initialData: Category | null;
-  billboards: Billboard[];
 };
 
-export const CategoryForm = ({
-  initialData,
-  billboards,
-}: CategoryFormProps) => {
+export const CategoryForm = ({ initialData }: CategoryFormProps) => {
   const router = useRouter();
   const params = useParams();
 
   const toastStore = useToastStore();
 
-  const [isSelectOpened, setIsSelectOpened] = useState(false);
-
   const [isPending, startTransition] = useTransition();
 
   const {
     control,
-    register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<z.infer<typeof CategoryFormSchema>>({
     resolver: zodResolver(CategoryFormSchema),
     defaultValues: initialData || {
       name: '',
-      // billboardId: '',
     },
   });
-
-  // const watchBillboardIdField = watch('billboardId');
 
   const title = initialData ? 'Edit category' : 'Create category';
   const description = initialData ? 'Edit a category' : 'Create a category';
@@ -105,47 +89,6 @@ export const CategoryForm = ({
               />
             )}
           />
-          {/*<div className={'flex flex-col gap-2'}>*/}
-          {/*  <h5 className={`${dmSans.className} text-dark-gray`}>Billboard</h5>*/}
-          {/*  <Dropdown*/}
-          {/*    isOpenChange={() => setIsSelectOpened((prevState) => !prevState)}*/}
-          {/*    isOpen={isSelectOpened}*/}
-          {/*    clickOutside={() => setIsSelectOpened(false)}*/}
-          {/*    title={*/}
-          {/*      billboards.find((b) => b.id === watchBillboardIdField)?.label ||*/}
-          {/*      'Select billboard'*/}
-          {/*    }*/}
-          {/*    className={errors.billboardId && 'border-red-500'}>*/}
-          {/*    <div className='w-full p-2 flex flex-col gap-2'>*/}
-          {/*      {billboards.map((b) => (*/}
-          {/*        <div*/}
-          {/*          key={b.id}*/}
-          {/*          className='w-full h-10 relative'*/}
-          {/*          onClick={() => setIsSelectOpened(false)}>*/}
-          {/*          <input*/}
-          {/*            type='radio'*/}
-          {/*            className='appearance-none absolute w-full h-full rounded-sm bg-white peer hover:bg-light-gray transition-colors cursor-pointer'*/}
-          {/*            value={b.id}*/}
-          {/*            {...register('billboardId')}*/}
-          {/*          />*/}
-          {/*          <label*/}
-          {/*            className={`${dmSans.className} absolute top-1/2 left-1 -translate-y-1/2 pointer-events-none`}>*/}
-          {/*            {b.label}*/}
-          {/*          </label>*/}
-          {/*          <Check*/}
-          {/*            className={clsx(*/}
-          {/*              'hidden w-4 h-4 peer-checked:block',*/}
-          {/*              'absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none'*/}
-          {/*            )}*/}
-          {/*          />*/}
-          {/*        </div>*/}
-          {/*      ))}*/}
-          {/*    </div>*/}
-          {/*  </Dropdown>*/}
-          {/*  {errors.billboardId && (*/}
-          {/*    <FieldError errorMessage={errors.billboardId.message} />*/}
-          {/*  )}*/}
-          {/*</div>*/}
         </div>
         <RoundedButton text={action} className='mt-16' type='submit' />
       </form>

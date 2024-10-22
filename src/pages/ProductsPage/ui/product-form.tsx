@@ -17,12 +17,19 @@ import * as z from 'zod';
 
 import { dmSans } from '@/shared/assets/fonts';
 import { useToastStore } from '@/shared/model';
-import { UploadImage } from '@/shared/ui';
+import { Test, UploadImage } from '@/shared/ui';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { ProductFormSchema } from '../model';
 import { Dropdown } from '@/shared/ui/dropdown';
 import { Check } from 'lucide-react';
 import clsx from 'clsx';
+import {
+  CheckboxField,
+  SelectField,
+  TextareaField,
+  TextField,
+} from '@/shared/ui/form-fields';
+import { Form, FormControl, FormField, FormItem } from '@/shared/ui/shadcn';
 
 type ProductFormProps = {
   initialData:
@@ -30,18 +37,17 @@ type ProductFormProps = {
         images: Image[];
       })
     | null;
-  billboards: Billboard[];
+  // billboards: Billboard[];
   categories: Category[];
   sizes: Size[];
   materials: Material[];
 };
-
+// FIXME
 export const ProductForm = ({
   initialData,
-  billboards,
+  categories,
   sizes,
   materials,
-  categories,
 }: ProductFormProps) => {
   const router = useRouter();
   const params = useParams();
@@ -56,12 +62,10 @@ export const ProductForm = ({
   const [isMaterialSelectOpened, setIsMaterialSelectOpened] = useState(false);
   const [isBillboardSelectOpened, setIsBillboardSelectOpened] = useState(false);
 
-  // FIXME props are very big
+  // // FIXME props are very big
   const {
-    register,
-    handleSubmit,
-    watch,
     control,
+    handleSubmit,
     formState: { errors },
   } = useForm<z.infer<typeof ProductFormSchema>>({
     resolver: zodResolver(ProductFormSchema),
@@ -69,6 +73,7 @@ export const ProductForm = ({
       ? {
           ...initialData,
           price: parseFloat(String(initialData.price)),
+          weight: parseFloat(String(initialData.weight)),
         }
       : {
           name: '',
@@ -77,31 +82,67 @@ export const ProductForm = ({
           categoryId: '',
           materialId: '',
           sizeId: '',
-          billboardId: '',
+          weight: 0,
+          description: '',
           isFeatured: false,
           isArchived: false,
         },
   });
 
-  const watchNameField = watch('name');
-  const watchImagesField = watch('images');
-  const watchPriceField = watch('price');
-  const watchCategoryIdField = watch('categoryId');
-  const watchMaterialIdField = watch('materialId');
-  const watchSizeIdField = watch('sizeId');
+  // const watchNameField = watch('name');
+  // const watchImagesField = watch('images');
+  // const watchPriceField = watch('price');
+  // const watchCategoryIdField = watch('categoryId');
+  // const watchMaterialIdField = watch('materialId');
+  // const watchSizeIdField = watch('sizeId');
 
   // useEffect(() => {
   //   console.log('watch images field: ', watchImagesField);
   // });
 
-  const title = initialData ? 'Edit product' : 'Create product';
-  const description = initialData ? 'Edit a product' : 'Create a product';
-  const action = initialData ? 'Save changes' : 'Create product';
+  const title = initialData ? 'Edit products' : 'Create products';
+  const description = initialData ? 'Edit a products' : 'Create a products';
+  const action = initialData ? 'Save changes' : 'Create products';
   const successfully = initialData
     ? 'Product was updated!'
     : 'Product was created!';
 
+  const categoriesFormattedItems = categories.map((i) => ({
+    id: i.id,
+    value: i.name,
+  }));
+  const sizesFormattedItems = sizes.map((i) => ({
+    id: i.id,
+    value: i.value.toString(),
+  }));
+  const materialsFormattedItems = materials.map((i) => ({
+    id: i.id,
+    value: i.value,
+  }));
+
+  const defaultValues: z.infer<typeof ProductFormSchema> = {
+    images: [],
+    name: '',
+    price: 0,
+    weight: 0,
+    description: '',
+    categoryId: '',
+    materialId: '',
+    sizeId: '',
+    isFeatured: false,
+    isArchived: false,
+  };
+
+  // useEffect(() => {
+  //   if (errors) console.log('error: ', errors);
+  // }, [errors]);
+  //
+  // useEffect(() => {
+  //   console.log('images: ', watchImagesField);
+  // }, [watchImagesField]);
+
   const onSubmit = (data: z.infer<typeof ProductFormSchema>) => {
+    console.log(data);
     startTransition(async () => {
       try {
         if (!initialData) {
@@ -137,27 +178,152 @@ export const ProductForm = ({
         </div>
       </header>
       <form
-        className='w-fit flex flex-col gap-6 items-start py-6'
+        className='w-full flex flex-col gap-6 items-start py-6'
         onSubmit={handleSubmit(onSubmit)}>
         <Controller
           control={control}
           name='images'
-          defaultValue={initialData?.images}
           render={({ field }) => (
             <UploadImage
-              onChange={(url) =>
-                field.onChange((prev: { url: string }[]) => [...prev, { url }])
-              }
+              onChange={(urls) => {
+                const formattedUrls = urls.map((u) => ({ url: u }));
+                field.onChange([...field.value, ...formattedUrls]);
+              }}
               onRemove={(url) =>
-                field.onChange((prev: { url: string }[]) =>
-                  prev.filter((cur) => cur.url !== url)
-                )
+                field.onChange(field.value.filter((i) => i.url !== url))
               }
               value={field.value.map((v) => v.url)}
               disabled={isPending}
+              title='Product images'
             />
           )}
         />
+        <div className='flex gap-40 w-full'>
+          <div className='flex flex-col gap-6'>
+            <Controller
+              control={control}
+              name='name'
+              render={({ field }) => (
+                <TextField
+                  label='Product name'
+                  error={errors.name?.message}
+                  disabled={isPending}
+                  {...field}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name='price'
+              render={({ field }) => (
+                <TextField
+                  type='number'
+                  label='Product price'
+                  error={errors.price?.message}
+                  disabled={isPending}
+                  {...field}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name='weight'
+              render={({ field }) => (
+                <TextField
+                  type='number'
+                  label='Product weight'
+                  error={errors.weight?.message}
+                  disabled={isPending}
+                  {...field}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name='description'
+              render={({ field }) => (
+                <TextareaField
+                  label='Description'
+                  error={errors.description?.message}
+                  disabled={isPending}
+                  {...field}
+                />
+              )}
+            />
+            <div className='flex gap-4'>
+              <Controller
+                control={control}
+                name='isFeatured'
+                render={({ field }) => (
+                  <CheckboxField
+                    label='Is featured'
+                    disabled={isPending}
+                    {...field}
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name='isArchived'
+                render={({ field }) => (
+                  <CheckboxField
+                    label='Is archived'
+                    disabled={isPending}
+                    {...field}
+                  />
+                )}
+              />
+            </div>
+          </div>
+          <div className='w-full flex justify-between'>
+            <Controller
+              control={control}
+              name='categoryId'
+              render={({ field }) => (
+                <SelectField
+                  title='Product category'
+                  items={categoriesFormattedItems}
+                  unselectedTitle='Select a category'
+                  emptyListText='There are now any categories'
+                  error={errors.categoryId?.message}
+                  disabled={isPending}
+                  {...field}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name='sizeId'
+              render={({ field }) => (
+                <SelectField
+                  items={sizesFormattedItems}
+                  unselectedTitle='Select a size'
+                  emptyListText='There are no one size!'
+                  title='Product size'
+                  error={errors.sizeId?.message}
+                  disabled={isPending}
+                  {...field}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name='materialId'
+              render={({ field }) => (
+                <SelectField
+                  items={materialsFormattedItems}
+                  unselectedTitle='Select a material'
+                  emptyListText='There are no one material'
+                  title='Product material'
+                  error={errors.materialId?.message}
+                  disabled={isPending}
+                  {...field}
+                />
+              )}
+            />
+          </div>
+        </div>
+
         {/*<div>*/}
         {/*  <TextInput*/}
         {/*    placeholder='Name'*/}

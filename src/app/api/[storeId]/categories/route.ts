@@ -19,10 +19,6 @@ export async function POST(
       return new NextResponse('Name is required!', { status: 400 });
     }
 
-    // if (!billboardId) {
-    //   return new NextResponse('Billboard id is required!', { status: 400 });
-    // }
-
     const category = await db.category.create({
       data: { name, storeId: params.storeId },
     });

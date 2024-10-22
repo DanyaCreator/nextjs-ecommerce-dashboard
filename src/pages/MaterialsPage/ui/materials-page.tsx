@@ -45,7 +45,6 @@ export const MaterialsPage = async ({ storeId }: MaterialsPageProps) => {
 
   const formattedMaterialItems: MaterialColumn[] = materials.map((i) => ({
     id: i.id,
-    name: i.name,
     value: i.value,
     createdAt: format(i.createdAt, 'MMMM do, yyyy'),
   }));

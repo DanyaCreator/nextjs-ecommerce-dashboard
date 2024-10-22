@@ -19,10 +19,6 @@ export async function PATCH(
       return new NextResponse('Name is required!', { status: 400 });
     }
 
-    // if (!billboardId) {
-    //   return new NextResponse('Billboard id is required!', { status: 400 });
-    // }
-
     if (!params.categoryId)
       return new NextResponse('Category id is required!', { status: 400 });
 

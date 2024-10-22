@@ -12,7 +12,6 @@ const ProductSettings = async ({
       images: true,
       size: true,
       category: true,
-      billboard: true,
       material: true,
     },
   });
@@ -29,10 +28,6 @@ const ProductSettings = async ({
     where: { storeId: params.storeId },
   });
 
-  const billboards = await db.billboard.findMany({
-    where: { storeId: params.storeId },
-  });
-
   return (
     <main className='container h-[80%] py-10 bg-white rounded-b-xl overflow-hidden'>
       <ProductForm
@@ -40,7 +35,7 @@ const ProductSettings = async ({
         categories={categories}
         sizes={sizes}
         materials={materials}
-        billboards={billboards}
+        // billboards={billboards}
       />
     </main>
   );

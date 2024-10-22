@@ -17,6 +17,7 @@ type DropdownProps = {
   clickOutside?: () => void;
   className?: string;
   children: ReactNode;
+  disabled?: boolean;
 };
 
 export const Dropdown = ({
@@ -27,6 +28,7 @@ export const Dropdown = ({
   clickOutside,
   className,
   children,
+  disabled,
 }: DropdownProps) => {
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
 
@@ -47,9 +49,10 @@ export const Dropdown = ({
         className={clsx(
           'w-[260px] h-[52px] px-4 py-3 flex justify-between items-center',
           'border-solid border border-light-gray rounded-s cursor-pointer',
-          className
+          className,
+          disabled && 'cursor-default'
         )}
-        onClick={isOpenChange}>
+        onClick={!disabled ? isOpenChange : () => {}}>
         <div className='flex gap-4 items-center'>
           {icon && icon}
           <span className={dmSans.className}>{title}</span>

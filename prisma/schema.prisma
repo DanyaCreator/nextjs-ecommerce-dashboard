@@ -95,9 +95,11 @@ model Billboard {
   imageUrl  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  product   Product?
+  productId String   @unique
+  product   Product  @relation(fields: [productId], references: [id])
 
   @@index([storeId])
+  @@index([productId])
 }
 
 model Category {
@@ -107,33 +109,35 @@ model Category {
   name      String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  product   Product[] @relation("CategoryToProduct")
+  products  Product[] @relation("CategoryToProduct")
+  sizes     Size[]    @relation("CategoryToSize")
 
   @@index([storeId])
 }
 
 model Size {
-  id        String    @id @default(uuid())
-  storeId   String
-  store     Store     @relation("StoreToSize", fields: [storeId], references: [id])
-  name      String
-  value     String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Product   Product[]
+  id         String    @id @default(uuid())
+  storeId    String
+  store      Store     @relation("StoreToSize", fields: [storeId], references: [id])
+  value      Decimal
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  Product    Product[]
+  category   Category  @relation("CategoryToSize", fields: [categoryId], references: [id])
+  categoryId String
 
   @@index([storeId])
+  @@index([categoryId])
 }
 
 model Material {
   id        String    @id @default(uuid())
   storeId   String
   store     Store     @relation("StoreToMaterial", fields: [storeId], references: [id])
-  name      String
   value     String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  Product   Product[]
+  prooducts Product[]
 
   @@index([storeId])
 }
@@ -144,10 +148,11 @@ model Product {
   store       Store      @relation("StoreToProduct", fields: [storeId], references: [id])
   categoryId  String
   category    Category   @relation("CategoryToProduct", fields: [categoryId], references: [id])
-  billboardId String     @unique
-  billboard   Billboard? @relation(fields: [billboardId], references: [id])
+  billboard   Billboard?
   name        String
   price       Decimal
+  weight      Decimal
+  description String
   isFeatured  Boolean    @default(false)
   isArchived  Boolean    @default(false)
   sizeId      String
@@ -162,7 +167,6 @@ model Product {
   @@index([categoryId])
   @@index([sizeId])
   @@index([materialId])
-  @@index([billboardId])
 }
 
 model Image {

@@ -37,3 +37,5 @@ export {
   TableHeader,
   TableRow,
 } from './table';
+
+export { Form, FormControl, FormField, FormItem } from './form';

@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Size } from '@prisma/client';
+import { Category, Size } from '@prisma/client';
 import axios, { AxiosError } from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { useTransition } from 'react';
@@ -11,14 +11,15 @@ import * as z from 'zod';
 import { useToastStore } from '@/shared/model';
 import { EntityFormWrapper } from '@/shared/ui';
 import { RoundedButton } from '@/shared/ui/buttons';
-import { TextField } from '@/shared/ui/form-fields';
+import { SelectField, TextField } from '@/shared/ui/form-fields';
 import { SizesFormSchema } from '../model';
 
 type SizeFormProps = {
   initialData: Size | null;
+  categories: Category[];
 };
 
-export const SizeForm = ({ initialData }: SizeFormProps) => {
+export const SizeForm = ({ initialData, categories }: SizeFormProps) => {
   const router = useRouter();
   const params = useParams();
 
@@ -32,16 +33,30 @@ export const SizeForm = ({ initialData }: SizeFormProps) => {
     formState: { errors },
   } = useForm<z.infer<typeof SizesFormSchema>>({
     resolver: zodResolver(SizesFormSchema),
-    defaultValues: initialData || {
-      name: '',
-      value: '',
-    },
+    defaultValues: initialData
+      ? {
+          ...initialData,
+          value: parseFloat(String(initialData?.value)),
+        }
+      : {
+          value: 0,
+          categoryId: '',
+        },
   });
 
   const title = initialData ? 'Edit size' : 'Create size';
   const description = initialData ? 'Edit a size' : 'Create a size';
   const action = initialData ? 'Save changes' : 'Create size';
   const successfully = initialData ? 'Size was updated!' : 'Size was created!';
+
+  const unselectedCategoryTitle = 'Select a category';
+  // FIXME
+  const emptyCategoryListText = 'No category';
+
+  const formattedCategoryItems = categories.map((c) => ({
+    id: c.id,
+    value: c.name,
+  }));
 
   const onSubmit = (data: z.infer<typeof SizesFormSchema>) => {
     startTransition(async () => {
@@ -76,26 +91,30 @@ export const SizeForm = ({ initialData }: SizeFormProps) => {
         <div className='flex gap-16'>
           <Controller
             control={control}
-            name='name'
-            render={({ field }) => (
-              <TextField
-                label='Name'
-                error={errors.name?.message}
-                disabled={isPending}
-                defaultValue={initialData?.name}
-                {...field}
-              />
-            )}
-          />
-          <Controller
-            control={control}
             name='value'
             render={({ field }) => (
               <TextField
                 label='Value'
                 error={errors.value?.message}
                 disabled={isPending}
-                defaultValue={initialData?.value}
+                defaultValue={
+                  initialData?.value ? parseFloat(String(initialData.value)) : 0
+                }
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name='categoryId'
+            render={({ field }) => (
+              <SelectField
+                items={formattedCategoryItems}
+                unselectedTitle={unselectedCategoryTitle}
+                emptyListText={emptyCategoryListText}
+                error={errors.categoryId?.message}
+                disabled={isPending}
+                defaultValue={initialData?.categoryId}
                 {...field}
               />
             )}

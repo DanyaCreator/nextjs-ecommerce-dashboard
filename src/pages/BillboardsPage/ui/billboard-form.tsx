@@ -80,10 +80,11 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
           name='imageUrl'
           render={({ field }) => (
             <UploadImage
-              onChange={(url) => field.onChange(url)}
+              onChange={(urls) => field.onChange(urls[0])}
               onRemove={() => field.onChange('')}
               value={field.value ? [field.value] : []}
               disabled={isPending}
+              title='Billboard image'
             />
           )}
         />

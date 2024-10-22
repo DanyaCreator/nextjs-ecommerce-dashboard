@@ -8,13 +8,15 @@ import {
 } from 'next-cloudinary';
 import { useEffect, useState } from 'react';
 
+import { dmSans } from '@/shared/assets/fonts';
 import { RoundedButton } from '@/shared/ui/buttons';
 
 type UploadImageProps = {
   disabled?: boolean;
-  onChange: (value: string) => void;
+  onChange: (value: string[]) => void;
   onRemove: (value: string) => void;
   value: string[];
+  title: string;
 };
 
 export const UploadImage = ({
@@ -22,9 +24,21 @@ export const UploadImage = ({
   onChange,
   onRemove,
   value,
+  title,
 }: UploadImageProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const [btnHovered, setBtnHovered] = useState(false);
+
+  const [activeUrls, setActiveUrls] = useState<string[]>([]);
+
+  useEffect(() => {
+    onChange(activeUrls);
+    // setActiveUrls([]);
+  }, [activeUrls]);
+
+  useEffect(() => {
+    console.log('value: ', value);
+  }, [value]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -38,13 +52,19 @@ export const UploadImage = ({
     )
       return;
 
-    onChange(result.info.secure_url);
+    // console.log('value onUpload: ', value);
+    setActiveUrls([]);
+    const url = result.info.secure_url;
+
+    setActiveUrls((prevState) => [...prevState, url]);
+    // setUrls((prevState) => [...prevState, result.info.secure_url]);
   };
 
   if (!isMounted) return null;
 
   return (
     <div className='mb-4 flex flex-col items-start gap-4'>
+      <span className={`${dmSans.className} text-h5 text-black`}>{title}</span>
       <div className='flex gap-4'>
         {value.map((url) => (
           <div
@@ -63,7 +83,13 @@ export const UploadImage = ({
           </div>
         ))}
       </div>
-      <CldUploadWidget onSuccess={onUpload} uploadPreset='duqla6y4'>
+      {/*<button onClick={() => onUpload()}>click</button>*/}
+      <CldUploadWidget
+        onSuccess={(results) => {
+          // console.log('value: ', value);
+          onUpload(results);
+        }}
+        uploadPreset='duqla6y4'>
         {({ open }) => {
           const onClick = () => {
             open();
@@ -89,31 +115,37 @@ export const UploadImage = ({
   );
 };
 
-// useEffect(() => {
-//   void (async () => {
-//     try {
-//       const usersData = await fetchUsers();
-//       setUsers(usersData);
-//
-//       const rolesPromises = usersData.map(user =>
-//         fetchUserRoles(user.id).then(roles => ({
-//           userId: user.id,
-//           roles
-//         }))
-//       );
-//
-//       const rolesData = await Promise.all(rolesPromises);
-//       const rolesMap = rolesData.reduce((acc, {userId, roles}) => {
-//         acc[userId] = roles;
-//         return acc;
-//       }, {} as Record<string, Role[]>);
-//
-//       setUserRoles(rolesMap);
-//       console.log(rolesMap[usersData[0].id])
-//     } catch (err) {
-//       setError("Failed to fetch users");
-//     } finally {
-//       setLoading(false);
-//     }
-//   })();
-// }, []);
+export const Test = ({
+  onChange,
+  value,
+}: {
+  onChange: (url: string) => void;
+  value: string[];
+}) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  // useEffect(() => {
+  //   console.log('test value: ', value);
+  // }, [value]);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // useEffect(() => {
+  //   console.log('value in test: ', value);
+  // }, [value]);
+
+  const onUpdate = (url: string) => {
+    onChange(url);
+  };
+
+  if (!isMounted) return null;
+
+  return (
+    <div>
+      <div>{value.join(', ')}</div>
+      <button onClick={() => onUpdate('a')}>click</button>
+    </div>
+  );
+};

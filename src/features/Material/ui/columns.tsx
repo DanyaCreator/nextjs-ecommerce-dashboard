@@ -5,16 +5,11 @@ import { EntityCellActions } from '@/shared/ui';
 
 export type MaterialColumn = {
   id: string;
-  name: string;
   value: string;
   createdAt: string;
 };
 
 export const columns: ColumnDef<MaterialColumn>[] = [
-  {
-    accessorKey: 'name',
-    header: 'Name',
-  },
   {
     accessorKey: 'value',
     header: 'Value',
