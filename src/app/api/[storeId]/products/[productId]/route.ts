@@ -26,7 +26,11 @@ export async function PATCH(
       images,
     } = body;
 
-    // TODO Check body
+    for (const key of Object.keys(body)) {
+      if (body[key]) continue;
+
+      return new NextResponse(`${key} is required!`, { status: 400 });
+    }
 
     if (!params.productId)
       return new NextResponse('Product id is required!', { status: 400 });
@@ -78,12 +82,6 @@ export async function DELETE(
     if (!params.productId) {
       return new NextResponse('Product id is required!', { status: 400 });
     }
-
-    await db.image.deleteMany({
-      where: {
-        productId: params.productId,
-      },
-    });
 
     const product = await db.product.deleteMany({
       where: { id: params.productId },

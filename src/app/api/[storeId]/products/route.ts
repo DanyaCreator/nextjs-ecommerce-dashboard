@@ -27,7 +27,11 @@ export async function POST(
       images,
     } = body;
 
-    // TODO Check body
+    for (const key of Object.keys(body)) {
+      if (body[key] || key === 'isFeatured' || key === 'isArchived') continue;
+
+      return new NextResponse(`${key} is required!`, { status: 400 });
+    }
 
     const product = await db.product.create({
       data: {
