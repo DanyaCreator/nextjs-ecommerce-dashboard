@@ -12,7 +12,7 @@ export async function PATCH(
     if (res) return res.error;
 
     const body = await req.json();
-    const { label, imageUrl } = body;
+    const { label, imageUrl, productId } = body;
 
     if (!label) {
       return new NextResponse('Label is required!', { status: 400 });
@@ -22,6 +22,10 @@ export async function PATCH(
       return new NextResponse('Image URL is required!', { status: 400 });
     }
 
+    if (!productId) {
+      return new NextResponse('Product id is required!', { status: 400 });
+    }
+
     if (!params.billboardId)
       return new NextResponse('Billboard id is required!', { status: 400 });
 
@@ -29,7 +33,7 @@ export async function PATCH(
       where: {
         id: params.billboardId,
       },
-      data: { label, imageUrl },
+      data: { label, imageUrl, productId },
     });
 
     return NextResponse.json(updatedStore);
