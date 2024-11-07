@@ -25,14 +25,8 @@ export const Modal = ({
   onClose,
   children,
 }: ModalProps) => {
-  const onChange = () => {
-    if (isOpen) return;
-
-    onClose();
-  };
-
   return (
-    <Dialog open={isOpen} onOpenChange={onChange}>
+    <Dialog open={isOpen} onOpenChange={onClose} >
       <DialogContent>
         <Logo className='w-full text-center' />
         <DialogHeader>
