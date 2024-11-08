@@ -1,35 +1,24 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Product,
-  Image,
-  Billboard,
-  Category,
-  Size,
-  Material,
-} from '@prisma/client';
+import { Product, Image, Category, Size, Material } from '@prisma/client';
 import axios, { AxiosError } from 'axios';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState, useTransition } from 'react';
+import { useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { dmSans } from '@/shared/assets/fonts';
 import { useToastStore } from '@/shared/model';
-import { Test, UploadImage } from '@/shared/ui';
+import { UploadImage } from '@/shared/ui';
 import { RoundedButton } from '@/shared/ui/buttons';
-import { ProductFormSchema } from '../model';
-import { Dropdown } from '@/shared/ui/dropdown';
-import { Check } from 'lucide-react';
-import clsx from 'clsx';
 import {
   CheckboxField,
   SelectField,
   TextareaField,
   TextField,
 } from '@/shared/ui/form-fields';
-import { Form, FormControl, FormField, FormItem } from '@/shared/ui/shadcn';
+import { ProductFormSchema } from '../model';
 
 type ProductFormProps = {
   initialData:
@@ -37,12 +26,11 @@ type ProductFormProps = {
         images: Image[];
       })
     | null;
-  // billboards: Billboard[];
   categories: Category[];
   sizes: Size[];
   materials: Material[];
 };
-// FIXME
+
 export const ProductForm = ({
   initialData,
   categories,
@@ -56,13 +44,6 @@ export const ProductForm = ({
 
   const [isPending, startTransition] = useTransition();
 
-  // TODO Maybe there is more universal
-  const [isCategorySelectOpened, setIsCategorySelectOpened] = useState(false);
-  const [isSizeSelectOpened, setIsSizeSelectOpened] = useState(false);
-  const [isMaterialSelectOpened, setIsMaterialSelectOpened] = useState(false);
-  const [isBillboardSelectOpened, setIsBillboardSelectOpened] = useState(false);
-
-  // // FIXME props are very big
   const {
     control,
     handleSubmit,
@@ -89,17 +70,6 @@ export const ProductForm = ({
         },
   });
 
-  // const watchNameField = watch('name');
-  // const watchImagesField = watch('images');
-  // const watchPriceField = watch('price');
-  // const watchCategoryIdField = watch('categoryId');
-  // const watchMaterialIdField = watch('materialId');
-  // const watchSizeIdField = watch('sizeId');
-
-  // useEffect(() => {
-  //   console.log('watch images field: ', watchImagesField);
-  // });
-
   const title = initialData ? 'Edit products' : 'Create products';
   const description = initialData ? 'Edit a products' : 'Create a products';
   const action = initialData ? 'Save changes' : 'Create products';
@@ -119,27 +89,6 @@ export const ProductForm = ({
     id: i.id,
     value: i.value,
   }));
-
-  const defaultValues: z.infer<typeof ProductFormSchema> = {
-    images: [],
-    name: '',
-    price: 0,
-    weight: 0,
-    description: '',
-    categoryId: '',
-    materialId: '',
-    sizeId: '',
-    isFeatured: false,
-    isArchived: false,
-  };
-
-  // useEffect(() => {
-  //   if (errors) console.log('error: ', errors);
-  // }, [errors]);
-  //
-  // useEffect(() => {
-  //   console.log('images: ', watchImagesField);
-  // }, [watchImagesField]);
 
   const onSubmit = (data: z.infer<typeof ProductFormSchema>) => {
     console.log(data);
