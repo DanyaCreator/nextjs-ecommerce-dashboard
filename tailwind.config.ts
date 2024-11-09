@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      boxShadow: {
+        'my-foreground': '0px 0px 0px 99999px rgba(0, 0, 0, 0.8)',
+      },
       filter: {
         white:
           'brightness(0) saturate(100%) invert(100%) sepia(20%) saturate(868%) hue-rotate(288deg) brightness(108%) contrast(100%)',

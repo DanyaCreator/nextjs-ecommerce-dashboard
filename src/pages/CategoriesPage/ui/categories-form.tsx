@@ -46,7 +46,6 @@ export const CategoryForm = ({ initialData }: CategoryFormProps) => {
 
   const onSubmit = (data: z.infer<typeof CategoryFormSchema>) => {
     startTransition(async () => {
-      console.log(data);
       try {
         if (!initialData) {
           await axios.post(`/api/${params?.storeId}/categories`, data);

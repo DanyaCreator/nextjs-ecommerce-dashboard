@@ -7,6 +7,7 @@ import { dmSans } from '@/shared/assets/fonts';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { Modal } from '@/shared/ui/modals';
 import { ModalWrapper } from '@/shared/ui/modals/modal-wrapper';
+import { useLockedBody } from '@/shared/model/hooks/use-lock-body.hook';
 
 type EntityHeaderProps = {
   entityName: string;
@@ -26,11 +27,7 @@ export const EntityHeader = ({
   return (
     <header className='flex justify-between items-center pb-6 border-solid border-b border-light-gray'>
       {open && (
-        <ModalWrapper
-          title={'Create category'}
-          description={'Enter the name of category'}
-          isOpen={open}
-          onClose={() => setOpen(false)}>
+        <ModalWrapper isOpen={open} onClose={() => setOpen(false)}>
           {children}
         </ModalWrapper>
       )}

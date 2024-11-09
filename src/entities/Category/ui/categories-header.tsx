@@ -8,7 +8,11 @@ type CategoryHeaderProps = {
 export const CategoriesHeader = ({ categoriesCount }: CategoryHeaderProps) => {
   return (
     <EntityHeader entityName='categories' entityCount={categoriesCount}>
-      <CategoryForm initialData={null} />
+      <CategoryForm
+        initialData={null}
+        title={'Create a category'}
+        description={'Enter the name of category'}
+      />
     </EntityHeader>
   );
 };

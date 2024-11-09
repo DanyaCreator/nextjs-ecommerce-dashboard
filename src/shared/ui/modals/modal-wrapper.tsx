@@ -1,32 +1,40 @@
-import { ReactNode } from 'react';
-import { IoClose } from 'react-icons/io5';
 import { clsx } from 'clsx';
+import { ReactNode, useRef } from 'react';
+import { IoClose } from 'react-icons/io5';
+import { useOutsideAlerter, useLockedBody } from '@/shared/model';
 
 type CardWrapperProps = {
-  title: string;
-  description: string;
   children: ReactNode;
   onClose: () => void;
-  isOpen?: boolean;
+  isOpen: boolean;
 };
 
 export const ModalWrapper = ({
   children,
-  title,
-  description,
   onClose,
+  isOpen,
 }: CardWrapperProps) => {
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  useOutsideAlerter(wrapperRef, onClose);
+  useLockedBody(isOpen);
+
   return (
-    <div className={'fixed w-[100vw] h-[100vh] top-0 left-0 bg-black'}>
+    <div
+      className={
+        'w-full h-full bg-black bg-opacity-80 z-[90] fixed top-0 right-0'
+      }>
       <section
+        ref={wrapperRef}
         className={clsx(
-          'w-1/2 h-1/2 bg-white rounded-2xl',
-          'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+          'w-[400px] max-h-[60vh] bg-white rounded-2xl',
+          'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ',
+          'p-8 flex justify-center items-center'
         )}>
-        <h4>{title}</h4>
-        <h5>{description}</h5>
-        <button onClick={onClose}>
-          <IoClose />
+        <button
+          onClick={onClose}
+          className={'absolute right-[5px] top-[5px] p-3'}>
+          <IoClose className={'w-[20px] h-[20px]'} />
         </button>
         {children}
       </section>

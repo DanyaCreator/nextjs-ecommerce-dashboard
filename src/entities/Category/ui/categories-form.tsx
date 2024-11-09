@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Category } from '@prisma/client';
 import axios, { AxiosError } from 'axios';
 import { useParams, useRouter } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import { useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -12,13 +12,19 @@ import { useToastStore } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { TextField } from '@/shared/ui/form-fields';
 import { CategoryFormSchema } from '../model';
-import { Close } from '@radix-ui/react-dialog';
+import { dmSans } from '@/shared/assets/fonts';
 
 type CategoryFormProps = {
   initialData: Category | null;
+  title: string;
+  description: string;
 };
 
-export const CategoryForm = ({ initialData }: CategoryFormProps) => {
+export const CategoryForm = ({
+  initialData,
+  title,
+  description,
+}: CategoryFormProps) => {
   const router = useRouter();
   const params = useParams();
 
@@ -72,9 +78,13 @@ export const CategoryForm = ({ initialData }: CategoryFormProps) => {
 
   return (
     <form
-      className='w-fit flex flex-col gap-6 items-start py-6'
+      className='w-fit flex flex-col items-start'
       onSubmit={handleSubmit(onSubmit)}>
-      <label className='flex gap-16'>
+      <div className={'flex flex-col gap-5'}>
+        <h3 className={`${dmSans.className}`}>{title}</h3>
+        <h4 className={`${dmSans.className} text-dark-gray`}>{description}</h4>
+      </div>
+      <label className='flex flex-col mt-[50px]'>
         <Controller
           control={control}
           name='name'
@@ -88,8 +98,8 @@ export const CategoryForm = ({ initialData }: CategoryFormProps) => {
             />
           )}
         />
+        <RoundedButton text={action} type='submit' className={'mt-[30px]'} />
       </label>
-      <RoundedButton text={action} className='mt-16' type='submit' />
     </form>
   );
 };
