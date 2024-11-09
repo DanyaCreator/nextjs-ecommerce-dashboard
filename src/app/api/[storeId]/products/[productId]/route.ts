@@ -27,7 +27,7 @@ export async function PATCH(
     } = body;
 
     for (const key of Object.keys(body)) {
-      if (body[key]) continue;
+      if (body[key] || key === 'isArchived' || key === 'isFeatured') continue;
 
       return new NextResponse(`${key} is required!`, { status: 400 });
     }

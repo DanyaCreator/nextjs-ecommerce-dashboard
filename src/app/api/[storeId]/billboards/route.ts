@@ -13,7 +13,7 @@ export async function POST(
     if (res) return res.error;
 
     const body = await req.json();
-    const { label, imageUrl } = body;
+    const { label, imageUrl, productId } = body;
 
     if (!label) {
       return new NextResponse('Label is required!', { status: 400 });
@@ -23,8 +23,12 @@ export async function POST(
       return new NextResponse('Image URL is required!', { status: 400 });
     }
 
+    if (!productId) {
+      return new NextResponse('Product id is required!', { status: 400 });
+    }
+
     const billboard = await db.billboard.create({
-      data: { label, imageUrl, storeId: params.storeId },
+      data: { label, imageUrl, productId, storeId: params.storeId },
     });
 
     return NextResponse.json(billboard);

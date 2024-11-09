@@ -8,7 +8,7 @@ import { useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { useToastStore } from '@/shared/model';
+import { useModalWrapper, useToastStore } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { TextField } from '@/shared/ui/form-fields';
 import { CategoryFormSchema } from '../model';
@@ -46,6 +46,9 @@ export const CategoryForm = ({
 
   // const watchBillboardIdField = watch('billboardId');
 
+  const onClose = useModalWrapper((state) => state.onCloseUpdate);
+  const onCloseMethod = useModalWrapper((state) => state.onCloseNewCategory);
+
   const action = initialData ? 'Save changes' : 'Create category';
   const successfully = initialData
     ? 'Category was updated!'
@@ -65,6 +68,9 @@ export const CategoryForm = ({
         }
 
         toastStore.onOpen(successfully, 'success');
+
+        onClose();
+        onCloseMethod();
 
         router.refresh();
       } catch (error) {

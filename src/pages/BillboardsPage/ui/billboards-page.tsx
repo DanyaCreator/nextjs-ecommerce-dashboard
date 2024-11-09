@@ -40,12 +40,16 @@ const apiCalls: ApiData[] = [
 export const BillboardsPage = async ({ storeId }: BillboardsPageProps) => {
   const billboards = await db.billboard.findMany({
     where: { storeId },
+    include: {
+      product: true,
+    },
     orderBy: { createdAt: 'desc' },
   });
 
   const formattedBillboardItems: BillboardColumn[] = billboards.map((i) => ({
     id: i.id,
     label: i.label,
+    product: i.product.name,
     createdAt: format(i.createdAt, 'MMMM do, yyyy'),
   }));
 

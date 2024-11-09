@@ -1,23 +1,25 @@
+'use client';
+
 import { clsx } from 'clsx';
 import { ReactNode, useRef } from 'react';
 import { IoClose } from 'react-icons/io5';
-import { useOutsideAlerter, useLockedBody } from '@/shared/model';
+import { useOutsideAlerter, useModalWrapper } from '@/shared/model';
 
 type CardWrapperProps = {
   children: ReactNode;
-  onClose: () => void;
-  isOpen: boolean;
 };
 
-export const ModalWrapper = ({
-  children,
-  onClose,
-  isOpen,
-}: CardWrapperProps) => {
+export const ModalWrapper = ({ children }: CardWrapperProps) => {
+  const modalWrapperStore = useModalWrapper();
+
+  const onClose = () => {
+    modalWrapperStore.onCloseNewCategory();
+    modalWrapperStore.onCloseUpdate();
+  };
+
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useOutsideAlerter(wrapperRef, onClose);
-  useLockedBody(isOpen);
 
   return (
     <div
