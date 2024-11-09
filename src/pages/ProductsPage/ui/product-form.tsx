@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Product, Image, Category, Size, Material } from '@prisma/client';
 import axios, { AxiosError } from 'axios';
 import { useParams, useRouter } from 'next/navigation';
-import { useTransition } from 'react';
+import { useEffect, useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -47,7 +47,8 @@ export const ProductForm = ({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    watch,
+    formState: { errors, defaultValues },
   } = useForm<z.infer<typeof ProductFormSchema>>({
     resolver: zodResolver(ProductFormSchema),
     defaultValues: initialData
@@ -69,6 +70,12 @@ export const ProductForm = ({
           isArchived: false,
         },
   });
+
+  const watchImages = watch('images');
+
+  useEffect(() => {
+    console.log('images: ', watchImages, 'default values: ', defaultValues);
+  }, [watchImages]);
 
   const title = initialData ? 'Edit products' : 'Create products';
   const description = initialData ? 'Edit a products' : 'Create a products';
@@ -135,8 +142,10 @@ export const ProductForm = ({
           render={({ field }) => (
             <UploadImage
               onChange={(urls) => {
+                console.log('onChange');
                 const formattedUrls = urls.map((u) => ({ url: u }));
                 field.onChange([...field.value, ...formattedUrls]);
+                console.log('field value: ', field.value);
               }}
               onRemove={(url) =>
                 field.onChange(field.value.filter((i) => i.url !== url))

@@ -6,6 +6,7 @@ import { EntityCellActions } from '@/shared/ui';
 export type BillboardColumn = {
   id: string;
   label: string;
+  product: string;
   createdAt: string;
 };
 
@@ -13,6 +14,10 @@ export const columns: ColumnDef<BillboardColumn>[] = [
   {
     accessorKey: 'label',
     header: 'Label',
+  },
+  {
+    accessorKey: 'product',
+    header: 'Product',
   },
   {
     accessorKey: 'createdAt',

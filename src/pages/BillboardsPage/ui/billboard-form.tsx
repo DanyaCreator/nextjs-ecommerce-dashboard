@@ -1,24 +1,28 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Billboard } from '@prisma/client';
+import { Billboard, Product } from '@prisma/client';
 import axios, { AxiosError } from 'axios';
 import { useParams, useRouter } from 'next/navigation';
-import { useTransition } from 'react';
+import { useEffect, useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { useToastStore } from '@/shared/model';
 import { EntityFormWrapper, UploadImage } from '@/shared/ui';
 import { RoundedButton } from '@/shared/ui/buttons';
-import { TextField } from '@/shared/ui/form-fields';
+import { SelectField, TextField } from '@/shared/ui/form-fields';
 import { BillboardFormSchema } from '../model';
 
 type BillboardFormProps = {
   initialData: Billboard | null;
+  products: Product[];
 };
 
-export const BillboardForm = ({ initialData }: BillboardFormProps) => {
+export const BillboardForm = ({
+  initialData,
+  products,
+}: BillboardFormProps) => {
   const router = useRouter();
   const params = useParams();
 
@@ -35,6 +39,7 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
     defaultValues: initialData || {
       label: '',
       imageUrl: '',
+      productId: '',
     },
   });
 
@@ -44,6 +49,15 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
   const successfully = initialData
     ? 'Billboard was updated!'
     : 'Billboard was created!';
+
+  const formattedProductItems = products.map((p) => ({
+    id: p.id,
+    value: p.name,
+  }));
+
+  useEffect(() => {
+    console.log('err: ', errors.imageUrl);
+  }, [errors.imageUrl]);
 
   const onSubmit = (data: z.infer<typeof BillboardFormSchema>) => {
     startTransition(async () => {
@@ -79,13 +93,21 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
           control={control}
           name='imageUrl'
           render={({ field }) => (
-            <UploadImage
-              onChange={(urls) => field.onChange(urls[0])}
-              onRemove={() => field.onChange('')}
-              value={field.value ? [field.value] : []}
-              disabled={isPending}
-              title='Billboard image'
-            />
+            <div>
+              <UploadImage
+                onChange={(urls) => {
+                  console.log('onChange');
+                  field.onChange(urls[0]);
+                }}
+                onRemove={() => field.onChange('')}
+                value={field.value ? [field.value] : []}
+                disabled={isPending}
+                title='Billboard image'
+              />
+              {errors.imageUrl && (
+                <span className='text-red-500'>{errors.imageUrl.message}</span>
+              )}
+            </div>
           )}
         />
         <Controller
@@ -96,7 +118,22 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
               label='Label'
               error={errors.label?.message}
               disabled={isPending}
-              defaultValue={initialData?.label}
+              // defaultValue={initialData?.label}
+              {...field}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name='productId'
+          render={({ field }) => (
+            <SelectField
+              items={formattedProductItems}
+              unselectedTitle='Select a product'
+              emptyListText='There are no one product yet...'
+              title='Billboard product'
+              error={errors.productId?.message}
+              disabled={isPending}
               {...field}
             />
           )}

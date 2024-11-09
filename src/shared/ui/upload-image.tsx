@@ -12,11 +12,11 @@ import { dmSans } from '@/shared/assets/fonts';
 import { RoundedButton } from '@/shared/ui/buttons';
 
 type UploadImageProps = {
-  disabled?: boolean;
   onChange: (value: string[]) => void;
   onRemove: (value: string) => void;
   value: string[];
   title: string;
+  disabled?: boolean;
 };
 
 export const UploadImage = ({
@@ -32,13 +32,14 @@ export const UploadImage = ({
   const [activeUrls, setActiveUrls] = useState<string[]>([]);
 
   useEffect(() => {
+    if (!isMounted) return;
+
     onChange(activeUrls);
-    // setActiveUrls([]);
   }, [activeUrls]);
 
-  useEffect(() => {
-    console.log('value: ', value);
-  }, [value]);
+  // useEffect(() => {
+  //   console.log('value: ', value);
+  // }, [value]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -52,12 +53,12 @@ export const UploadImage = ({
     )
       return;
 
-    // console.log('value onUpload: ', value);
+    console.log('upload images!');
+
     setActiveUrls([]);
     const url = result.info.secure_url;
 
     setActiveUrls((prevState) => [...prevState, url]);
-    // setUrls((prevState) => [...prevState, result.info.secure_url]);
   };
 
   if (!isMounted) return null;
@@ -83,10 +84,8 @@ export const UploadImage = ({
           </div>
         ))}
       </div>
-      {/*<button onClick={() => onUpload()}>click</button>*/}
       <CldUploadWidget
         onSuccess={(results) => {
-          // console.log('value: ', value);
           onUpload(results);
         }}
         uploadPreset='duqla6y4'>
@@ -132,9 +131,9 @@ export const Test = ({
     setIsMounted(true);
   }, []);
 
-  // useEffect(() => {
-  //   console.log('value in test: ', value);
-  // }, [value]);
+  useEffect(() => {
+    console.log('value in test: ', value);
+  }, [value]);
 
   const onUpdate = (url: string) => {
     onChange(url);
