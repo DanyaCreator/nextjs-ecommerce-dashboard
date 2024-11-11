@@ -1,13 +1,16 @@
 'use client';
 
+import { Category } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
+
+import { CategoryForm } from '@/entities/Category';
 import { EntityCellActions } from '@/shared/ui';
-import { CategoryForm } from '@/entities/Category/ui/categories-form';
 
 export type CategoryColumn = {
   id: string;
   name: string;
   createdAt: string;
+  initialData: Category;
 };
 
 export const columns: ColumnDef<CategoryColumn>[] = [
@@ -27,7 +30,7 @@ export const columns: ColumnDef<CategoryColumn>[] = [
         entityName='Category'
         entityEndpoint='categories'>
         <CategoryForm
-          initialData={null}
+          initialData={row.original.initialData}
           title={'Update category'}
           description={'Change the name of your category'}
         />

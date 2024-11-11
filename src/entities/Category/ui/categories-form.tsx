@@ -8,11 +8,11 @@ import { useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { dmSans } from '@/shared/assets/fonts';
 import { useModalWrapper, useToastStore } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { TextField } from '@/shared/ui/form-fields';
 import { CategoryFormSchema } from '../model';
-import { dmSans } from '@/shared/assets/fonts';
 
 type CategoryFormProps = {
   initialData: Category | null;
@@ -48,6 +48,7 @@ export const CategoryForm = ({
 
   const onClose = useModalWrapper((state) => state.onCloseUpdate);
   const onCloseMethod = useModalWrapper((state) => state.onCloseNewCategory);
+  // TODO general onClose for both functions
 
   const action = initialData ? 'Save changes' : 'Create category';
   const successfully = initialData
@@ -62,7 +63,7 @@ export const CategoryForm = ({
           await axios.post(`/api/${params?.storeId}/categories`, data);
         } else {
           await axios.patch(
-            `/api/${params?.storeId}/categories/${params?.categoryId}`,
+            `/api/${params?.storeId}/categories/${initialData.id}`,
             data
           );
         }
@@ -104,7 +105,7 @@ export const CategoryForm = ({
             />
           )}
         />
-        <RoundedButton text={action} type='submit' className={'mt-[30px]'} />
+        <RoundedButton text={action} disabled={isPending} type='submit' className={'mt-[30px]'} />
       </label>
     </form>
   );

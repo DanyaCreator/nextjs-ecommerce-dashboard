@@ -1,1 +1,1 @@
-export { CategoriesPage, CategoryForm } from './ui';
+export { CategoriesPage } from './ui';

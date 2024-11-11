@@ -47,6 +47,7 @@ export const CategoriesPage = async ({ storeId }: CategoriesPageProps) => {
     id: i.id,
     name: i.name,
     createdAt: format(i.createdAt, 'MMMM do, yyyy'),
+    initialData: i,
   }));
 
   return (

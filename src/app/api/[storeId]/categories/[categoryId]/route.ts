@@ -19,7 +19,7 @@ export async function PATCH(
       return new NextResponse('Name is required!', { status: 400 });
     }
 
-    if (!params.categoryId)
+    if (params.categoryId === 'undefined')
       return new NextResponse('Category id is required!', { status: 400 });
 
     const updatedCategory = await db.category.updateMany({

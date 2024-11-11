@@ -1,1 +1,1 @@
-export { CategoriesHeader } from './ui';
+export { CategoriesHeader, CategoryForm } from './ui';
