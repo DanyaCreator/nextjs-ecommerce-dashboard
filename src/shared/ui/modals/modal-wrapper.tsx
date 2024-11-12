@@ -3,18 +3,17 @@
 import { clsx } from 'clsx';
 import { ReactNode, useRef } from 'react';
 import { IoClose } from 'react-icons/io5';
-import { useOutsideAlerter, useModalWrapper } from '@/shared/model';
+import { useOutsideAlerter } from '@/shared/model';
 
-type CardWrapperProps = {
+type ModalWrapperProps = {
   children: ReactNode;
+  onClose: () => void;
 };
 
-export const ModalWrapper = ({ children }: CardWrapperProps) => {
-  const modalWrapperStore = useModalWrapper();
-
+export const ModalWrapper = ({ children, onClose }: ModalWrapperProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-  useOutsideAlerter(wrapperRef, modalWrapperStore.onClose);
+  useOutsideAlerter(wrapperRef, onClose);
 
   return (
     <div
@@ -29,7 +28,7 @@ export const ModalWrapper = ({ children }: CardWrapperProps) => {
           'p-8 flex justify-center items-center'
         )}>
         <button
-          onClick={modalWrapperStore.onClose}
+          onClick={onClose}
           className={'absolute right-[5px] top-[5px] p-3'}>
           <IoClose className={'w-[20px] h-[20px]'} />
         </button>

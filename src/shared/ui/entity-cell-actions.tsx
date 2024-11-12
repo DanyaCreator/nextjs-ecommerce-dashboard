@@ -5,7 +5,7 @@ import { Copy, Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 
-import { useModalWrapper, useToastStore } from '@/shared/model';
+import { useModalEntityForm, useToastStore } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { AlertModal } from '@/shared/ui/modals';
 import {
@@ -28,7 +28,7 @@ export const EntityCellActions = ({
   entityEndpoint,
   entityInitialData,
 }: EntityCellActionsProps) => {
-  const modalOnOpen = useModalWrapper((state) => state.onOpen);
+  const modalOnOpen = useModalEntityForm((state) => state.onOpen);
 
   const toastStore = useToastStore();
 
@@ -58,6 +58,7 @@ export const EntityCellActions = ({
 
         toastStore.onOpen(`${entityName} was deleted!`, 'success');
 
+        setOpen(false);
         router.refresh();
       } catch (error) {
         if (error instanceof AxiosError) {

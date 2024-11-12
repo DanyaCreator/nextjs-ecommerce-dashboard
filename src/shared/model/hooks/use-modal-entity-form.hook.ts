@@ -8,7 +8,7 @@ interface useModalEntityFormStore {
   onClose: () => void;
 }
 
-export const useModalWrapper = create<useModalEntityFormStore>((set) => ({
+export const useModalEntityForm = create<useModalEntityFormStore>((set) => ({
   isOpen: false,
   initialData: undefined,
 

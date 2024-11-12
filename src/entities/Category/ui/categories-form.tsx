@@ -9,7 +9,7 @@ import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { dmSans } from '@/shared/assets/fonts';
-import { useModalWrapper, useToastStore } from '@/shared/model';
+import { useModalEntityForm, useToastStore } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { TextField } from '@/shared/ui/form-fields';
 import { CategoryFormSchema } from '../model';
@@ -43,7 +43,7 @@ export const CategoryForm = ({
     },
   });
 
-  const onClose = useModalWrapper((state) => state.onClose);
+  const onClose = useModalEntityForm((state) => state.onClose);
 
   const action = initialData ? 'Save changes' : 'Create category';
   const successfully = initialData
