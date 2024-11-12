@@ -1,23 +1,17 @@
 import { create } from 'zustand';
 
-interface useModalWrapperStore {
-  isOpenNewCategory: boolean;
-  isOpenUpdate: boolean;
+interface useModalEntityFormStore {
+  isOpen: boolean;
+  initialData?: unknown;
 
-  onOpenNewCategory: () => void;
-  onCloseNewCategory: () => void;
-
-  onOpenUpdate: () => void;
-  onCloseUpdate: () => void;
+  onOpen: (initialData?: unknown) => void;
+  onClose: () => void;
 }
 
-export const useModalWrapper = create<useModalWrapperStore>((set) => ({
-  isOpenNewCategory: false,
-  isOpenUpdate: false,
+export const useModalWrapper = create<useModalEntityFormStore>((set) => ({
+  isOpen: false,
+  initialData: undefined,
 
-  onOpenNewCategory: () => set({ isOpenNewCategory: true }),
-  onCloseNewCategory: () => set({ isOpenNewCategory: false }),
-
-  onOpenUpdate: () => set({ isOpenUpdate: true }),
-  onCloseUpdate: () => set({ isOpenUpdate: false }),
+  onOpen: (initialData?: unknown) => set({ isOpen: true, initialData }),
+  onClose: () => set({ isOpen: false, initialData: undefined }),
 }));

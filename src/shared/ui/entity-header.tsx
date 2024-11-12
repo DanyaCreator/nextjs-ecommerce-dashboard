@@ -3,10 +3,10 @@
 import { Plus } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 
-import { useModalWrapper } from '@/shared/model';
 import { dmSans } from '@/shared/assets/fonts';
+import { useModalWrapper } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
-import { ModalWrapper } from '@/shared/ui/modals/modal-wrapper';
+import { ModalWrapper } from '@/shared/ui/modals';
 
 type EntityHeaderProps = {
   entityName: string;
@@ -19,10 +19,8 @@ export const EntityHeader = ({
   entityCount,
   children,
 }: EntityHeaderProps) => {
-  const modalWrapperStore = useModalWrapper();
-
-  const modalIsOpen = useModalWrapper((state) => state.isOpenNewCategory);
-  const modalOnOpen = () => modalWrapperStore.onOpenNewCategory();
+  const modalIsOpen = useModalWrapper((state) => state.isOpen);
+  const modalOnOpen = useModalWrapper((state) => state.onOpen);
 
   const [btnHovered, setBtnHovered] = useState(false);
 
@@ -40,7 +38,7 @@ export const EntityHeader = ({
       <RoundedButton
         onMouseEnter={() => setBtnHovered(true)}
         onMouseLeave={() => setBtnHovered(false)}
-        onClick={modalOnOpen}>
+        onClick={() => modalOnOpen()}>
         <Plus className='mr-2 w-4 h-4' color={btnHovered ? '#000' : '#fff'} />
         Add new
       </RoundedButton>

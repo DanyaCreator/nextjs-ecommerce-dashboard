@@ -12,14 +12,9 @@ type CardWrapperProps = {
 export const ModalWrapper = ({ children }: CardWrapperProps) => {
   const modalWrapperStore = useModalWrapper();
 
-  const onClose = () => {
-    modalWrapperStore.onCloseNewCategory();
-    modalWrapperStore.onCloseUpdate();
-  };
-
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-  useOutsideAlerter(wrapperRef, onClose);
+  useOutsideAlerter(wrapperRef, modalWrapperStore.onClose);
 
   return (
     <div
@@ -34,7 +29,7 @@ export const ModalWrapper = ({ children }: CardWrapperProps) => {
           'p-8 flex justify-center items-center'
         )}>
         <button
-          onClick={onClose}
+          onClick={modalWrapperStore.onClose}
           className={'absolute right-[5px] top-[5px] p-3'}>
           <IoClose className={'w-[20px] h-[20px]'} />
         </button>

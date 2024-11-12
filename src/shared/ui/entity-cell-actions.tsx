@@ -3,7 +3,7 @@
 import axios, { AxiosError } from 'axios';
 import { Copy, Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import { ReactNode, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 
 import { useModalWrapper, useToastStore } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
@@ -14,25 +14,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/shared/ui/shadcn';
-import { ModalWrapper } from '@/shared/ui/modals/modal-wrapper';
 
 type EntityCellActionsProps = {
   entityName: string;
   entityId: string;
   entityEndpoint: string;
-  children: ReactNode;
+  entityInitialData: unknown;
 };
 
 export const EntityCellActions = ({
   entityName,
   entityId,
   entityEndpoint,
-  children,
+  entityInitialData,
 }: EntityCellActionsProps) => {
-  const modalWrapperStore = useModalWrapper();
-
-  const modalIsOpen = useModalWrapper((state) => state.isOpenUpdate);
-  const modalOnOpen = () => modalWrapperStore.onOpenUpdate();
+  const modalOnOpen = useModalWrapper((state) => state.onOpen);
 
   const toastStore = useToastStore();
 
@@ -74,7 +70,6 @@ export const EntityCellActions = ({
 
   return (
     <>
-      {modalIsOpen && <ModalWrapper>{children}</ModalWrapper>}
       <DropdownMenu>
         <AlertModal
           isOpen={open}
@@ -101,7 +96,9 @@ export const EntityCellActions = ({
             <Copy className='mr-2 w-4 h-4' />
             Copy id
           </DropdownMenuItem>
-          <DropdownMenuItem className='cursor-pointer' onClick={modalOnOpen}>
+          <DropdownMenuItem
+            className='cursor-pointer'
+            onClick={() => modalOnOpen(entityInitialData)}>
             <Edit className='mr-2 w-4 h-4' />
             Update
           </DropdownMenuItem>

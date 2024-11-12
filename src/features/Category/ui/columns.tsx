@@ -3,7 +3,6 @@
 import { Category } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
 
-import { CategoryForm } from '@/entities/Category';
 import { EntityCellActions } from '@/shared/ui';
 
 export type CategoryColumn = {
@@ -28,13 +27,9 @@ export const columns: ColumnDef<CategoryColumn>[] = [
       <EntityCellActions
         entityId={row.original.id}
         entityName='Category'
-        entityEndpoint='categories'>
-        <CategoryForm
-          initialData={row.original.initialData}
-          title={'Update category'}
-          description={'Change the name of your category'}
-        />
-      </EntityCellActions>
+        entityEndpoint='categories'
+        entityInitialData={row.original.initialData}
+      />
     ),
   },
 ];

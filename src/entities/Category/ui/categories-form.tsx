@@ -40,15 +40,10 @@ export const CategoryForm = ({
     resolver: zodResolver(CategoryFormSchema),
     defaultValues: initialData || {
       name: '',
-      // billboardId: '',
     },
   });
 
-  // const watchBillboardIdField = watch('billboardId');
-
-  const onClose = useModalWrapper((state) => state.onCloseUpdate);
-  const onCloseMethod = useModalWrapper((state) => state.onCloseNewCategory);
-  // TODO general onClose for both functions
+  const onClose = useModalWrapper((state) => state.onClose);
 
   const action = initialData ? 'Save changes' : 'Create category';
   const successfully = initialData
@@ -71,7 +66,6 @@ export const CategoryForm = ({
         toastStore.onOpen(successfully, 'success');
 
         onClose();
-        onCloseMethod();
 
         router.refresh();
       } catch (error) {
@@ -105,7 +99,12 @@ export const CategoryForm = ({
             />
           )}
         />
-        <RoundedButton text={action} disabled={isPending} type='submit' className={'mt-[30px]'} />
+        <RoundedButton
+          text={action}
+          disabled={isPending}
+          type='submit'
+          className={'mt-[30px]'}
+        />
       </label>
     </form>
   );
