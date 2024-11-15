@@ -64,13 +64,13 @@ export const UploadImage = ({
   if (!isMounted) return null;
 
   return (
-    <div className='mb-4 flex flex-col items-start gap-4'>
+    <div className='mb-4 flex flex-col items-start gap-2'>
       <span className={`${dmSans.className} text-h5 text-black`}>{title}</span>
       <div className='flex gap-4'>
         {value.map((url) => (
           <div
             key={url}
-            className='relative w-[200px] h-[200px] rounded-md overflow-hidden'>
+            className='relative w-[130px] h-[130px] rounded-md overflow-hidden'>
             <div className='z-10 absolute top-2 right-2'>
               <RoundedButton
                 type='button'
@@ -80,7 +80,7 @@ export const UploadImage = ({
                 <Trash className='h-4 w-4' color='#fff' />
               </RoundedButton>
             </div>
-            <Image fill className='object-cover' src={url} alt='Image' />
+            <Image className='object-cover' src={url} alt='Image' width={130} height={130}/>
           </div>
         ))}
       </div>

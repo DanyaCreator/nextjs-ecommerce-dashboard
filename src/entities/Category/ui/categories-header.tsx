@@ -25,7 +25,7 @@ export const CategoriesHeader = ({ categoriesCount }: CategoryHeaderProps) => {
   return (
     <>
       {isModalOpen && (
-        <ModalWrapper onClose={onModalClose}>
+        <ModalWrapper onClose={onModalClose} isOpen={isModalOpen}>
           <CategoryForm
             initialData={modalInitialData as Category}
             title={title}
@@ -39,12 +39,5 @@ export const CategoriesHeader = ({ categoriesCount }: CategoryHeaderProps) => {
         onCreate={() => onModalOpen()}
       />
     </>
-    // <EntityHeader entityName='categories' entityCount={categoriesCount}>
-    //   <CategoryForm
-    //     initialData={modalInitialData as Category}
-    //     title={title}
-    //     description={description}
-    //   />
-    // </EntityHeader>
   );
 };

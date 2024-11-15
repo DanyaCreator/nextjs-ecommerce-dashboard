@@ -9,6 +9,7 @@ import { FieldError } from '@/shared/ui/errors';
 
 type TextFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
+  title: string;
   error?: string;
   disabled?: boolean;
   className?: string;
@@ -16,13 +17,14 @@ type TextFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 
 export const TextField = forwardRef(
   (
-    { label, disabled, error, className, ...props }: TextFieldProps,
+    { label, title, disabled, error, className, ...props }: TextFieldProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
     return (
       <div className={clsx('flex flex-col gap-2 w-96', className)}>
+        <span className={`text-[16px] ${dmSans.className}`}>{title}</span>
         <div className='relative flex flex-col'>
           <input
             {...props}

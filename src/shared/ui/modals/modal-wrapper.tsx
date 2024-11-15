@@ -3,29 +3,36 @@
 import { clsx } from 'clsx';
 import { ReactNode, useRef } from 'react';
 import { IoClose } from 'react-icons/io5';
-import { useOutsideAlerter } from '@/shared/model';
+import { useLockedBody, useOutsideAlerter } from '@/shared/model';
 
 type ModalWrapperProps = {
-  children: ReactNode;
+  isOpen: boolean;
   onClose: () => void;
+  children: ReactNode;
 };
 
-export const ModalWrapper = ({ children, onClose }: ModalWrapperProps) => {
+export const ModalWrapper = ({
+  isOpen,
+  onClose,
+  children,
+}: ModalWrapperProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useOutsideAlerter(wrapperRef, onClose);
+  useLockedBody(isOpen);
 
   return (
     <div
-      className={
-        'w-full h-full bg-black bg-opacity-80 z-[90] fixed top-0 right-0'
-      }>
+      className={clsx(
+        'w-full h-full bg-black bg-opacity-80',
+        'fixed top-0 right-0 z-[90]'
+      )}>
       <section
         ref={wrapperRef}
         className={clsx(
-          'w-[400px] max-h-[60vh] bg-white rounded-2xl',
+          'flex justify-center max-h-[70vh] rounded-2xl bg-white',
           'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ',
-          'p-8 flex justify-center items-center'
+          'p-8 overflow-hidden'
         )}>
         <button
           onClick={onClose}
