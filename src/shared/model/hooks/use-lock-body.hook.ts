@@ -14,8 +14,6 @@ export function useLockedBody(locked = false) {
 
     document.body.style.overflow = 'hidden';
 
-    document.querySelector('div').style.overflow = 'hidden';
-
     return () => {
       document.body.style.overflow = originalOverflow;
 

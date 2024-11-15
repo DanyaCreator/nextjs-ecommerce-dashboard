@@ -4,8 +4,8 @@ import { Category } from '@prisma/client';
 
 import { useModalEntityForm } from '@/shared/model';
 import { EntityHeader } from '@/shared/ui';
-import { CategoryForm } from './categories-form';
 import { ModalWrapper } from '@/shared/ui/modals';
+import { CategoryForm } from './categories-form';
 
 type CategoryHeaderProps = {
   categoriesCount: number;
