@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Category } from '@prisma/client';
 import axios, { AxiosError } from 'axios';
 import { useParams, useRouter } from 'next/navigation';
-import { useTransition } from 'react';
+import { useEffect, useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -18,12 +18,14 @@ type CategoryFormProps = {
   initialData: Category | null;
   title: string;
   description: string;
+  setLoading: (value: boolean) => void;
 };
 
 export const CategoryForm = ({
   initialData,
   title,
   description,
+  setLoading,
 }: CategoryFormProps) => {
   const router = useRouter();
   const params = useParams();
@@ -31,6 +33,11 @@ export const CategoryForm = ({
   const toastStore = useToastStore();
 
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (!isPending) setLoading(false);
+    else setLoading(true);
+  }, [isPending]);
 
   const {
     control,

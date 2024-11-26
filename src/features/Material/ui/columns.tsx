@@ -1,12 +1,15 @@
 'use client';
 
+import { Material } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
+
 import { EntityCellActions } from '@/shared/ui';
 
 export type MaterialColumn = {
   id: string;
   value: string;
   createdAt: string;
+  initialData: Material;
 };
 
 export const columns: ColumnDef<MaterialColumn>[] = [
@@ -25,6 +28,7 @@ export const columns: ColumnDef<MaterialColumn>[] = [
         entityId={row.original.id}
         entityName='Material'
         entityEndpoint='materials'
+        entityInitialData={row.original.initialData}
       />
     ),
   },

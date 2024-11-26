@@ -46,18 +46,26 @@ export const BillboardsPage = async ({ storeId }: BillboardsPageProps) => {
     orderBy: { createdAt: 'desc' },
   });
 
+  const products = await db.product.findMany({
+    where: { storeId },
+  });
+
   const formattedBillboardItems: BillboardColumn[] = billboards.map((i) => ({
     id: i.id,
     label: i.label,
     product: i.product.name,
     createdAt: format(i.createdAt, 'MMMM do, yyyy'),
+    initialData: i,
   }));
 
   return (
     <main className='container h-[80%] py-10 bg-white rounded-b-xl overflow-hidden'>
       <div className='h-full overflow-auto px-3'>
         <section className='flex-1'>
-          <BillboardsHeader billboardsCount={billboards.length} />
+          <BillboardsHeader
+            billboardsCount={billboards.length}
+            products={products}
+          />
         </section>
         <section className='mt-6'>
           <BillboardsTable data={formattedBillboardItems} />

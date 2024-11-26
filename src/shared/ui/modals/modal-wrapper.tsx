@@ -9,16 +9,18 @@ type ModalWrapperProps = {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
+  loading?: boolean;
 };
 
 export const ModalWrapper = ({
   isOpen,
   onClose,
   children,
+  loading,
 }: ModalWrapperProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-  useOutsideAlerter(wrapperRef, onClose);
+  useOutsideAlerter(wrapperRef, onClose, loading);
   useLockedBody(isOpen);
 
   return (
@@ -32,7 +34,7 @@ export const ModalWrapper = ({
         className={clsx(
           'flex justify-center max-h-[70vh] rounded-2xl bg-white',
           'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ',
-          'p-8 overflow-hidden'
+          'p-8'
         )}>
         <button
           onClick={onClose}

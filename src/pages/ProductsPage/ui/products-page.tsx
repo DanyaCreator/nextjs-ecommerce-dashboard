@@ -41,7 +41,7 @@ const apiCalls: ApiData[] = [
 export const ProductsPage = async ({ storeId }: ProductsPageProps) => {
   const products = await db.product.findMany({
     where: { storeId },
-    include: { billboard: true, category: true, size: true, material: true },
+    include: { billboard: true, category: true, size: true, material: true, images: true },
     orderBy: { createdAt: 'desc' },
   });
 
@@ -53,16 +53,34 @@ export const ProductsPage = async ({ storeId }: ProductsPageProps) => {
     isPinnedOnBillboard: !!i.billboard,
     price: formatter.format(i.price.toNumber()),
     category: i.category.name,
-    size: i.size.value,
+    size: i.size.value.toString(),
     material: i.material.value,
     createdAt: format(i.createdAt, 'MMMM do, yyyy'),
+    initialData: i,
   }));
+
+  const categories = await db.category.findMany({
+    where: { storeId },
+  });
+
+  const sizes = await db.size.findMany({
+    where: { storeId },
+  });
+
+  const materials = await db.material.findMany({
+    where: { storeId },
+  });
 
   return (
     <main className='container h-[80%] py-10 bg-white rounded-b-xl overflow-hidden'>
       <div className='h-full overflow-auto px-3'>
         <section className='flex-1'>
-          <ProductsHeader productsCount={products.length} />
+          <ProductsHeader
+            productsCount={products.length}
+            categories={categories}
+            materials={materials}
+            sizes={sizes}
+          />
         </section>
         <section className='mt-6'>
           <ProductsTable data={formattedProductItems} />

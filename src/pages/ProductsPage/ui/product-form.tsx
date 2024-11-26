@@ -47,8 +47,7 @@ export const ProductForm = ({
   const {
     control,
     handleSubmit,
-    watch,
-    formState: { errors, defaultValues },
+    formState: { errors },
   } = useForm<z.infer<typeof ProductFormSchema>>({
     resolver: zodResolver(ProductFormSchema),
     defaultValues: initialData
@@ -70,12 +69,6 @@ export const ProductForm = ({
           isArchived: false,
         },
   });
-
-  const watchImages = watch('images');
-
-  useEffect(() => {
-    console.log('images: ', watchImages, 'default values: ', defaultValues);
-  }, [watchImages]);
 
   const title = initialData ? 'Edit products' : 'Create products';
   const description = initialData ? 'Edit a products' : 'Create a products';
@@ -105,7 +98,7 @@ export const ProductForm = ({
           await axios.post(`/api/${params?.storeId}/products`, data);
         } else {
           await axios.patch(
-            `/api/${params?.storeId}/products/${params?.productId}`,
+            `/api/${params?.storeId}/products/${initialData.id}`,
             data
           );
         }
@@ -142,10 +135,8 @@ export const ProductForm = ({
           render={({ field }) => (
             <UploadImage
               onChange={(urls) => {
-                console.log('onChange');
                 const formattedUrls = urls.map((u) => ({ url: u }));
                 field.onChange([...field.value, ...formattedUrls]);
-                console.log('field value: ', field.value);
               }}
               onRemove={(url) =>
                 field.onChange(field.value.filter((i) => i.url !== url))
@@ -156,131 +147,124 @@ export const ProductForm = ({
             />
           )}
         />
-        <div className='flex gap-40 w-full'>
-          <div className='flex flex-col gap-6'>
-            <Controller
-              control={control}
-              name='name'
-              render={({ field }) => (
-                <TextField
-                  label='Product name'
-                  error={errors.name?.message}
-                  disabled={isPending}
-                  {...field}
-                />
-              )}
+
+        <Controller
+          control={control}
+          name='name'
+          render={({ field }) => (
+            <TextField
+              label='Product name'
+              error={errors.name?.message}
+              disabled={isPending}
+              {...field}
             />
-            <Controller
-              control={control}
-              name='price'
-              render={({ field }) => (
-                <TextField
-                  type='number'
-                  label='Product price'
-                  error={errors.price?.message}
-                  disabled={isPending}
-                  {...field}
-                />
-              )}
+          )}
+        />
+        <Controller
+          control={control}
+          name='price'
+          render={({ field }) => (
+            <TextField
+              type='number'
+              label='Product price'
+              error={errors.price?.message}
+              disabled={isPending}
+              {...field}
             />
-            <Controller
-              control={control}
-              name='weight'
-              render={({ field }) => (
-                <TextField
-                  type='number'
-                  label='Product weight'
-                  error={errors.weight?.message}
-                  disabled={isPending}
-                  {...field}
-                />
-              )}
+          )}
+        />
+        <Controller
+          control={control}
+          name='weight'
+          render={({ field }) => (
+            <TextField
+              type='number'
+              label='Product weight'
+              error={errors.weight?.message}
+              disabled={isPending}
+              {...field}
             />
-            <Controller
-              control={control}
-              name='description'
-              render={({ field }) => (
-                <TextareaField
-                  label='Description'
-                  error={errors.description?.message}
-                  disabled={isPending}
-                  {...field}
-                />
-              )}
+          )}
+        />
+        <Controller
+          control={control}
+          name='description'
+          render={({ field }) => (
+            <TextareaField
+              label='Description'
+              error={errors.description?.message}
+              disabled={isPending}
+              {...field}
             />
-            <div className='flex gap-4'>
-              <Controller
-                control={control}
-                name='isFeatured'
-                render={({ field }) => (
-                  <CheckboxField
-                    label='Is featured'
-                    disabled={isPending}
-                    {...field}
-                  />
-                )}
-              />
-              <Controller
-                control={control}
-                name='isArchived'
-                render={({ field }) => (
-                  <CheckboxField
-                    label='Is archived'
-                    disabled={isPending}
-                    {...field}
-                  />
-                )}
-              />
-            </div>
-          </div>
-          <div className='w-full flex justify-between'>
-            <Controller
-              control={control}
-              name='categoryId'
-              render={({ field }) => (
-                <SelectField
-                  title='Product category'
-                  items={categoriesFormattedItems}
-                  unselectedTitle='Select a category'
-                  emptyListText='There are now any categories'
-                  error={errors.categoryId?.message}
-                  disabled={isPending}
-                  {...field}
-                />
-              )}
+          )}
+        />
+        <Controller
+          control={control}
+          name='isFeatured'
+          render={({ field }) => (
+            <CheckboxField
+              label='Is featured'
+              disabled={isPending}
+              {...field}
             />
-            <Controller
-              control={control}
-              name='sizeId'
-              render={({ field }) => (
-                <SelectField
-                  items={sizesFormattedItems}
-                  unselectedTitle='Select a size'
-                  emptyListText='There are no one size!'
-                  title='Product size'
-                  error={errors.sizeId?.message}
-                  disabled={isPending}
-                  {...field}
-                />
-              )}
+          )}
+        />
+        <Controller
+          control={control}
+          name='isArchived'
+          render={({ field }) => (
+            <CheckboxField
+              label='Is archived'
+              disabled={isPending}
+              {...field}
             />
-            <Controller
-              control={control}
-              name='materialId'
-              render={({ field }) => (
-                <SelectField
-                  items={materialsFormattedItems}
-                  unselectedTitle='Select a material'
-                  emptyListText='There are no one material'
-                  title='Product material'
-                  error={errors.materialId?.message}
-                  disabled={isPending}
-                  {...field}
-                />
-              )}
+          )}
+        />
+        <Controller
+          control={control}
+          name='categoryId'
+          render={({ field }) => (
+            <SelectField
+              title='Product category'
+              items={categoriesFormattedItems}
+              unselectedTitle='Select a category'
+              emptyListText='There are now any categories'
+              error={errors.categoryId?.message}
+              disabled={isPending}
+              {...field}
             />
-          </div>
-        </div>
+          )}
+        />
+        <Controller
+          control={control}
+          name='sizeId'
+          render={({ field }) => (
+            <SelectField
+              items={sizesFormattedItems}
+              unselectedTitle='Select a size'
+              emptyListText='There are no one size!'
+              title='Product size'
+              error={errors.sizeId?.message}
+              disabled={isPending}
+              {...field}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name='materialId'
+          render={({ field }) => (
+            <SelectField
+              items={materialsFormattedItems}
+              unselectedTitle='Select a material'
+              emptyListText='There are no one material'
+              title='Product material'
+              error={errors.materialId?.message}
+              disabled={isPending}
+              {...field}
+            />
+          )}
+        />
 
         {/*<div>*/}
         {/*  <TextInput*/}

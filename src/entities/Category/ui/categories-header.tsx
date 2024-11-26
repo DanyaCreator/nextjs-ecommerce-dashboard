@@ -1,6 +1,7 @@
 'use client';
 
 import { Category } from '@prisma/client';
+import { useState } from 'react';
 
 import { useModalEntityForm } from '@/shared/model';
 import { EntityHeader } from '@/shared/ui';
@@ -17,6 +18,8 @@ export const CategoriesHeader = ({ categoriesCount }: CategoryHeaderProps) => {
   const onModalOpen = useModalEntityForm((state) => state.onOpen);
   const onModalClose = useModalEntityForm((state) => state.onClose);
 
+  const [loading, setLoading] = useState(false);
+
   const title = modalInitialData ? 'Update a category' : 'Create a category';
   const description = modalInitialData
     ? 'Change the name of your category'
@@ -25,11 +28,15 @@ export const CategoriesHeader = ({ categoriesCount }: CategoryHeaderProps) => {
   return (
     <>
       {isModalOpen && (
-        <ModalWrapper onClose={onModalClose} isOpen={isModalOpen}>
+        <ModalWrapper
+          onClose={onModalClose}
+          isOpen={isModalOpen}
+          loading={loading}>
           <CategoryForm
             initialData={modalInitialData as Category}
             title={title}
             description={description}
+            setLoading={setLoading}
           />
         </ModalWrapper>
       )}

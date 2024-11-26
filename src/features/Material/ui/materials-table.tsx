@@ -6,5 +6,5 @@ type MaterialsTableProps = {
 };
 
 export const MaterialsTable = ({ data }: MaterialsTableProps) => {
-  return <DataTable searchKey='name' columns={columns} data={data} />;
+  return <DataTable searchKey='value' columns={columns} data={data} />;
 };

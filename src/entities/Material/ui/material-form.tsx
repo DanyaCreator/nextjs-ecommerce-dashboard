@@ -4,30 +4,41 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Material } from '@prisma/client';
 import axios, { AxiosError } from 'axios';
 import { useParams, useRouter } from 'next/navigation';
-import { useTransition } from 'react';
+import { useEffect, useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { useToastStore } from '@/shared/model';
-import { EntityFormWrapper } from '@/shared/ui';
+import { dmSans } from '@/shared/assets/fonts';
+import { useModalEntityForm, useToastStore } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { TextField } from '@/shared/ui/form-fields';
 import { MaterialsFormSchema } from '../model';
-import { dmSans } from '@/shared/assets/fonts';
 
 type MaterialFormProps = {
   initialData: Material | null;
   title: string;
   description: string;
+  setLoading: (value: boolean) => void;
 };
 
-export const MaterialForm = ({ initialData, title, description }: MaterialFormProps) => {
+export const MaterialForm = ({
+  initialData,
+  title,
+  description,
+  setLoading,
+}: MaterialFormProps) => {
   const router = useRouter();
   const params = useParams();
 
   const toastStore = useToastStore();
 
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    setLoading(isPending);
+  }, [isPending]);
+
+  const modalOnClose = useModalEntityForm((state) => state.onClose);
 
   const {
     control,
@@ -39,9 +50,6 @@ export const MaterialForm = ({ initialData, title, description }: MaterialFormPr
       value: '',
     },
   });
-
-  /* const title = initialData ? 'Edit material' : 'Create material';
-   const description = initialData ? 'Edit a material' : 'Create a material';*/
 
   const action = initialData ? 'Save changes' : 'Create material';
   const successfully = initialData
@@ -55,7 +63,7 @@ export const MaterialForm = ({ initialData, title, description }: MaterialFormPr
           await axios.post(`/api/${params?.storeId}/materials`, data);
         } else {
           await axios.patch(
-            `/api/${params?.storeId}/materials/${params?.materialId}`,
+            `/api/${params?.storeId}/materials/${initialData.id}`,
             data
           );
         }
@@ -64,6 +72,8 @@ export const MaterialForm = ({ initialData, title, description }: MaterialFormPr
 
         router.push(`/${params?.storeId}/materials`);
         router.refresh();
+
+        modalOnClose();
       } catch (error) {
         if (error instanceof AxiosError) {
           console.log(error);

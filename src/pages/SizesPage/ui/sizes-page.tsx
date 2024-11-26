@@ -44,18 +44,24 @@ export const SizesPage = async ({ storeId }: SizesPageProps) => {
     orderBy: { createdAt: 'desc' },
   });
 
+  const categories = await db.category.findMany({
+    where: { storeId },
+    orderBy: { createdAt: 'desc' },
+  });
+
   const formattedSizeItems: SizeColumn[] = sizes.map((i) => ({
     id: i.id,
     value: i.value.toString(),
     category: i.category.name,
     createdAt: format(i.createdAt, 'MMMM do, yyyy'),
+    initialData: i,
   }));
 
   return (
     <main className='container h-[80%] py-10 bg-white rounded-b-xl'>
       <div className='h-full overflow-auto px-3'>
         <section className='flex-1'>
-          <SizesHeader sizesCount={sizes.length} />
+          <SizesHeader sizesCount={sizes.length} categories={categories} />
         </section>
         <section className='mt-6'>
           <SizesTable data={formattedSizeItems} />

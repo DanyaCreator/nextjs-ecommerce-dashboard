@@ -4,22 +4,22 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Category, Size } from '@prisma/client';
 import axios, { AxiosError } from 'axios';
 import { useParams, useRouter } from 'next/navigation';
-import { useTransition } from 'react';
+import { useEffect, useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { useToastStore } from '@/shared/model';
-import { EntityFormWrapper } from '@/shared/ui';
+import { dmSans } from '@/shared/assets/fonts';
+import { useModalEntityForm, useToastStore } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { SelectField, TextField } from '@/shared/ui/form-fields';
 import { SizesFormSchema } from '../model';
-import { dmSans } from '@/shared/assets/fonts';
 
 type SizeFormProps = {
   initialData: Size | null;
   categories: Category[];
   title: string;
   description: string;
+  setLoading: (value: boolean) => void;
 };
 
 export const SizeForm = ({
@@ -27,6 +27,7 @@ export const SizeForm = ({
   categories,
   title,
   description,
+  setLoading,
 }: SizeFormProps) => {
   const router = useRouter();
   const params = useParams();
@@ -34,6 +35,12 @@ export const SizeForm = ({
   const toastStore = useToastStore();
 
   const [isPending, startTransition] = useTransition();
+
+  const modalOnClose = useModalEntityForm((state) => state.onClose);
+
+  useEffect(() => {
+    setLoading(isPending);
+  }, [isPending]);
 
   const {
     control,
@@ -71,7 +78,7 @@ export const SizeForm = ({
           await axios.post(`/api/${params?.storeId}/sizes`, data);
         } else {
           await axios.patch(
-            `/api/${params?.storeId}/sizes/${params?.sizeId}`,
+            `/api/${params?.storeId}/sizes/${initialData.id}`,
             data
           );
         }
@@ -80,6 +87,8 @@ export const SizeForm = ({
 
         router.push(`/${params?.storeId}/sizes`);
         router.refresh();
+
+        modalOnClose();
       } catch (error) {
         if (error instanceof AxiosError) {
           console.log(error);
@@ -97,7 +106,7 @@ export const SizeForm = ({
         <h3 className={`${dmSans.className}`}>{title}</h3>
         <h4 className={`${dmSans.className} text-dark-gray`}>{description}</h4>
       </div>
-      <label className='flex flex-col mt-[50px]'>
+      <label className='flex flex-col gap-4 mt-[50px]'>
         <Controller
           control={control}
           name='value'
@@ -128,7 +137,12 @@ export const SizeForm = ({
             />
           )}
         />
-        <RoundedButton text={action} className='mt-16' type='submit' />
+        <RoundedButton
+          text={action}
+          className='mt-16'
+          type='submit'
+          disabled={isPending}
+        />
       </label>
     </form>
   );

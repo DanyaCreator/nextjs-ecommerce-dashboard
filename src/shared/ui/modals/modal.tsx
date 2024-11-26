@@ -26,7 +26,7 @@ export const Modal = ({
   children,
 }: ModalProps) => {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose} >
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <Logo className='w-full text-center' />
         <DialogHeader>

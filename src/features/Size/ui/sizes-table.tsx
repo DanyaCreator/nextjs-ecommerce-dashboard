@@ -6,5 +6,5 @@ type SizesTableProps = {
 };
 
 export const SizesTable = ({ data }: SizesTableProps) => {
-  return <DataTable searchKey='name' columns={columns} data={data} />;
+  return <DataTable searchKey='value' columns={columns} data={data} />;
 };

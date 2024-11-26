@@ -47,6 +47,7 @@ export const MaterialsPage = async ({ storeId }: MaterialsPageProps) => {
     id: i.id,
     value: i.value,
     createdAt: format(i.createdAt, 'MMMM do, yyyy'),
+    initialData: i,
   }));
 
   return (

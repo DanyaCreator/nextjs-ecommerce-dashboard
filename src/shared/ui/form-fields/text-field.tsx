@@ -9,7 +9,7 @@ import { FieldError } from '@/shared/ui/errors';
 
 type TextFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
-  title: string;
+  title?: string;
   error?: string;
   disabled?: boolean;
   className?: string;
@@ -24,7 +24,9 @@ export const TextField = forwardRef(
 
     return (
       <div className={clsx('flex flex-col gap-2 w-96', className)}>
-        <span className={`text-[16px] ${dmSans.className}`}>{title}</span>
+        {title && (
+          <span className={`text-[16px] ${dmSans.className}`}>{title}</span>
+        )}
         <div className='relative flex flex-col'>
           <input
             {...props}

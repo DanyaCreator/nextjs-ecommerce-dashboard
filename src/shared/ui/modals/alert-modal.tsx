@@ -24,6 +24,12 @@ export const AlertModal = ({
     setIsMounted(true);
   }, []);
 
+  const handleClose = () => {
+    if (loading) return;
+
+    onClose();
+  };
+
   if (!isMounted) return null;
 
   return (
@@ -31,7 +37,7 @@ export const AlertModal = ({
       title='Are you sure?'
       description='This action cannot be undone.'
       isOpen={isOpen}
-      onClose={onClose}>
+      onClose={handleClose}>
       <div className='flex mt-16 gap-4 justify-end'>
         <RoundedButton text='Cancel' disabled={loading} onClick={onClose} />
         <RoundedButton

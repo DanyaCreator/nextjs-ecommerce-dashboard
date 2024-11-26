@@ -1,6 +1,8 @@
 'use client';
 
+import { Product } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
+
 import { EntityCellActions } from '@/shared/ui';
 
 export type ProductColumn = {
@@ -14,6 +16,7 @@ export type ProductColumn = {
   isFeatured: boolean;
   isArchived: boolean;
   createdAt: string;
+  initialData: Product;
 };
 
 export const columns: ColumnDef<ProductColumn>[] = [
@@ -60,6 +63,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
         entityId={row.original.id}
         entityName='Product'
         entityEndpoint='products'
+        entityInitialData={row.original.initialData}
       />
     ),
   },

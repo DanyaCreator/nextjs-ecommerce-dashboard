@@ -4,14 +4,16 @@ import { RefObject, useEffect } from 'react';
 
 export const useOutsideAlerter = <T extends HTMLElement>(
   ref: RefObject<T>,
-  onClose: () => void
+  onClose: () => void,
+  disabled?: boolean
 ) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         ref?.current &&
         event.target &&
-        !ref?.current.contains(event.target as Node)
+        !ref?.current.contains(event.target as Node) &&
+        !disabled
       ) {
         onClose();
       }
@@ -20,5 +22,5 @@ export const useOutsideAlerter = <T extends HTMLElement>(
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [ref]);
+  }, [ref, disabled]);
 };

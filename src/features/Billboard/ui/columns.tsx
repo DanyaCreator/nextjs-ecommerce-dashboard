@@ -1,6 +1,8 @@
 'use client';
 
+import { Billboard } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
+
 import { EntityCellActions } from '@/shared/ui';
 
 export type BillboardColumn = {
@@ -8,6 +10,7 @@ export type BillboardColumn = {
   label: string;
   product: string;
   createdAt: string;
+  initialData: Billboard;
 };
 
 export const columns: ColumnDef<BillboardColumn>[] = [
@@ -30,6 +33,7 @@ export const columns: ColumnDef<BillboardColumn>[] = [
         entityId={row.original.id}
         entityName='Billboards'
         entityEndpoint='billboards'
+        entityInitialData={row.original.initialData}
       />
     ),
   },

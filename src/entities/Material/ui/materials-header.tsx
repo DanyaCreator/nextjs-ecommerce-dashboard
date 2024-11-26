@@ -1,6 +1,7 @@
 'use client';
 
 import { Material } from '@prisma/client';
+import { useState } from 'react';
 
 import { useModalEntityForm } from '@/shared/model';
 import { EntityHeader } from '@/shared/ui';
@@ -17,6 +18,8 @@ export const MaterialsHeader = ({ materialsCount }: MaterialsHeaderProps) => {
   const onModalOpen = useModalEntityForm((state) => state.onOpen);
   const onModalClose = useModalEntityForm((state) => state.onClose);
 
+  const [loading, setLoading] = useState(false);
+
   const title = modalInitialData ? 'Update a material' : 'Create a material';
   const description = modalInitialData
     ? 'Change the name of material'
@@ -25,18 +28,22 @@ export const MaterialsHeader = ({ materialsCount }: MaterialsHeaderProps) => {
   return (
     <>
       {isModalOpen && (
-        <ModalWrapper isOpen={isModalOpen} onClose={onModalClose}>
+        <ModalWrapper
+          isOpen={isModalOpen}
+          onClose={onModalClose}
+          loading={loading}>
           <MaterialForm
             initialData={modalInitialData as Material}
             title={title}
             description={description}
+            setLoading={setLoading}
           />
         </ModalWrapper>
       )}
       <EntityHeader
         entityName='materials'
         entityCount={materialsCount}
-        onCreate={onModalOpen}
+        onCreate={() => onModalOpen()}
       />
     </>
   );

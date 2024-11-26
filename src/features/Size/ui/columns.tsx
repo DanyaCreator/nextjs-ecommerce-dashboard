@@ -1,6 +1,8 @@
 'use client';
 
+import { Size } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
+
 import { EntityCellActions } from '@/shared/ui';
 
 export type SizeColumn = {
@@ -8,6 +10,7 @@ export type SizeColumn = {
   value: string;
   category: string;
   createdAt: string;
+  initialData: Size;
 };
 
 export const columns: ColumnDef<SizeColumn>[] = [
@@ -30,6 +33,7 @@ export const columns: ColumnDef<SizeColumn>[] = [
         entityId={row.original.id}
         entityName='Size'
         entityEndpoint='sizes'
+        entityInitialData={row.original.initialData}
       />
     ),
   },

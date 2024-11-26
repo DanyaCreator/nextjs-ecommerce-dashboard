@@ -8,18 +8,19 @@ import { useEffect, useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { dmSans } from '@/shared/assets/fonts';
 import { useToastStore } from '@/shared/model';
-import { EntityFormWrapper, UploadImage } from '@/shared/ui';
+import { UploadImage } from '@/shared/ui';
 import { RoundedButton } from '@/shared/ui/buttons';
 import { SelectField, TextField } from '@/shared/ui/form-fields';
 import { BillboardFormSchema } from '../model';
-import { dmSans } from '@/shared/assets/fonts';
 
 type BillboardFormProps = {
   initialData: Billboard | null;
   products: Product[];
   title: string;
   description: string;
+  setLoading: (value: boolean) => void;
 };
 
 export const BillboardForm = ({
@@ -27,6 +28,7 @@ export const BillboardForm = ({
   products,
   title,
   description,
+  setLoading,
 }: BillboardFormProps) => {
   const router = useRouter();
   const params = useParams();
@@ -34,6 +36,10 @@ export const BillboardForm = ({
   const toastStore = useToastStore();
 
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    setLoading(isPending);
+  }, [isPending]);
 
   const {
     handleSubmit,
@@ -89,66 +95,67 @@ export const BillboardForm = ({
 
   return (
     <form
-      className='w-fit h-full flex flex-col gap-5 items-start'
+      className='w-fit flex flex-col gap-5 items-start'
       onSubmit={handleSubmit(onSubmit)}>
       <div className={'flex flex-col gap-6 border-b-[1px] w-full pb-5'}>
         <h3 className={`${dmSans.className}`}>{title}</h3>
         <h4 className={`${dmSans.className} text-dark-gray`}>{description}</h4>
       </div>
-      <fieldset className={'flex flex-col gap-[90px]'}>
-        {/*<Controller
-          control={control}
-          name='label'
-          render={({ field }) => (
-            <TextField
-              label='Label'
-              error={errors.label?.message}
-              disabled={isPending}
-              title='Billboard label'
-              // defaultValue={initialData?.label}
-              {...field}
-            />
-          )}
-        />*/}
-        <Controller
-          control={control}
-          name='productId'
-          render={({ field }) => (
-            <SelectField
-              items={formattedProductItems}
-              unselectedTitle='Select a product'
-              emptyListText='There are no one product yet...'
-              title='Billboard product'
-              error={errors.productId?.message}
-              disabled={isPending}
-              {...field}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name='imageUrl'
-          render={({ field }) => (
-            <div>
-              <UploadImage
-                onChange={(urls) => {
-                  console.log('onChange');
-                  field.onChange(urls[0]);
-                }}
-                onRemove={() => field.onChange('')}
-                value={field.value ? [field.value] : []}
+      <div className='flex flex-col overflow-auto'>
+        <fieldset className='flex flex-col pr-2 gap-6'>
+          <Controller
+            control={control}
+            name='imageUrl'
+            render={({ field }) => (
+              <div>
+                <UploadImage
+                  onChange={(urls) => {
+                    console.log('onChange');
+                    field.onChange(urls[0]);
+                  }}
+                  onRemove={() => field.onChange('')}
+                  value={field.value ? [field.value] : []}
+                  disabled={isPending}
+                  title='Billboard image'
+                />
+                {errors.imageUrl && (
+                  <span className='text-red-500'>
+                    {errors.imageUrl.message}
+                  </span>
+                )}
+              </div>
+            )}
+          />
+          <Controller
+            control={control}
+            name='label'
+            render={({ field }) => (
+              <TextField
+                label='Label'
+                error={errors.label?.message}
                 disabled={isPending}
-                title='Billboard image'
+                defaultValue={initialData?.label}
+                {...field}
               />
-              {errors.imageUrl && (
-                <span className='text-red-500'>{errors.imageUrl.message}</span>
-              )}
-            </div>
-          )}
-        />
-      </fieldset>
-      <div className={'w-full pt-5 border-t-[1px]'}>
-        <RoundedButton text={action} type='submit' className={'w-full'} />
+            )}
+          />
+          <Controller
+            control={control}
+            name='productId'
+            render={({ field }) => (
+              <SelectField
+                items={formattedProductItems}
+                unselectedTitle='Select a product'
+                emptyListText='There are no one product yet...'
+                title='Billboard product'
+                error={errors.productId?.message}
+                disabled={isPending}
+                {...field}
+              />
+            )}
+          />
+          <RoundedButton text={action} type='submit' className='w-fit mb-2' />
+        </fieldset>
       </div>
     </form>
   );
