@@ -1,1 +1,1 @@
-export { BillboardsPage, BillboardForm } from './ui';
+export { BillboardsPage } from './ui';

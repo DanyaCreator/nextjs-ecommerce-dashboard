@@ -1,1 +1,1 @@
-export { SizesPage, SizeForm } from './ui';
+export { SizesPage } from './ui';

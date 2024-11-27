@@ -1,1 +1,1 @@
-export { MaterialForm, MaterialsPage } from './ui';
+export { MaterialsPage } from './ui';

@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+
 import { dmSans } from '@/shared/assets/fonts';
 
 type HeaderLinkProps = {
@@ -12,9 +13,10 @@ export const HeaderLink = ({ href, title, active }: HeaderLinkProps) => {
     <a
       href={href}
       className={clsx(
-        `${dmSans.className} text-[16px] text-dark-gray transition`,
+        `${dmSans.className} text-[16px] transition`,
         'hover:text-black',
-        active && 'text-black'
+        active && 'text-black',
+        !active && 'text-dark-gray'
       )}>
       {title}
     </a>
