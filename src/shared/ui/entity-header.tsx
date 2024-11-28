@@ -9,7 +9,7 @@ import { RoundedButton } from '@/shared/ui/buttons';
 type EntityHeaderProps = {
   entityName: string;
   entityCount?: number;
-  onCreate: () => void;
+  onCreate?: () => void;
 };
 
 export const EntityHeader = ({
@@ -29,13 +29,15 @@ export const EntityHeader = ({
           Manage {entityName} for your store
         </span>
       </div>
-      <RoundedButton
-        onMouseEnter={() => setBtnHovered(true)}
-        onMouseLeave={() => setBtnHovered(false)}
-        onClick={onCreate}>
-        <Plus className='mr-2 w-4 h-4' color={btnHovered ? '#000' : '#fff'} />
-        Add new
-      </RoundedButton>
+      {!!onCreate && (
+        <RoundedButton
+          onMouseEnter={() => setBtnHovered(true)}
+          onMouseLeave={() => setBtnHovered(false)}
+          onClick={onCreate}>
+          <Plus className='mr-2 w-4 h-4' color={btnHovered ? '#000' : '#fff'} />
+          Add new
+        </RoundedButton>
+      )}
     </header>
   );
 };

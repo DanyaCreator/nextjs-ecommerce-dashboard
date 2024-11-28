@@ -4,7 +4,7 @@ import { db } from '@/lib';
 import { ApiData, ApiList } from '@/widgets/ApiList';
 import { ProductColumn, ProductsTable } from '@/features/Product';
 import { ProductsHeader } from '@/entities/Product';
-import { formatter } from '../lib';
+import { formatter } from '@/shared/lib/utils';
 
 type ProductsPageProps = {
   storeId: string;
@@ -41,7 +41,13 @@ const apiCalls: ApiData[] = [
 export const ProductsPage = async ({ storeId }: ProductsPageProps) => {
   const products = await db.product.findMany({
     where: { storeId },
-    include: { billboard: true, category: true, size: true, material: true, images: true },
+    include: {
+      billboard: true,
+      category: true,
+      size: true,
+      material: true,
+      images: true,
+    },
     orderBy: { createdAt: 'desc' },
   });
 
