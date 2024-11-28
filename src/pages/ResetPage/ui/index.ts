@@ -1,1 +1,1 @@
-export { ResetPage } from './ResetPage';
+export { ResetPage } from './reset-page';

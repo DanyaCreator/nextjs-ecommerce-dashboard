@@ -1,1 +1,1 @@
-export { AuthErrorPage } from './AuthErrorPage';
+export { AuthErrorPage } from './auth-error-page';

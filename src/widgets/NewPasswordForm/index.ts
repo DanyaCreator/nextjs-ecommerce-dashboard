@@ -1,1 +1,0 @@
-export { NewPasswordForm } from './ui';

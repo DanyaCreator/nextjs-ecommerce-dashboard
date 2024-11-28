@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs';
 import type { NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import Google from 'next-auth/providers/google';
 import * as z from 'zod';
 
 import { db } from '@/lib';
@@ -13,10 +12,6 @@ const AuthSchema = z.object({
 
 export default {
   providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
     Credentials({
       async authorize(credentials) {
         const validatedFields = AuthSchema.safeParse(credentials);
@@ -24,7 +19,7 @@ export default {
           const { email, password } = validatedFields.data;
 
           const user = await db.user.findUnique({ where: { email } });
-          if (!user || !user.password) return null;
+          if (!user || !user.password || user.role !== 'ADMIN') return null;
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
 

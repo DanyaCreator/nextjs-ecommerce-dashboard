@@ -1,2 +1,2 @@
-export { RoundedButton } from './RoundedButton';
-export { TextButton } from './TextButton';
+export { RoundedButton } from './rounded-button';
+export { TextButton } from './text-button';

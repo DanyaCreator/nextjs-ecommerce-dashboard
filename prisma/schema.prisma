@@ -73,3 +73,136 @@ model ResetPasswordToken {
 
   @@unique([email, token])
 }
+
+model Store {
+  id        String      @id @default(uuid())
+  name      String
+  userId    String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  billboard Billboard[] @relation("StoreToBillboard")
+  category  Category[]  @relation("StoreToCategory")
+  size      Size[]      @relation("StoreToSize")
+  material  Material[]  @relation("StoreToMaterial")
+  product   Product[]   @relation("StoreToProduct")
+  Order     Order[]     @relation("StoreToOrder")
+}
+
+model Billboard {
+  id        String   @id @default(uuid())
+  storeId   String
+  store     Store    @relation("StoreToBillboard", fields: [storeId], references: [id])
+  label     String
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  productId String   @unique
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([storeId])
+  @@index([productId])
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  storeId   String
+  store     Store     @relation("StoreToCategory", fields: [storeId], references: [id])
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[] @relation("CategoryToProduct")
+  sizes     Size[]    @relation("CategoryToSize")
+
+  @@index([storeId])
+}
+
+model Size {
+  id         String    @id @default(uuid())
+  storeId    String
+  store      Store     @relation("StoreToSize", fields: [storeId], references: [id])
+  value      Decimal
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  Product    Product[]
+  category   Category  @relation("CategoryToSize", fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryId String
+
+  @@index([storeId])
+  @@index([categoryId])
+}
+
+model Material {
+  id        String    @id @default(uuid())
+  storeId   String
+  store     Store     @relation("StoreToMaterial", fields: [storeId], references: [id])
+  value     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  prooducts Product[]
+
+  @@index([storeId])
+}
+
+model Product {
+  id          String      @id @default(uuid())
+  storeId     String
+  store       Store       @relation("StoreToProduct", fields: [storeId], references: [id])
+  categoryId  String
+  category    Category    @relation("CategoryToProduct", fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  billboard   Billboard?
+  name        String
+  price       Decimal
+  weight      Decimal
+  description String
+  isFeatured  Boolean     @default(false)
+  isArchived  Boolean     @default(false)
+  sizeId      String
+  size        Size        @relation(fields: [sizeId], references: [id])
+  materialId  String
+  material    Material    @relation(fields: [materialId], references: [id])
+  images      Image[]
+  orderItems  OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([storeId])
+  @@index([categoryId])
+  @@index([sizeId])
+  @@index([materialId])
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+}
+
+model Order {
+  id         String      @id @default(uuid())
+  storeId    String
+  store      Store       @relation("StoreToOrder", fields: [storeId], references: [id])
+  orderItems OrderItem[]
+  isPaid     Boolean     @default(false)
+  phone      String      @default("")
+  address    String      @default("")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([storeId])
+}
+
+model OrderItem {
+  id        String  @default(uuid())
+  orderId   String  @unique
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String  @unique
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
+}
