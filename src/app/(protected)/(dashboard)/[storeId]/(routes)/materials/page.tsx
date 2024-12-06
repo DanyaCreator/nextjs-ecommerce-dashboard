@@ -1,5 +1,6 @@
 import React from 'react';
-import { MaterialsPage } from '@/pages/MaterialsPage';
+// eslint-disable-next-line import/no-internal-modules
+import { MaterialsPage } from '@/screens/MaterialsPage';
 
 type MaterialsProps = {
   params: { storeId: string };

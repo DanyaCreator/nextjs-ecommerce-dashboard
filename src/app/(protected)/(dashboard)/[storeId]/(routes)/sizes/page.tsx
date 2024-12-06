@@ -1,5 +1,6 @@
 import React from 'react';
-import { SizesPage } from '@/pages/SizesPage';
+// eslint-disable-next-line import/no-internal-modules
+import { SizesPage } from '@/screens/SizesPage';
 
 type SizesProps = {
   params: { storeId: string };

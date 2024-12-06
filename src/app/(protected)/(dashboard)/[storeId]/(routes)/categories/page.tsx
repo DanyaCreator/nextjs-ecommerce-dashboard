@@ -1,5 +1,6 @@
 import React from 'react';
-import { CategoriesPage } from '@/pages/CategoriesPage';
+// eslint-disable-next-line import/no-internal-modules
+import { CategoriesPage } from '@/screens/CategoriesPage';
 
 type CategoriesProps = {
   params: { storeId: string };

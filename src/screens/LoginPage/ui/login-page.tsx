@@ -9,7 +9,7 @@ import * as z from 'zod';
 import { RoundedButton, TextButton } from '@/shared/ui/buttons';
 import { TextField } from '@/shared/ui/form-fields';
 import { CardWrapper, FormModalMessage } from '@/shared/ui/modals';
-import { login } from '../api';
+// import { login } from '../api';
 import { LoginSchema } from '../model';
 
 export const LoginPage = () => {
@@ -33,9 +33,9 @@ export const LoginPage = () => {
     setErrorMessage(undefined);
 
     startTransition(async () => {
-      const result = await login(data);
-
-      setErrorMessage(result.error);
+      // const result = await login(data);
+      console.log(data);
+      // setErrorMessage(result.error);
     });
   };
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import { ProductsPage } from '@/pages/ProductsPage';
+// eslint-disable-next-line import/no-internal-modules
+import { ProductsPage } from '@/screens/ProductsPage';
 
 type ProductsProps = {
   params: { storeId: string };

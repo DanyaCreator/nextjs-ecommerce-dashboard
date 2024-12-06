@@ -36,6 +36,7 @@ export const MaterialForm = ({
 
   useEffect(() => {
     setLoading(isPending);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPending]);
 
   const modalOnClose = useModalEntityForm((state) => state.onClose);

@@ -1,12 +1,12 @@
 'use client';
 
 import { Category, Image, Material, Product, Size } from '@prisma/client';
+import { useState } from 'react';
 
 import { useModalEntityForm } from '@/shared/model';
 import { EntityHeader } from '@/shared/ui';
 import { ModalWrapper } from '@/shared/ui/modals';
 import { ProductForm } from './product-form';
-import { useState } from 'react';
 
 type ProductsHeaderProps = {
   productsCount?: number;
@@ -31,7 +31,10 @@ export const ProductsHeader = ({
   return (
     <>
       {isModalOpen && (
-        <ModalWrapper isOpen={isModalOpen} onClose={onModalClose} loading={loading}>
+        <ModalWrapper
+          isOpen={isModalOpen}
+          onClose={onModalClose}
+          loading={loading}>
           <ProductForm
             initialData={modalInitialData as Product & { images: Image[] }}
             categories={categories}

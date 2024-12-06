@@ -39,6 +39,7 @@ export const BillboardForm = ({
 
   useEffect(() => {
     setLoading(isPending);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPending]);
 
   const {

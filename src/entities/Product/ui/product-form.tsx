@@ -49,6 +49,7 @@ export const ProductForm = ({
 
   useEffect(() => {
     setLoading(isPending);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPending]);
 
   const {

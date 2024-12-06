@@ -37,6 +37,7 @@ export const CategoryForm = ({
   useEffect(() => {
     if (!isPending) setLoading(false);
     else setLoading(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPending]);
 
   const {

@@ -1,5 +1,6 @@
 import React from 'react';
-import { BillboardsPage } from '@/pages/BillboardsPage';
+// eslint-disable-next-line import/no-internal-modules
+import { BillboardsPage } from '@/screens/BillboardsPage';
 
 type BillboardsProps = {
   params: { storeId: string };

@@ -12,7 +12,6 @@ import {
   AvatarImage,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/shared/ui/shadcn';
 

@@ -35,6 +35,7 @@ export const UploadImage = ({
     if (!isMounted) return;
 
     onChange(activeUrls);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeUrls]);
 
   // useEffect(() => {
@@ -80,7 +81,13 @@ export const UploadImage = ({
                 <Trash className='h-4 w-4' color='#fff' />
               </RoundedButton>
             </div>
-            <Image className='object-cover' src={url} alt='Image' width={130} height={130}/>
+            <Image
+              className='w-[130px] h-[130px] object-contain'
+              src={url}
+              alt='Image'
+              width={130}
+              height={130}
+            />
           </div>
         ))}
       </div>

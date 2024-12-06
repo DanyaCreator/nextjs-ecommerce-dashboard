@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { StoreModal } from '@/pages/SetupPage';
+// eslint-disable-next-line import/no-internal-modules
+import { StoreModal } from '@/screens/SetupPage';
 import { Toast } from '@/shared/ui/modals';
 
 export const ModalProvider = () => {
