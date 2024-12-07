@@ -9,7 +9,7 @@ import * as z from 'zod';
 import { RoundedButton, TextButton } from '@/shared/ui/buttons';
 import { TextField } from '@/shared/ui/form-fields';
 import { CardWrapper, FormModalMessage } from '@/shared/ui/modals';
-// import { login } from '../api';
+import { login } from '../api';
 import { LoginSchema } from '../model';
 
 export const LoginPage = () => {
@@ -32,9 +32,12 @@ export const LoginPage = () => {
   const onSubmit = (data: z.infer<typeof LoginSchema>) => {
     setErrorMessage(undefined);
 
+    // FIXME Add toast
     startTransition(async () => {
-      // const result = await login(data);
-      console.log(data);
+      const result = await login(data);
+
+      if (!result) console.error(result);
+      // console.log(data);
       // setErrorMessage(result.error);
     });
   };
