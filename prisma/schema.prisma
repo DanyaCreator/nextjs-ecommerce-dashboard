@@ -144,26 +144,27 @@ model Material {
 }
 
 model Product {
-  id          String      @id @default(uuid())
-  storeId     String
-  store       Store       @relation("StoreToProduct", fields: [storeId], references: [id])
-  categoryId  String
-  category    Category    @relation("CategoryToProduct", fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  billboard   Billboard?
-  name        String
-  price       Decimal
-  weight      Decimal
-  description String
-  isFeatured  Boolean     @default(false)
-  isArchived  Boolean     @default(false)
-  sizeId      String
-  size        Size        @relation(fields: [sizeId], references: [id])
-  materialId  String
-  material    Material    @relation(fields: [materialId], references: [id])
-  images      Image[]
-  orderItems  OrderItem[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id             String          @id @default(uuid())
+  storeId        String
+  store          Store           @relation("StoreToProduct", fields: [storeId], references: [id])
+  categoryId     String
+  category       Category        @relation("CategoryToProduct", fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  billboard      Billboard?
+  name           String
+  price          Decimal
+  weight         Decimal
+  description    String
+  isFeatured     Boolean         @default(false)
+  isArchived     Boolean         @default(false)
+  sizeId         String
+  size           Size            @relation(fields: [sizeId], references: [id])
+  materialId     String
+  material       Material        @relation(fields: [materialId], references: [id])
+  images         Image[]
+  orderItems     OrderItem[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  productReviews ProductReview[]
 
   @@index([storeId])
   @@index([categoryId])
@@ -204,5 +205,17 @@ model OrderItem {
   product   Product @relation(fields: [productId], references: [id])
 
   @@index([orderId])
+  @@index([productId])
+}
+
+model ProductReview {
+  id        String   @default(uuid())
+  productId String   @unique
+  product   Product  @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  text      String
+  name      String
+  rating    Decimal
+  createdAt DateTime @default(now())
+
   @@index([productId])
 }

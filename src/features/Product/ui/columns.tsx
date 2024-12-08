@@ -64,6 +64,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
         entityName='Product'
         entityEndpoint='products'
         entityInitialData={row.original.initialData}
+        productCellActions
       />
     ),
   },

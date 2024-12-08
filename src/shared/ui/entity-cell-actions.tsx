@@ -4,6 +4,7 @@ import axios, { AxiosError } from 'axios';
 import { Copy, Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
+import { FaRegComments } from 'react-icons/fa';
 
 import { useModalEntityForm, useToastStore } from '@/shared/model';
 import { RoundedButton } from '@/shared/ui/buttons';
@@ -20,6 +21,7 @@ type EntityCellActionsProps = {
   entityId: string;
   entityEndpoint: string;
   entityInitialData: unknown;
+  productCellActions?: boolean;
 };
 
 export const EntityCellActions = ({
@@ -27,6 +29,7 @@ export const EntityCellActions = ({
   entityId,
   entityEndpoint,
   entityInitialData,
+  productCellActions,
 }: EntityCellActionsProps) => {
   const modalOnOpen = useModalEntityForm((state) => state.onOpen);
 
@@ -97,18 +100,28 @@ export const EntityCellActions = ({
             <Copy className='mr-2 w-4 h-4' />
             Copy id
           </DropdownMenuItem>
-          <DropdownMenuItem
-            className='cursor-pointer'
-            onClick={() => modalOnOpen(entityInitialData)}>
-            <Edit className='mr-2 w-4 h-4' />
-            Update
-          </DropdownMenuItem>
+          {entityInitialData !== null && (
+            <DropdownMenuItem
+              className='cursor-pointer'
+              onClick={() => modalOnOpen(entityInitialData)}>
+              <Edit className='mr-2 w-4 h-4' />
+              Update
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             className='cursor-pointer'
             onClick={() => setOpen(true)}>
             <Trash className='mr-2 w-4 h-4' />
             Delete
           </DropdownMenuItem>
+          {productCellActions && (
+            <DropdownMenuItem
+              className='cursor-pointer'
+              onClick={() => router.push(`${entityEndpoint}/${entityId}/reviews`)}>
+              <FaRegComments className='mr-2 w-4 h-4' />
+              Reviews
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </>
