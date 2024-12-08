@@ -55,8 +55,7 @@ export const ProductForm = ({
   const {
     control,
     handleSubmit,
-    watch,
-    formState: { errors, defaultValues },
+    formState: { errors },
   } = useForm<z.infer<typeof ProductFormSchema>>({
     resolver: zodResolver(ProductFormSchema),
     defaultValues: initialData
@@ -78,12 +77,6 @@ export const ProductForm = ({
           isArchived: false,
         },
   });
-
-  const watchImages = watch('images');
-
-  useEffect(() => {
-    console.log('images: ', watchImages, 'default values: ', defaultValues);
-  }, [watchImages]);
 
   const title = initialData ? 'Edit products' : 'Create products';
   const description = initialData ? 'Edit a products' : 'Create a products';

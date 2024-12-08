@@ -117,7 +117,9 @@ export const EntityCellActions = ({
           {productCellActions && (
             <DropdownMenuItem
               className='cursor-pointer'
-              onClick={() => router.push(`${entityEndpoint}/${entityId}/reviews`)}>
+              onClick={() =>
+                router.push(`${entityEndpoint}/${entityId}/reviews`)
+              }>
               <FaRegComments className='mr-2 w-4 h-4' />
               Reviews
             </DropdownMenuItem>
