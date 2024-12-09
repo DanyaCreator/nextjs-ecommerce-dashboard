@@ -9,6 +9,8 @@ export const ProductFormSchema = z.object({
   categoryId: z.string().min(1),
   materialId: z.string().min(1),
   sizeId: z.string().min(1),
-  isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional(),
+  onSale: z.boolean().default(false).optional(),
+  sale: z.coerce.number().default(0).optional(),
+  inStock: z.boolean().default(true).optional(),
 });

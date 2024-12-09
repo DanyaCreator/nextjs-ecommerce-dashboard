@@ -13,8 +13,9 @@ export type ProductColumn = {
   category: string;
   material: string;
   isPinnedOnBillboard: boolean;
-  isFeatured: boolean;
   isArchived: boolean;
+  inStock: boolean;
+  sale: string;
   createdAt: string;
   initialData: Product;
 };
@@ -25,8 +26,8 @@ export const columns: ColumnDef<ProductColumn>[] = [
     header: 'Name',
   },
   {
-    accessorKey: 'isFeatured',
-    header: 'Featured',
+    accessorKey: 'inStock',
+    header: 'InStock',
   },
   {
     accessorKey: 'isArchived',
@@ -39,6 +40,10 @@ export const columns: ColumnDef<ProductColumn>[] = [
   {
     accessorKey: 'price',
     header: 'Price',
+  },
+  {
+    accessorKey: 'sale',
+    header: 'Sale',
   },
   {
     accessorKey: 'category',

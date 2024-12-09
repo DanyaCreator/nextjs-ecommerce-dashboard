@@ -54,10 +54,12 @@ export const ProductsPage = async ({ storeId }: ProductsPageProps) => {
   const formattedProductItems: ProductColumn[] = products.map((i) => ({
     id: i.id,
     name: i.name,
-    isFeatured: i.isFeatured,
     isArchived: i.isArchived,
+    inStock: i.inStock,
     isPinnedOnBillboard: !!i.billboard,
     price: formatter.format(i.price.toNumber()),
+    onSale: i.onSale,
+    sale: i.sale + '%',
     category: i.category.name,
     size: i.size.value.toString(),
     material: i.material.value,

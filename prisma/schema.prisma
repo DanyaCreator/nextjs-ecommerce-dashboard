@@ -154,8 +154,10 @@ model Product {
   price          Decimal
   weight         Decimal
   description    String
-  isFeatured     Boolean         @default(false)
+  onSale         Boolean         @default(false)
+  sale           Decimal         @default(0)
   isArchived     Boolean         @default(false)
+  inStock        Boolean         @default(true)
   sizeId         String
   size           Size            @relation(fields: [sizeId], references: [id])
   materialId     String

@@ -19,15 +19,21 @@ export async function PATCH(
       price,
       weight,
       description,
-      isFeatured,
       isArchived,
+      inStock,
+      onSale,
+      sale,
       sizeId,
       materialId,
       images,
     } = body;
 
     for (const key of Object.keys(body)) {
-      if (body[key] || key === 'isArchived' || key === 'isFeatured') continue;
+      if (
+        body[key] ||
+        ['inStock', 'isArchived', 'onSale', 'sale'].includes(key)
+      )
+        continue;
 
       return new NextResponse(`${key} is required!`, { status: 400 });
     }
@@ -45,8 +51,10 @@ export async function PATCH(
         price,
         weight,
         description,
-        isFeatured,
         isArchived,
+        inStock,
+        onSale,
+        sale,
         sizeId,
         materialId,
         images: { deleteMany: {} },

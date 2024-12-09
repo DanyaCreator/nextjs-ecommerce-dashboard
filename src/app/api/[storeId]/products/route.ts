@@ -20,15 +20,21 @@ export async function POST(
       price,
       weight,
       description,
-      isFeatured,
       isArchived,
+      inStock,
+      onSale,
+      sale,
       sizeId,
       materialId,
       images,
     } = body;
 
     for (const key of Object.keys(body)) {
-      if (body[key] || key === 'isFeatured' || key === 'isArchived') continue;
+      if (
+        body[key] ||
+        ['inStock', 'isArchived', 'onSale', 'sale'].includes(key)
+      )
+        continue;
 
       return new NextResponse(`${key} is required!`, { status: 400 });
     }
@@ -41,7 +47,9 @@ export async function POST(
         weight,
         description,
         isArchived,
-        isFeatured,
+        inStock,
+        onSale,
+        sale,
         sizeId,
         materialId,
         storeId: params.storeId,
@@ -70,7 +78,6 @@ export async function GET(
     const categoryId = searchParams.get('categoryId') || undefined;
     const sizeId = searchParams.get('sizeId') || undefined;
     const materialId = searchParams.get('materialId') || undefined;
-    const isFeatured = searchParams.get('isFeatured');
 
     if (!params.storeId) {
       return new NextResponse('Store id is required!', { status: 400 });
@@ -82,7 +89,6 @@ export async function GET(
         categoryId,
         sizeId,
         materialId,
-        isFeatured: isFeatured ? true : undefined,
         isArchived: false,
       },
       include: {

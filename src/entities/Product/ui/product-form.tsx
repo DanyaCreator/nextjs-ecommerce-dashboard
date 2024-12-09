@@ -62,6 +62,7 @@ export const ProductForm = ({
       ? {
           ...initialData,
           price: parseFloat(String(initialData.price)),
+          sale: parseFloat(String(initialData.sale)),
           weight: parseFloat(String(initialData.weight)),
         }
       : {
@@ -73,8 +74,10 @@ export const ProductForm = ({
           sizeId: '',
           weight: 0,
           description: '',
-          isFeatured: false,
           isArchived: false,
+          onSale: false,
+          sale: 0,
+          inStock: false,
         },
   });
 
@@ -257,10 +260,10 @@ export const ProductForm = ({
           <div className='flex gap-4'>
             <Controller
               control={control}
-              name='isFeatured'
+              name='inStock'
               render={({ field }) => (
                 <CheckboxField
-                  label='Is featured'
+                  label='In stock'
                   disabled={isPending}
                   {...field}
                 />
@@ -278,6 +281,27 @@ export const ProductForm = ({
               )}
             />
           </div>
+          <Controller
+            control={control}
+            name='onSale'
+            render={({ field }) => (
+              <CheckboxField label='On sale' disabled={isPending} {...field} />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name='sale'
+            render={({ field }) => (
+              <TextField
+                label='Sale, %'
+                type={'number'}
+                disabled={isPending}
+                {...field}
+              />
+            )}
+          />
+
           <RoundedButton
             text={action}
             className='mt-16'
