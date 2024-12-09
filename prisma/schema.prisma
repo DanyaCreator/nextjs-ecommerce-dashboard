@@ -209,8 +209,8 @@ model OrderItem {
 }
 
 model ProductReview {
-  id        String   @default(uuid())
-  productId String   @unique
+  id        String   @id @default(uuid())
+  productId String
   product   Product  @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   text      String
   name      String
