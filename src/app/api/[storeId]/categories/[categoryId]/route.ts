@@ -70,6 +70,7 @@ export async function GET(
 
     const category = await db.category.findUnique({
       where: { id: params.categoryId },
+      include: { sizes: true },
     });
 
     return NextResponse.json(category);

@@ -41,6 +41,7 @@ export async function GET(
 
     const categories = await db.category.findMany({
       where: { storeId: params.storeId },
+      include: { sizes: true },
     });
 
     return NextResponse.json(categories);
