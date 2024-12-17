@@ -77,6 +77,7 @@ export async function GET(
 
     const billboard = await db.billboard.findUnique({
       where: { id: params.billboardId },
+      include: { product: true },
     });
 
     return NextResponse.json(billboard);

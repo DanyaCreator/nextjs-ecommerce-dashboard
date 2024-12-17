@@ -49,6 +49,7 @@ export async function GET(
 
     const billboards = await db.billboard.findMany({
       where: { storeId: params.storeId },
+      include: { product: true },
     });
 
     return NextResponse.json(billboards);
